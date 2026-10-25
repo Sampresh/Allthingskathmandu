@@ -80,6 +80,7 @@ export const twoFactorLimiter = createLimiter({
 export const registerLimiter = createLimiter({ name: 'register', windowMs: HOUR, limit: 5 })
 export const emailLimiter = createLimiter({ name: 'email', windowMs: HOUR, limit: 5 })
 export const reportLimiter = createLimiter({ name: 'reports', windowMs: HOUR, limit: 5 })
+export const contactLimiter = createLimiter({ name: 'contact', windowMs: HOUR, limit: 5 })
 
 // Search and suggest: 60 per minute per IP. Track: 120 per minute per IP.
 export const searchLimiter = createLimiter({ name: 'search', windowMs: MINUTE, limit: 60 })

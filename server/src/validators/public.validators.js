@@ -1,13 +1,9 @@
 import { z } from 'zod'
 import { DEFAULT_LIMIT, MAX_LIMIT } from '../lib/cursor.js'
-import { TRACK_FIELDS } from '../services/stats.js'
+import { TRACK_FIELDS } from '../lib/track.js'
+import { slug } from './common.js'
 
-export const slug = z
-  .string()
-  .trim()
-  .toLowerCase()
-  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Invalid slug')
-  .max(160)
+export { slug }
 
 export const slugParams = z.object({ slug })
 
@@ -105,3 +101,14 @@ export const reportBody = z
     message: 'Tell us what is wrong',
     path: ['details'],
   })
+
+export const pageParams = z.object({
+  slug: z.enum(['about', 'contact', 'terms', 'privacy', 'refund']),
+})
+
+export const contactBody = z.object({
+  name: z.string().trim().min(1).max(100),
+  email: z.string().trim().toLowerCase().max(254).pipe(z.email()),
+  message: z.string().trim().min(10).max(2000),
+  turnstileToken: z.string().max(4096).optional(),
+})

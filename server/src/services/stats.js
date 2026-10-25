@@ -2,16 +2,10 @@ import { db } from '../config/db.js'
 import { isRedisReady, redis } from '../config/redis.js'
 import { Prisma } from '../generated/prisma/client'
 import { nepalClock } from '../lib/hours.js'
+import { TRACK_FIELDS } from '../lib/track.js'
 import { logger } from '../utils/logger.js'
 
-// Tracked kinds → listing_stats_daily columns.
-export const TRACK_FIELDS = {
-  view: 'views',
-  call: 'calls',
-  whatsapp: 'whatsapp',
-  map: 'mapClicks',
-  website: 'websiteClicks',
-}
+export { TRACK_FIELDS }
 
 const PENDING = 'stats:pending'
 const KEY_TTL_S = 7 * 24 * 60 * 60

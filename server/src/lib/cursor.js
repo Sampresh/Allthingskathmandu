@@ -19,3 +19,20 @@ export function decodeCursor(cursor, schema) {
 
 /** Keyset position: [sortKey, id]. */
 export const keysetSchema = z.tuple([z.number().finite(), z.uuid()])
+
+/**
+ * Newest-first page keyed on the id (UUID v7 ids sort by creation time). Returns the Prisma
+ * `where` and `take` for the query, and `finish(rows)` → { items, nextCursor }.
+ */
+export function idPage(cursor, limit) {
+  const after = cursor ? decodeCursor(cursor, z.uuid()) : null
+  return {
+    where: after ? { id: { lt: after } } : {},
+    take: limit + 1,
+    orderBy: { id: 'desc' },
+    finish: (rows) => ({
+      items: rows.slice(0, limit),
+      nextCursor: rows.length > limit ? encodeCursor(rows[limit - 1].id) : null,
+    }),
+  }
+}

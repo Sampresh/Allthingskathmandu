@@ -36,6 +36,27 @@ const templates = {
       `<p>Hi ${escape(name)},</p><p>Someone tried to sign up with this email, but it already has an account.</p>${button(loginUrl, 'Log in')}<p>Forgot your password? <a href="${escape(resetUrl)}">Reset it</a>.</p><p style="color:#6b7280;font-size:14px">If this was not you, ignore this email.</p>`,
     ),
   }),
+  'claim-approved': ({ name, listingName, url }) => ({
+    subject: `Your claim for ${listingName} is approved`,
+    text: `Hi ${name},\n\nYou now manage ${listingName} on All Things Kathmandu. Update it from your business portal:\n${url}`,
+    html: layout(
+      `<p>Hi ${escape(name)},</p><p>You now manage <strong>${escape(listingName)}</strong> on All Things Kathmandu.</p>${button(url, 'Open business portal')}`,
+    ),
+  }),
+  'claim-rejected': ({ name, listingName, reason }) => ({
+    subject: `Your claim for ${listingName}`,
+    text: `Hi ${name},\n\nWe could not approve your claim for ${listingName}.${reason ? `\nReason: ${reason}` : ''}\n\nReply to this email if you can send more proof.`,
+    html: layout(
+      `<p>Hi ${escape(name)},</p><p>We could not approve your claim for <strong>${escape(listingName)}</strong>.</p>${reason ? `<p>Reason: ${escape(reason)}</p>` : ''}<p>Reply to this email if you can send more proof.</p>`,
+    ),
+  }),
+  'contact-message': ({ name, email, message }) => ({
+    subject: `Contact form: ${name}`,
+    text: `From: ${name} <${email}>\n\n${message}`,
+    html: layout(
+      `<p><strong>From:</strong> ${escape(name)} &lt;${escape(email)}&gt;</p><p style="white-space:pre-line">${escape(message)}</p>`,
+    ),
+  }),
 }
 
 export function renderEmail(template, data) {
@@ -45,9 +66,9 @@ export function renderEmail(template, data) {
 }
 
 /** Queues an email; the worker renders and sends it (never inline in a request). */
-export function queueEmail(to, template, data) {
+export function queueEmail(to, template, data, { replyTo } = {}) {
   if (!templates[template]) throw new Error(`unknown email template: ${template}`)
-  return enqueue(QUEUE.EMAIL, 'send', { to, template, data })
+  return enqueue(QUEUE.EMAIL, 'send', { to, template, data, ...(replyTo && { replyTo }) })
 }
 
 export const clientUrl = (path) => new URL(path, env.CLIENT_URL).toString()

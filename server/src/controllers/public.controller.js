@@ -3,6 +3,8 @@ import { readDb } from '../config/db.js'
 import * as directory from '../services/directory.js'
 import { getHome } from '../services/home.js'
 import * as searchService from '../services/search.js'
+import { env } from '../config/env.js'
+import { queueEmail } from '../services/email.js'
 import { createReport, isReportable } from '../services/reports.js'
 import { trackEvent } from '../services/stats.js'
 import { verifyTurnstile } from '../services/turnstile.js'
@@ -100,4 +102,30 @@ export async function report(req, res) {
   if (!(await isReportable(body.entityType, body.entityId))) throw ApiError.notFound()
   await createReport({ ...body, userId: req.user?.id })
   return created(res, { message: 'Thanks. We will check this and fix it.' })
+}
+
+export async function page(req, res) {
+  const found = await readDb.cmsPage.findFirst({
+    where: { slug: req.params.slug, isPublished: true },
+    select: {
+      slug: true,
+      title: true,
+      body: true,
+      seoTitle: true,
+      seoDescription: true,
+      updatedAt: true,
+    },
+  })
+  if (!found) throw ApiError.notFound('Page not found')
+  return ok(res, found)
+}
+
+// Contact form: goes to the address in Settings → contact (else FROM_EMAIL), via the queue.
+export async function contact(req, res) {
+  const { turnstileToken, name, email, message } = req.body
+  await verifyTurnstile(turnstileToken, req.ip)
+  const setting = await readDb.setting.findUnique({ where: { key: 'contact' } })
+  const to = setting?.value?.email || env.FROM_EMAIL
+  await queueEmail(to, 'contact-message', { name, email, message }, { replyTo: email })
+  return created(res, { message: 'Thanks. We will reply by email.' })
 }
