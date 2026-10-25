@@ -6,6 +6,7 @@ export const QUEUE = {
   STATS: 'stats',
   DIRECTORY: 'directory',
   CACHE: 'cache',
+  REVALIDATE: 'revalidate',
 }
 
 // Retries with backoff; completed jobs are trimmed, failed jobs stay for inspection (Part 3 §9).

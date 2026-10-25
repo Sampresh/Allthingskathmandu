@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { FormError, FormSuccess } from './FormStatus'
-import { T } from './T'
+import { AuthT as T } from './AuthT'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 
@@ -33,7 +33,13 @@ export function EmailForm({ action, submitKey, doneKey }) {
     }
   }
 
-  if (done) return <FormSuccess k={doneKey} />
+  if (done) {
+    return (
+      <FormSuccess>
+        <T k={doneKey} />
+      </FormSuccess>
+    )
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-4">

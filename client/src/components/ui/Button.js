@@ -21,7 +21,7 @@ export function Button({
   ...props
 }) {
   const classes = clsx(
-    'inline-flex min-h-11 items-center justify-center gap-2 rounded-box px-4 text-base font-semibold transition-opacity',
+    'inline-flex min-h-11 items-center justify-center gap-2 rounded-box px-4 text-base font-semibold whitespace-nowrap transition-opacity',
     'disabled:cursor-not-allowed disabled:opacity-60',
     variants[variant],
     fullWidth && 'w-full',

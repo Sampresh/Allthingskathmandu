@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { AuthCard } from '@/components/common/AuthCard'
-import { T } from '@/components/common/T'
+import { AuthT as T } from '@/components/common/AuthT'
 import { ForgotPasswordForm } from './ForgotPasswordForm'
 
 export const metadata = { title: 'Reset your password', robots: { index: false, follow: false } }

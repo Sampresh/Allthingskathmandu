@@ -1,12 +1,14 @@
-import { Router } from 'express'
+import express, { Router } from 'express'
 import * as pub from '../controllers/public.controller.js'
+import { optionalAuth } from '../middleware/auth.js'
 import { cache } from '../middleware/cache.js'
-import { searchLimiter, trackLimiter } from '../middleware/rateLimit.js'
+import { reportLimiter, searchLimiter, trackLimiter } from '../middleware/rateLimit.js'
 import { validate } from '../middleware/validate.js'
 import {
   homeQuery,
   listingsQuery,
   pageQuery,
+  reportBody,
   searchQuery,
   similarQuery,
   slugParams,
@@ -96,4 +98,19 @@ publicRouter.get('/areas', cache({ ttl: 60 * MIN, tags: () => ['areas'] }), pub.
 publicRouter.get('/plans', cache({ ttl: 60 * MIN, tags: () => ['plans'] }), pub.plans)
 publicRouter.get('/settings', cache({ ttl: 60 * MIN, tags: () => ['settings'] }), pub.settings)
 
-publicRouter.post('/track', trackLimiter, validate({ body: trackBody }), pub.track)
+// Browsers send track beacons as text/plain (a simple request, so no CORS preflight).
+publicRouter.post(
+  '/track',
+  trackLimiter,
+  express.json({ type: 'text/plain', limit: '1kb' }),
+  validate({ body: trackBody }),
+  pub.track,
+)
+
+publicRouter.post(
+  '/reports',
+  reportLimiter,
+  optionalAuth,
+  validate({ body: reportBody }),
+  pub.report,
+)

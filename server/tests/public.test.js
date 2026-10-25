@@ -124,6 +124,7 @@ describe('GET /categories/:slug/listings', () => {
       contact: { phone: '014000001' },
       area: { slug: 'thamel', nameEn: 'Thamel', nameNe: 'ठमेल' },
       category: { slug: 'restaurants', groupSlug: 'eat-and-drink' },
+      location: { lat: expect.closeTo(27.7156, 4), lng: expect.closeTo(85.3125, 4) },
     })
   })
 

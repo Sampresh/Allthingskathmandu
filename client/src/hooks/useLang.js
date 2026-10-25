@@ -2,6 +2,7 @@
 
 import { useCallback, useSyncExternalStore } from 'react'
 import { LANG_COOKIE, translate } from '@/lib/i18n'
+import { clientMessages } from '@/lib/messages/client'
 
 const EVENT = 'atk:lang'
 
@@ -20,7 +21,7 @@ export function useLang() {
 /** Translator bound to the current language, for placeholders, aria-labels and alt text. */
 export function useT() {
   const lang = useLang()
-  return useCallback((key) => translate(key, lang), [lang])
+  return useCallback((key) => translate(key, lang, clientMessages), [lang])
 }
 
 export function setLang(lang) {

@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { FormError, FormSuccess } from '@/components/common/FormStatus'
-import { T } from '@/components/common/T'
+import { AuthT as T } from '@/components/common/AuthT'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { resetPassword } from '@/services/auth.service'
@@ -48,7 +48,9 @@ export function ResetPasswordForm() {
   if (done) {
     return (
       <div className="flex flex-col gap-4">
-        <FormSuccess k="auth.reset.done" />
+        <FormSuccess>
+          <T k="auth.reset.done" />
+        </FormSuccess>
         <Button href="/login" fullWidth>
           <T k="auth.loginLink" />
         </Button>

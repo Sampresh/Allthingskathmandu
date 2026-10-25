@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Turnstile } from '@marsidev/react-turnstile'
 import { z } from 'zod'
 import { FormError, FormSuccess } from '@/components/common/FormStatus'
-import { T } from '@/components/common/T'
+import { AuthT as T } from '@/components/common/AuthT'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { useLang } from '@/hooks/useLang'
@@ -45,7 +45,12 @@ export function RegisterForm() {
     }
   }
 
-  if (done) return <FormSuccess k="auth.register.done" />
+  if (done)
+    return (
+      <FormSuccess>
+        <T k="auth.register.done" />
+      </FormSuccess>
+    )
 
   return (
     <div className="flex flex-col gap-6">

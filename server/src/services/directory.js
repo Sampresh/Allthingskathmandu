@@ -27,7 +27,8 @@ const cardColumns = (point) => Prisma.sql`
   a.slug AS "areaSlug", a."nameEn" AS "areaNameEn", a."nameNe" AS "areaNameNe",
   pc.slug AS "categorySlug", pc."nameEn" AS "categoryNameEn", pc."nameNe" AS "categoryNameNe",
   pc."groupSlug",
-  ${distanceSql(point)} AS meters`
+  ${distanceSql(point)} AS meters,
+  ST_Y(b.location::geometry) AS lat, ST_X(b.location::geometry) AS lng`
 
 // Area and primary category for each card.
 const cardJoins = Prisma.sql`
@@ -64,6 +65,8 @@ export function toCard(row, clock = nepalClock()) {
     isVerified: row.isVerified,
     featured: row.featured,
     openNow: isOpenAt(row.hours, clock),
+    // Sent so the browser can recompute openNow on pages that were cached a while ago.
+    hours: row.hours,
     area: row.areaSlug
       ? { slug: row.areaSlug, nameEn: row.areaNameEn, nameNe: row.areaNameNe }
       : null,
@@ -76,6 +79,7 @@ export function toCard(row, clock = nepalClock()) {
         }
       : null,
     distanceMeters: row.meters == null ? null : Math.round(row.meters),
+    location: row.lat == null ? null : { lat: row.lat, lng: row.lng },
   }
 }
 

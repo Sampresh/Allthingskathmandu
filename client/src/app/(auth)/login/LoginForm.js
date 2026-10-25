@@ -9,10 +9,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { FormError } from '@/components/common/FormStatus'
 import { GoogleSignInButton } from '@/components/common/GoogleSignInButton'
-import { T } from '@/components/common/T'
+import { AuthT as T } from '@/components/common/AuthT'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { useT } from '@/hooks/useLang'
+import { useAuthT as useT } from '@/hooks/useAuthT'
 import {
   completeSignIn,
   enableTwoFactor,

@@ -2,6 +2,7 @@ import { QUEUE } from '../queues.js'
 import { purgeCacheJob } from './cache.js'
 import { refreshCountsJob, syncListingsJob } from './directory.js'
 import { sendEmailJob } from './email.js'
+import { revalidateJob } from './revalidate.js'
 import { flushStatsJob } from './stats.js'
 
 /**
@@ -12,6 +13,7 @@ export const processors = {
   [QUEUE.EMAIL]: { concurrency: 5, handlers: { send: sendEmailJob } },
   [QUEUE.CACHE]: { concurrency: 2, handlers: { purge: purgeCacheJob } },
   [QUEUE.STATS]: { concurrency: 1, handlers: { flush: flushStatsJob } },
+  [QUEUE.REVALIDATE]: { concurrency: 2, handlers: { revalidate: revalidateJob } },
   [QUEUE.DIRECTORY]: {
     concurrency: 1,
     handlers: { 'refresh-counts': refreshCountsJob, 'sync-listings': syncListingsJob },

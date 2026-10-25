@@ -1,22 +1,15 @@
-import { messages } from '@/lib/i18n'
+import { clientMessages } from '@/lib/messages/client'
+import { Bilingual } from './Bilingual'
+
+export { Bilingual }
 
 /**
- * Renders text in both languages; CSS shows the one picked by <html data-lang>.
- * Use `k` for UI messages, or `en` / `ne` for data (e.g. category.nameEn / nameNe).
- * Works in server and client components.
+ * Text in both languages (client-safe: knows only client text; server components use ST).
+ * Use `k` for UI messages, or `en` / `ne` for data (e.g.
+ * category.nameEn / nameNe). Works in server and client components.
  */
 export function T({ k, en, ne }) {
-  const entry = k ? messages[k] : { en, ne }
+  const entry = k ? clientMessages[k] : { en, ne }
   if (!entry) return k
-  if (!entry.ne || entry.ne === entry.en) return entry.en
-  return (
-    <>
-      <span className="i18n-en" lang="en">
-        {entry.en}
-      </span>
-      <span className="i18n-ne" lang="ne">
-        {entry.ne}
-      </span>
-    </>
-  )
+  return <Bilingual entry={entry} />
 }

@@ -2,7 +2,6 @@ import axios from 'axios'
 import { useAuthStore } from '@/store/authStore'
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL
-export const SESSION_HINT_COOKIE = 'atk_session'
 
 // The access token lives only in this module's memory: never in storage or a cookie.
 let accessToken = null
@@ -10,11 +9,6 @@ let accessToken = null
 export const setAccessToken = (token) => {
   accessToken = token
 }
-
-/** True when the API's "logged in" hint cookie is present, so a refresh is worth trying. */
-export const hasSessionHint = () =>
-  typeof document !== 'undefined' &&
-  document.cookie.split('; ').some((c) => c === `${SESSION_HINT_COOKIE}=1`)
 
 /** Error shape every service call rejects with. */
 export class ApiClientError extends Error {

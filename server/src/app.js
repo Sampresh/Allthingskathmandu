@@ -22,7 +22,9 @@ export function createApp() {
   const app = express()
 
   app.disable('x-powered-by')
-  app.use(helmet())
+  // same-site (not helmet's same-origin) so the web app's track beacons, which are no-cors
+  // requests from allthingskathmandu.com, are not blocked.
+  app.use(helmet({ crossOriginResourcePolicy: { policy: 'same-site' } }))
   app.set('trust proxy', env.isProduction ? TRUSTED_PROXY_HOPS : false)
   app.use(httpsRedirect)
   app.use(cors({ origin: env.CLIENT_URL, credentials: true }))

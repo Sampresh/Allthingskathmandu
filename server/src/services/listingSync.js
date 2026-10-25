@@ -1,6 +1,7 @@
 import { db } from '../config/db.js'
 import { Prisma } from '../generated/prisma/client'
 import { purgeTags } from './cache.js'
+import { pageTagsFor, queueRevalidate } from './revalidate.js'
 
 /**
  * Recomputes categories.liveCount: LIVE listings per category, per group (across its
@@ -26,10 +27,12 @@ export async function refreshCategoryCounts() {
     UPDATE categories c SET "liveCount" = counts.live
     FROM counts
     WHERE c.id = counts.id AND c."liveCount" IS DISTINCT FROM counts.live
-    RETURNING c.id`
+    RETURNING c.id, c.slug`
 
   if (changed.length) {
     await purgeTags(['groups', 'home', 'market', ...changed.map((c) => `category:${c.id}`)])
+    // A category crossing the 5-listing threshold appears or disappears on public pages.
+    await queueRevalidate(pageTagsFor({ categories: changed, extra: ['groups', 'home'] }))
   }
   return { changed: changed.length }
 }

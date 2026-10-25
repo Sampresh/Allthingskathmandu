@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/Card'
-import { T } from './T'
+import { AuthT as T } from './AuthT'
 
 /** Card shell shared by the auth pages. */
 export function AuthCard({ titleKey, introKey, children }) {

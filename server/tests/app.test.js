@@ -54,6 +54,8 @@ describe('app pipeline', () => {
     expect(res.headers['x-content-type-options']).toBe('nosniff')
     expect(res.headers['strict-transport-security']).toBeDefined()
     expect(res.headers['x-powered-by']).toBeUndefined()
+    // same-site, so the web app's no-cors track beacons are not blocked
+    expect(res.headers['cross-origin-resource-policy']).toBe('same-site')
   })
 
   it('allows credentialed CORS only for CLIENT_URL', async () => {

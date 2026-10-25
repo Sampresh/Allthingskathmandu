@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { hasSessionHint, refreshSession } from '@/services/api'
+import { hasSessionHint } from '@/lib/session'
 import { useAuthStore } from '@/store/authStore'
 
 function AuthBootstrap() {
@@ -14,7 +14,8 @@ function AuthBootstrap() {
       return
     }
     useAuthStore.getState().setLoading()
-    refreshSession().catch(() => {})
+    // The API client loads only for visitors who may have a session.
+    import('@/services/api').then(({ refreshSession }) => refreshSession()).catch(() => {})
   }, [])
   return null
 }

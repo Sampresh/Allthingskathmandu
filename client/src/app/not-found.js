@@ -1,4 +1,4 @@
-import { T } from '@/components/common/T'
+import { ST as T } from '@/components/common/ST'
 import { Button } from '@/components/ui/Button'
 
 export const metadata = { title: 'Page not found', robots: { index: false } }

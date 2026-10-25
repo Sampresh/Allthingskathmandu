@@ -3,9 +3,11 @@ import { readDb } from '../config/db.js'
 import * as directory from '../services/directory.js'
 import { getHome } from '../services/home.js'
 import * as searchService from '../services/search.js'
+import { createReport, isReportable } from '../services/reports.js'
 import { trackEvent } from '../services/stats.js'
+import { verifyTurnstile } from '../services/turnstile.js'
 import { ApiError } from '../utils/ApiError.js'
-import { noContent, ok } from '../utils/ApiResponse.js'
+import { created, noContent, ok } from '../utils/ApiResponse.js'
 
 const pageMeta = (page) => ({ nextCursor: page.nextCursor })
 
@@ -89,4 +91,13 @@ export async function settings(req, res) {
 export async function track(req, res) {
   await trackEvent({ ...req.body, visitor: ipKeyGenerator(req.ip) })
   return noContent(res)
+}
+
+// "Report wrong info": guests (Turnstile) and members (userId is kept).
+export async function report(req, res) {
+  const { turnstileToken, ...body } = req.body
+  await verifyTurnstile(turnstileToken, req.ip)
+  if (!(await isReportable(body.entityType, body.entityId))) throw ApiError.notFound()
+  await createReport({ ...body, userId: req.user?.id })
+  return created(res, { message: 'Thanks. We will check this and fix it.' })
 }

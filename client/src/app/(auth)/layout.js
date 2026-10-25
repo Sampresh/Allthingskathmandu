@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { LanguageToggle } from '@/components/common/LanguageToggle'
-import { T } from '@/components/common/T'
+import { AuthT as T } from '@/components/common/AuthT'
 
 export default function AuthLayout({ children }) {
   return (

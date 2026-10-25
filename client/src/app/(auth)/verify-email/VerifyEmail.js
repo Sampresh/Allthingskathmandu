@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { EmailForm } from '@/components/common/EmailForm'
 import { FormError, FormSuccess } from '@/components/common/FormStatus'
-import { T } from '@/components/common/T'
+import { AuthT as T } from '@/components/common/AuthT'
 import { Button } from '@/components/ui/Button'
 import { resendVerification, verifyEmail } from '@/services/auth.service'
 
@@ -45,7 +45,9 @@ export function VerifyEmail() {
   if (state === 'done') {
     return (
       <div className="flex flex-col gap-4">
-        <FormSuccess k="auth.verify.done" />
+        <FormSuccess>
+          <T k="auth.verify.done" />
+        </FormSuccess>
         <Button href="/login" fullWidth>
           <T k="auth.loginLink" />
         </Button>

@@ -81,3 +81,27 @@ export const trackBody = z.object({
   businessId: z.uuid(),
   kind: z.enum(Object.keys(TRACK_FIELDS)),
 })
+
+export const REPORT_REASONS = [
+  'closed',
+  'wrong_contact',
+  'wrong_location',
+  'wrong_hours',
+  'wrong_details',
+  'inappropriate',
+  'spam',
+  'other',
+]
+
+export const reportBody = z
+  .object({
+    entityType: z.enum(['BUSINESS', 'REVIEW', 'MARKET_ITEM', 'EVENT']),
+    entityId: z.uuid(),
+    reason: z.enum(REPORT_REASONS),
+    details: z.string().trim().max(1000).optional(),
+    turnstileToken: z.string().max(4096).optional(),
+  })
+  .refine((v) => v.reason !== 'other' || v.details, {
+    message: 'Tell us what is wrong',
+    path: ['details'],
+  })
