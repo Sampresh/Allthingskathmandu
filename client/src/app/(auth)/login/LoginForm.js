@@ -36,7 +36,7 @@ const codeSchema = z.object({
     .regex(/^\d{6}$/, 'v.code'),
 })
 
-export function LoginForm() {
+export function LoginForm({ defaultNext, staffOnly = false }) {
   const router = useRouter()
   const next = safeNext(useSearchParams().get('next'))
   // step: 'password' | 'setup' | 'verify'
@@ -47,7 +47,7 @@ export function LoginForm() {
 
   const finish = (session) => {
     const user = completeSignIn(session)
-    router.replace(next ?? homeFor(user))
+    router.replace(next ?? defaultNext ?? homeFor(user))
   }
 
   // A sign-in either completes or asks staff for a TOTP step.
@@ -77,6 +77,7 @@ export function LoginForm() {
         error={error}
         onSubmit={(values) => run(async () => handleResult(await login(values)))}
         onGoogle={(idToken) => run(async () => handleResult(await loginWithGoogle(idToken)))}
+        staffOnly={staffOnly}
       />
     )
   }
@@ -98,7 +99,7 @@ export function LoginForm() {
   )
 }
 
-function PasswordStep({ error, onSubmit, onGoogle }) {
+function PasswordStep({ error, onSubmit, onGoogle, staffOnly }) {
   const t = useT()
   const {
     register,
@@ -139,7 +140,7 @@ function PasswordStep({ error, onSubmit, onGoogle }) {
           <T k="auth.login.submit" />
         </Button>
       </form>
-      {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID && (
+      {!staffOnly && process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID && (
         <>
           <p className="text-center text-sm text-text-muted">
             <T k="common.or" />
@@ -147,12 +148,14 @@ function PasswordStep({ error, onSubmit, onGoogle }) {
           <GoogleSignInButton onCredential={onGoogle} />
         </>
       )}
-      <p className="text-sm text-text-muted">
-        <T k="auth.noAccount" />{' '}
-        <Link href="/register" className="font-semibold text-brand">
-          <T k="auth.registerLink" />
-        </Link>
-      </p>
+      {!staffOnly && (
+        <p className="text-sm text-text-muted">
+          <T k="auth.noAccount" />{' '}
+          <Link href="/register" className="font-semibold text-brand">
+            <T k="auth.registerLink" />
+          </Link>
+        </p>
+      )}
     </div>
   )
 }

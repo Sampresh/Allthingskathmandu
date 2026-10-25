@@ -20,3 +20,5 @@ export const getListingReviews = (slug, cursor) =>
 export const getHomeNear = (point) => api.get('/public/home', { params: point }).then(unwrap)
 
 export const sendReport = (body) => api.post('/public/reports', body).then(unwrap)
+
+export const sendContact = (body) => api.post('/public/contact', body).then(unwrap)

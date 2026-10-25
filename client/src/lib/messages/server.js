@@ -52,4 +52,6 @@ export const serverMessages = {
   'empty.group': { en: 'No categories here yet.', ne: 'यहाँ अहिलेसम्म कुनै श्रेणी छैन।' },
   'common.cancel': { en: 'Cancel', ne: 'रद्द गर्नुहोस्' },
   'common.breadcrumb': { en: 'Breadcrumb', ne: 'ब्रेडक्रम्ब' },
+  'contact.title': { en: 'Contact us', ne: 'सम्पर्क गर्नुहोस्' },
+  'contact.reach': { en: 'Other ways to reach us', ne: 'सम्पर्कका अन्य माध्यम' },
 }

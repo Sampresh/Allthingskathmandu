@@ -124,3 +124,41 @@
 :root[data-lang='ne'] .i18n-en {
   display: none;
 }
+
+/* CMS page body (admin editor preview and public pages). */
+.cms-body h2 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem;
+}
+.cms-body h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin: 1rem 0 0.5rem;
+}
+.cms-body h4 {
+  font-weight: 600;
+  margin: 1rem 0 0.25rem;
+}
+.cms-body p {
+  margin: 0.5rem 0;
+}
+.cms-body ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+.cms-body ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+.cms-body blockquote {
+  border-left: 3px solid var(--atk-border);
+  padding-left: 1rem;
+  color: var(--atk-text-muted);
+}
+.cms-body a {
+  color: var(--atk-brand);
+  text-decoration: underline;
+}

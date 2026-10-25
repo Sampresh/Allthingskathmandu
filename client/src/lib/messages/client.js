@@ -146,4 +146,13 @@ export const clientMessages = {
     en: 'Something went wrong. Please try again.',
     ne: 'केही गडबड भयो। फेरि प्रयास गर्नुहोस्।',
   },
+  'contact.name': { en: 'Your name', ne: 'तपाईंको नाम' },
+  'contact.email': { en: 'Your email', ne: 'तपाईंको इमेल' },
+  'contact.message': { en: 'Message', ne: 'सन्देश' },
+  'contact.submit': { en: 'Send message', ne: 'सन्देश पठाउनुहोस्' },
+  'contact.done': {
+    en: 'Thanks. We will reply by email.',
+    ne: 'धन्यवाद। हामी इमेलमार्फत जवाफ दिनेछौं।',
+  },
+  'v.messageMin': { en: 'Write at least 10 characters', ne: 'कम्तीमा १० अक्षर लेख्नुहोस्' },
 }

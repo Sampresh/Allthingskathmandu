@@ -4,10 +4,16 @@ import { NextResponse } from 'next/server'
 // whether to send a visitor to /login; every protected request is still checked by the API.
 const SESSION_HINT_COOKIE = 'atk_session'
 
+// The admin login page sits under /admin but must stay reachable when logged out.
+const PUBLIC_PATHS = ['/admin/login']
+
 export function proxy(request) {
+  if (PUBLIC_PATHS.includes(request.nextUrl.pathname)) return NextResponse.next()
   if (request.cookies.get(SESSION_HINT_COOKIE)?.value === '1') return NextResponse.next()
 
-  const login = new URL('/login', request.url)
+  // Staff use the separate admin login (Part 3 §10).
+  const loginPath = request.nextUrl.pathname.startsWith('/admin') ? '/admin/login' : '/login'
+  const login = new URL(loginPath, request.url)
   login.searchParams.set('next', `${request.nextUrl.pathname}${request.nextUrl.search}`)
   return NextResponse.redirect(login)
 }
