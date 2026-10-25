@@ -7,3 +7,644 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// ---------- Enums ----------
+
+enum Role {
+  MEMBER
+  BUSINESS_OWNER
+  MODERATOR
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum TokenType {
+  EMAIL_VERIFY
+  PASSWORD_RESET
+}
+
+enum CategoryKind {
+  DIRECTORY
+  MARKET
+}
+
+enum ListingType {
+  BUSINESS
+  APP
+  PLACE
+  HOTLINE
+}
+
+enum ListingStatus {
+  DRAFT
+  PENDING
+  LIVE
+  SUSPENDED
+}
+
+enum MediaType {
+  PHOTO
+  VIDEO
+}
+
+enum ModerationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ReportEntity {
+  BUSINESS
+  REVIEW
+  MARKET_ITEM
+  EVENT
+}
+
+enum ReportStatus {
+  OPEN
+  RESOLVED
+  DISMISSED
+}
+
+enum MarketStatus {
+  PENDING
+  LIVE
+  SOLD
+  EXPIRED
+  REJECTED
+}
+
+enum ItemCondition {
+  NEW
+  LIKE_NEW
+  GOOD
+  FAIR
+}
+
+enum SubscriptionStatus {
+  PENDING
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}
+
+enum PaymentGateway {
+  KHALTI
+  ESEWA
+}
+
+enum PaymentStatus {
+  INITIATED
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum HomeSectionType {
+  GROUPS
+  OPEN_NOW
+  FEATURED
+  POPULAR
+  EVENTS
+  MARKET
+  BANNER
+  CUSTOM_LIST
+}
+
+// ---------- Accounts ----------
+
+model User {
+  id              String     @id @default(uuid(7)) @db.Uuid
+  email           String     @unique
+  phone           String?    @unique
+  passwordHash    String?
+  googleId        String?    @unique
+  name            String
+  avatarUrl       String?
+  role            Role       @default(MEMBER)
+  status          UserStatus @default(ACTIVE)
+  emailVerifiedAt DateTime?
+  totpSecret      String? // encrypted at rest
+  totpEnabled     Boolean    @default(false)
+  failedLogins    Int        @default(0)
+  lockedUntil     DateTime?
+  lastLoginAt     DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  deletedAt       DateTime?
+
+  sessions    Session[]
+  tokens      VerificationToken[]
+  businesses  Business[]          @relation("BusinessOwner")
+  reviews     Review[]
+  saved       SavedListing[]
+  claims      Claim[]
+  marketItems MarketItem[]
+  auditLogs   AuditLog[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String    @id @default(uuid(7)) @db.Uuid
+  userId    String    @db.Uuid
+  tokenHash String    @unique
+  userAgent String?
+  ip        String?
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model VerificationToken {
+  id        String    @id @default(uuid(7)) @db.Uuid
+  userId    String    @db.Uuid
+  type      TokenType
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
+  @@map("verification_tokens")
+}
+
+// ---------- Taxonomy ----------
+
+model Category {
+  id             String       @id @default(uuid(7)) @db.Uuid
+  kind           CategoryKind @default(DIRECTORY)
+  parentId       String?      @db.Uuid
+  slug           String       @unique
+  nameEn         String
+  nameNe         String?
+  icon           String?
+  description    String?
+  sortOrder      Int          @default(0)
+  isVisible      Boolean      @default(true)
+  liveCount      Int          @default(0) // maintained by the worker
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  parent      Category?          @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[]         @relation("CategoryTree")
+  tags        Tag[]
+  businesses  BusinessCategory[]
+  marketItems MarketItem[]
+
+  @@index([parentId, sortOrder])
+  @@index([kind, isVisible])
+  @@map("categories")
+}
+
+model Tag {
+  id         String   @id @default(uuid(7)) @db.Uuid
+  categoryId String?  @db.Uuid
+  slug       String   @unique
+  nameEn     String
+  nameNe     String?
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  category   Category?     @relation(fields: [categoryId], references: [id])
+  businesses BusinessTag[]
+
+  @@index([categoryId])
+  @@map("tags")
+}
+
+model Area {
+  id        String                                 @id @default(uuid(7)) @db.Uuid
+  slug      String                                 @unique
+  nameEn    String
+  nameNe    String?
+  district  String // Kathmandu | Lalitpur | Bhaktapur
+  center    Unsupported("geography(Point, 4326)")?
+  sortOrder Int                                    @default(0)
+  isVisible Boolean                                @default(true)
+  createdAt DateTime                               @default(now())
+  updatedAt DateTime                               @updatedAt
+
+  businesses  Business[]
+  events      Event[]
+  marketItems MarketItem[]
+
+  @@map("areas")
+}
+
+// ---------- Listings ----------
+
+model Business {
+  id             String                                 @id @default(uuid(7)) @db.Uuid
+  ownerId        String?                                @db.Uuid
+  type           ListingType                            @default(BUSINESS)
+  slug           String                                 @unique
+  name           String
+  nameNe         String?
+  shortDesc      String                                 @db.VarChar(120)
+  description    String?                                @db.VarChar(600)
+  logoUrl        String?
+  logoPublicId   String?
+  phone          String?
+  whatsapp       String?
+  email          String?
+  website        String?
+  playStoreUrl   String?
+  appStoreUrl    String?
+  address        String?
+  areaId         String?                                @db.Uuid
+  location       Unsupported("geography(Point, 4326)")?
+  hours          Json? // { mon: [["09:00","18:00"]], ... }
+  priceLevel     Int? // 1 to 4
+  status         ListingStatus                          @default(DRAFT)
+  isVerified     Boolean                                @default(false)
+  featuredUntil  DateTime? // set from the active subscription by the worker
+  profileScore   Int                                    @default(0)
+  ratingAvg      Decimal                                @default(0) @db.Decimal(2, 1)
+  ratingCount    Int                                    @default(0)
+  searchExtra    String? // category, tag and area names, set by the worker
+  searchVector   Unsupported("tsvector")? // set by trigger
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime                               @default(now())
+  updatedAt      DateTime                               @updatedAt
+  deletedAt      DateTime?
+
+  owner         User?              @relation("BusinessOwner", fields: [ownerId], references: [id])
+  area          Area?              @relation(fields: [areaId], references: [id])
+  categories    BusinessCategory[]
+  tags          BusinessTag[]
+  media         Media[]
+  offers        Offer[]
+  reviews       Review[]
+  savedBy       SavedListing[]
+  claims        Claim[]
+  events        Event[]
+  subscriptions Subscription[]
+  payments      Payment[]
+  stats         ListingStatDaily[]
+
+  @@index([ownerId])
+  @@index([status, areaId])
+  @@index([featuredUntil])
+  @@index([location], map: "businesses_location_gix", type: Gist)
+  @@index([searchVector], map: "businesses_search_gin", type: Gin)
+  @@index([name(ops: raw("gin_trgm_ops"))], map: "businesses_name_trgm", type: Gin)
+  @@map("businesses")
+}
+
+model BusinessCategory {
+  businessId String  @db.Uuid
+  categoryId String  @db.Uuid
+  isPrimary  Boolean @default(false)
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([businessId, categoryId])
+  @@index([categoryId, isPrimary])
+  @@map("business_categories")
+}
+
+model BusinessTag {
+  businessId String @db.Uuid
+  tagId      String @db.Uuid
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  tag      Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([businessId, tagId])
+  @@index([tagId])
+  @@map("business_tags")
+}
+
+model Media {
+  id         String    @id @default(uuid(7)) @db.Uuid
+  businessId String    @db.Uuid
+  type       MediaType
+  url        String
+  publicId   String? // Cloudinary id; null for YouTube embeds
+  altText    String
+  sortOrder  Int       @default(0)
+  createdAt  DateTime  @default(now())
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, sortOrder])
+  @@map("media")
+}
+
+model Offer {
+  id         String   @id @default(uuid(7)) @db.Uuid
+  businessId String   @db.Uuid
+  title      String
+  body       String?
+  startsAt   DateTime
+  endsAt     DateTime
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, endsAt])
+  @@map("offers")
+}
+
+model Review {
+  id         String           @id @default(uuid(7)) @db.Uuid
+  businessId String           @db.Uuid
+  userId     String           @db.Uuid
+  rating     Int // 1 to 5
+  body       String?          @db.VarChar(1000)
+  status     ModerationStatus @default(PENDING)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([businessId, userId])
+  @@index([businessId, status, createdAt])
+  @@map("reviews")
+}
+
+model SavedListing {
+  userId     String   @db.Uuid
+  businessId String   @db.Uuid
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@id([userId, businessId])
+  @@map("saved_listings")
+}
+
+model Claim {
+  id           String           @id @default(uuid(7)) @db.Uuid
+  businessId   String           @db.Uuid
+  userId       String           @db.Uuid
+  proofUrl     String?
+  note         String?
+  status       ModerationStatus @default(PENDING)
+  reviewedById String?          @db.Uuid
+  reviewedAt   DateTime?
+  createdAt    DateTime         @default(now())
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status, createdAt])
+  @@map("claims")
+}
+
+model Report {
+  id          String       @id @default(uuid(7)) @db.Uuid
+  entityType  ReportEntity
+  entityId    String       @db.Uuid
+  userId      String?      @db.Uuid
+  reason      String
+  details     String?      @db.VarChar(1000)
+  status      ReportStatus @default(OPEN)
+  handledById String?      @db.Uuid
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([status, createdAt])
+  @@index([entityType, entityId])
+  @@map("reports")
+}
+
+// ---------- Events (phase 2) ----------
+
+model Event {
+  id            String                                 @id @default(uuid(7)) @db.Uuid
+  businessId    String?                                @db.Uuid
+  submittedById String?                                @db.Uuid
+  slug          String                                 @unique
+  title         String
+  description   String?
+  startsAt      DateTime
+  endsAt        DateTime?
+  venue         String?
+  areaId        String?                                @db.Uuid
+  location      Unsupported("geography(Point, 4326)")?
+  coverUrl      String?
+  ticketUrl     String?
+  status        ModerationStatus                       @default(PENDING)
+  createdAt     DateTime                               @default(now())
+  updatedAt     DateTime                               @updatedAt
+
+  business Business? @relation(fields: [businessId], references: [id], onDelete: SetNull)
+  area     Area?     @relation(fields: [areaId], references: [id])
+
+  @@index([status, startsAt])
+  @@index([location], map: "events_location_gix", type: Gist)
+  @@map("events")
+}
+
+// ---------- Marketplace (phase 2) ----------
+
+model MarketItem {
+  id              String        @id @default(uuid(7)) @db.Uuid
+  sellerId        String        @db.Uuid
+  categoryId      String        @db.Uuid // category with kind = MARKET
+  slug            String        @unique
+  title           String        @db.VarChar(100)
+  description     String?       @db.VarChar(1000)
+  priceNpr        Int
+  isNegotiable    Boolean       @default(false)
+  condition       ItemCondition
+  areaId          String?       @db.Uuid
+  contactPhone    String?
+  contactWhatsapp String?
+  status          MarketStatus  @default(PENDING)
+  expiresAt       DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  deletedAt       DateTime?
+
+  seller   User              @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  category Category          @relation(fields: [categoryId], references: [id])
+  area     Area?             @relation(fields: [areaId], references: [id])
+  media    MarketItemMedia[]
+
+  @@index([status, categoryId, createdAt])
+  @@index([sellerId])
+  @@index([expiresAt])
+  @@index([title(ops: raw("gin_trgm_ops"))], map: "market_items_title_trgm", type: Gin)
+  @@map("market_items")
+}
+
+model MarketItemMedia {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  itemId    String   @db.Uuid
+  url       String
+  publicId  String
+  altText   String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  item MarketItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([itemId, sortOrder])
+  @@map("market_item_media")
+}
+
+// ---------- Plans and payments ----------
+
+model Plan {
+  id           String   @id @default(uuid(7)) @db.Uuid
+  code         String   @unique // BASIC, FEATURED
+  name         String
+  priceNpr     Int
+  durationDays Int
+  features     Json // { maxPhotos, maxVideos, featured, homepage }
+  isActive     Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  subscriptions Subscription[]
+
+  @@map("plans")
+}
+
+model Subscription {
+  id         String             @id @default(uuid(7)) @db.Uuid
+  businessId String             @db.Uuid
+  planId     String             @db.Uuid
+  status     SubscriptionStatus @default(PENDING)
+  startsAt   DateTime?
+  endsAt     DateTime?
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+
+  business Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  plan     Plan      @relation(fields: [planId], references: [id])
+  payments Payment[]
+
+  @@index([businessId, status])
+  @@index([status, endsAt])
+  @@map("subscriptions")
+}
+
+model Payment {
+  id             String         @id @default(uuid(7)) @db.Uuid
+  subscriptionId String         @db.Uuid
+  businessId     String         @db.Uuid
+  gateway        PaymentGateway
+  gatewayRef     String         @unique // Khalti pidx or eSewa transaction_uuid
+  invoiceNo      String?        @unique
+  amountNpr      Int
+  status         PaymentStatus  @default(INITIATED)
+  raw            Json?
+  verifiedAt     DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [id])
+  business     Business     @relation(fields: [businessId], references: [id])
+
+  @@index([businessId, createdAt])
+  @@map("payments")
+}
+
+// ---------- Content and settings ----------
+
+model CmsPage {
+  id             String   @id @default(uuid(7)) @db.Uuid
+  slug           String   @unique
+  title          String
+  body           String // sanitized HTML
+  seoTitle       String?
+  seoDescription String?
+  isPublished    Boolean  @default(false)
+  updatedById    String?  @db.Uuid
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("cms_pages")
+}
+
+model HomeSection {
+  id        String          @id @default(uuid(7)) @db.Uuid
+  type      HomeSectionType
+  title     String?
+  config    Json? // e.g. { categoryId, limit, businessIds, imageUrl, href }
+  sortOrder Int             @default(0)
+  isActive  Boolean         @default(true)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([isActive, sortOrder])
+  @@map("home_sections")
+}
+
+model Setting {
+  key       String   @id // e.g. emergency_numbers, social_links, contact
+  value     Json
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}
+
+model SearchSynonym {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  term      String   @unique
+  synonyms  String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("search_synonyms")
+}
+
+// ---------- Analytics and audit ----------
+
+model ListingStatDaily {
+  businessId    String   @db.Uuid
+  date          DateTime @db.Date
+  views         Int      @default(0)
+  calls         Int      @default(0)
+  whatsapp      Int      @default(0)
+  mapClicks     Int      @default(0)
+  websiteClicks Int      @default(0)
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@id([businessId, date])
+  @@map("listing_stats_daily")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  actorId   String?  @db.Uuid
+  action    String // e.g. business.update, category.reorder
+  entity    String
+  entityId  String?
+  diff      Json?
+  ip        String?
+  createdAt DateTime @default(now())
+
+  actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([entity, entityId])
+  @@index([actorId, createdAt])
+  @@map("audit_logs")
+}

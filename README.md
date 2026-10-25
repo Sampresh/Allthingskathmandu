@@ -40,7 +40,7 @@ cd server
 npm install
 npm run db:generate
 npm run db:migrate      # creates the migration only; review the SQL, then: npx prisma migrate dev
-npm run db:seed
+npm run db:seed         # super admin from ADMIN_EMAIL / ADMIN_PASSWORD, taxonomy, areas, plans, starter listings
 npm run dev             # http://localhost:5001  (health: http://localhost:5001/health)
 
 # 4. Worker (second terminal)

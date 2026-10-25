@@ -15,4 +15,9 @@ export default [
       'no-console': 'error',
     },
   },
+  {
+    // CLI scripts report progress on stdout.
+    files: ['prisma/seed.js', 'scripts/**/*.js'],
+    rules: { 'no-console': 'off' },
+  },
 ]

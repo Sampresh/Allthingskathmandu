@@ -1,0 +1,22 @@
+// Tests run against the atk_test database and local Valkey (docker compose), or the CI
+// service containers. These are throwaway local values, not secrets.
+const databaseUrl = process.env.TEST_DATABASE_URL ?? 'postgresql://atk:atk@localhost:5432/atk_test'
+
+export const testEnv = {
+  NODE_ENV: 'test',
+  DATABASE_URL: databaseUrl,
+  DIRECT_URL: databaseUrl,
+  DATABASE_REPLICA_URL: '',
+  REDIS_URL: process.env.TEST_REDIS_URL ?? 'redis://localhost:6379/1',
+  CLIENT_URL: 'http://localhost:3000',
+  SERVER_PUBLIC_URL: 'http://localhost:5001',
+  FORCE_HTTPS: 'false',
+  COOKIE_DOMAIN: '',
+  JWT_ACCESS_SECRET: 'test-access-secret-0123456789abcdefghijklmnopqrstuv',
+  JWT_REFRESH_SECRET: 'test-refresh-secret-0123456789abcdefghijklmnopqrstu',
+  REVALIDATE_URL: 'http://localhost:3000/api/revalidate',
+  REVALIDATE_SECRET: 'test-revalidate-secret-0123456789abcdefghijklmn',
+  ADMIN_EMAIL: '',
+  ADMIN_PASSWORD: '',
+  LOG_LEVEL: 'error',
+}
