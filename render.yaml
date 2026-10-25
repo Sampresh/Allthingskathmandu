@@ -1,0 +1,172 @@
+# All Things Kathmandu: Render Blueprint (API, worker, Key Value).
+#
+# Render does not allow `sync: false` inside an environment group, so:
+# - `atk-server` holds the shared values that are neither secret nor account specific;
+# - every secret or account-specific variable is declared with `sync: false` on each
+#   service that needs it. Render prompts for these only on the first Blueprint creation;
+#   variables added later must be set in the dashboard by hand.
+# Plan IDs follow Render's current compute names (spec: api standard, worker/kv starter).
+
+envVarGroups:
+  - name: atk-server
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: FORCE_HTTPS
+        value: "true"
+      - key: CLIENT_URL
+        value: https://allthingskathmandu.com
+      - key: SERVER_PUBLIC_URL
+        value: https://api.allthingskathmandu.com
+      - key: COOKIE_DOMAIN
+        value: api.allthingskathmandu.com
+      - key: JWT_ACCESS_EXPIRY
+        value: 15m
+      - key: JWT_REFRESH_EXPIRY
+        value: 7d
+      - key: TOTP_ISSUER
+        value: All Things Kathmandu
+      - key: CLOUDINARY_FOLDER
+        value: atk-prod
+      - key: SMTP_PORT
+        value: "587"
+      - key: FROM_EMAIL
+        value: hello@allthingskathmandu.com
+      - key: FROM_NAME
+        value: All Things Kathmandu
+      - key: KHALTI_BASE_URL
+        value: https://khalti.com/api/v2
+      - key: REVALIDATE_URL
+        value: https://allthingskathmandu.com/api/revalidate
+      - key: LOG_LEVEL
+        value: info
+
+services:
+  - type: keyvalue
+    name: atk-kv
+    region: singapore
+    plan: 256mb
+    ipAllowList: []            # internal only
+    maxmemoryPolicy: noeviction
+
+  - type: web
+    name: atk-api
+    runtime: node
+    region: singapore
+    plan: 1c-2g
+    rootDir: server
+    buildCommand: npm ci && npx prisma generate
+    startCommand: npm start    # "start": "tsx index.js"
+    healthCheckPath: /health
+    scaling:
+      minInstances: 2
+      maxInstances: 4
+      targetCPUPercent: 70
+      targetMemoryPercent: 80
+    envVars:
+      - fromGroup: atk-server
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: atk-kv
+          property: connectionString
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: DATABASE_REPLICA_URL      # stage 2; leave empty until the read replica exists
+        sync: false
+      - key: JWT_ACCESS_SECRET
+        sync: false
+      - key: JWT_REFRESH_SECRET
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: KHALTI_SECRET_KEY
+        sync: false
+      - key: ESEWA_PRODUCT_CODE
+        sync: false
+      - key: ESEWA_SECRET_KEY
+        sync: false
+      - key: ESEWA_FORM_URL            # production form URL from eSewa merchant docs
+        sync: false
+      - key: ESEWA_STATUS_URL          # production status check URL from eSewa merchant docs
+        sync: false
+      - key: TURNSTILE_SECRET_KEY
+        sync: false
+      - key: REVALIDATE_SECRET
+        sync: false
+      - key: SENTRY_DSN
+        sync: false
+      - key: ADMIN_EMAIL               # first production seed only, then remove
+        sync: false
+      - key: ADMIN_PASSWORD            # first production seed only, then remove
+        sync: false
+
+  - type: worker
+    name: atk-worker
+    runtime: node
+    region: singapore
+    plan: 0.5c-512mb
+    rootDir: server
+    buildCommand: npm ci && npx prisma generate
+    startCommand: npm run worker   # "worker": "tsx worker.js"
+    envVars:
+      - fromGroup: atk-server
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: atk-kv
+          property: connectionString
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: DATABASE_REPLICA_URL
+        sync: false
+      - key: JWT_ACCESS_SECRET
+        sync: false
+      - key: JWT_REFRESH_SECRET
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: KHALTI_SECRET_KEY
+        sync: false
+      - key: ESEWA_PRODUCT_CODE
+        sync: false
+      - key: ESEWA_SECRET_KEY
+        sync: false
+      - key: ESEWA_FORM_URL
+        sync: false
+      - key: ESEWA_STATUS_URL
+        sync: false
+      - key: TURNSTILE_SECRET_KEY
+        sync: false
+      - key: REVALIDATE_SECRET
+        sync: false
+      - key: SENTRY_DSN
+        sync: false

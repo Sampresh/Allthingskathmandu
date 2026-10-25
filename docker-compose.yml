@@ -1,0 +1,44 @@
+# Local development services. The API and web app run with npm, not in Docker.
+# Postgres + PostGIS on 5432 (databases: atk for dev, atk_test for npm test)
+# Valkey on 6379
+
+services:
+  postgres:
+    image: postgis/postgis:17-3.5
+    # postgis/postgis publishes amd64 images only; Apple Silicon runs it under emulation.
+    platform: linux/amd64
+    container_name: atk-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: atk
+      POSTGRES_PASSWORD: atk
+      POSTGRES_DB: atk
+    ports:
+      - "5432:5432"
+    volumes:
+      - atk-postgres-data:/var/lib/postgresql/data
+      - ./docker/postgres/20-test-db.sh:/docker-entrypoint-initdb.d/20-test-db.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U atk -d atk"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  valkey:
+    image: valkey/valkey:8.1
+    container_name: atk-valkey
+    restart: unless-stopped
+    command: ["valkey-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - atk-valkey-data:/data
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  atk-postgres-data:
+  atk-valkey-data:

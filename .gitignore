@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Environment (never commit secrets; .env.example is the template)
+.env
+.env.*
+!.env.example
+
+# Build output
+.next/
+out/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Prisma client output (built on deploy)
+server/src/generated/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Vercel
+.vercel/
+
+# Sentry
+.sentryclirc
+
+# OS and editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Local ops output (backups, k6 results)
+backups/
+*.dump
+k6-results/

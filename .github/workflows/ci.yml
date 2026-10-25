@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  server:
+    name: Server (lint, prisma validate, tests)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    services:
+      postgres:
+        image: postgis/postgis:17-3.5
+        env:
+          POSTGRES_USER: atk
+          POSTGRES_PASSWORD: atk
+          POSTGRES_DB: atk_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U atk -d atk_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+      valkey:
+        image: valkey/valkey:8.1
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "valkey-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+    env:
+      # Throwaway values for the CI containers only; not real secrets.
+      NODE_ENV: test
+      DATABASE_URL: postgresql://atk:atk@localhost:5432/atk_test
+      DIRECT_URL: postgresql://atk:atk@localhost:5432/atk_test
+      REDIS_URL: redis://localhost:6379
+      CLIENT_URL: http://localhost:3000
+      SERVER_PUBLIC_URL: http://localhost:5001
+      JWT_ACCESS_SECRET: ci-access-secret-0123456789abcdefghijklmnopqrstuv
+      JWT_REFRESH_SECRET: ci-refresh-secret-0123456789abcdefghijklmnopqrstu
+      REVALIDATE_URL: http://localhost:3000/api/revalidate
+      REVALIDATE_SECRET: ci-revalidate-secret-0123456789abcdefghijklmn
+      LOG_LEVEL: warn
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: server/.node-version
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+      - run: npx prisma validate
+      - run: npx prisma generate
+      - run: npm run lint
+      - run: npx prisma migrate deploy
+      - run: npm test
+
+  client:
+    name: Client (lint, build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+    env:
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      NEXT_PUBLIC_API_URL: http://localhost:5001/api/v1
+      INTERNAL_API_ORIGIN: http://localhost:5001
+      REVALIDATE_SECRET: ci-revalidate-secret-0123456789abcdefghijklmn
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: client/.node-version
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
