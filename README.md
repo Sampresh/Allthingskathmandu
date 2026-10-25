@@ -39,7 +39,7 @@ docker compose up -d
 cd server
 npm install
 npm run db:generate
-npm run db:migrate      # creates the migration only; review the SQL, then: npx prisma migrate dev
+npx prisma migrate dev  # applies the existing migrations to the local database
 npm run db:seed         # super admin from ADMIN_EMAIL / ADMIN_PASSWORD, taxonomy, areas, plans, starter listings
 npm run dev             # http://localhost:5001  (health: http://localhost:5001/health)
 
@@ -63,6 +63,16 @@ npm run dev             # http://localhost:3000
 | Valkey | 6379 | |
 
 On Apple Silicon the `postgis/postgis` image runs under amd64 emulation (the image has no arm64 build). If something else already listens on 5432 or 6379 (for example a Homebrew `postgresql` or `redis` service), stop it before `docker compose up`.
+
+## Changing the database
+
+```bash
+cd server
+npm run db:migrate      # prisma migrate dev --create-only: writes the SQL without applying it
+# review prisma/migrations/<new>/migration.sql (never keep DROPs of the PostGIS, trigram or search objects)
+npx prisma migrate dev  # applies it
+npm run db:generate
+```
 
 ## Tests
 
