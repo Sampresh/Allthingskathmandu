@@ -1,0 +1,11 @@
+/Users/sampreshkarki/Desktop/allthingskathmandu/.github/pull_request_template.md
+/Users/sampreshkarki/Desktop/allthingskathmandu/.github/workflows/backup.yml
+/Users/sampreshkarki/Desktop/allthingskathmandu/.github/workflows/ci.yml
+/Users/sampreshkarki/Desktop/allthingskathmandu/CHANGELOG.md
+/Users/sampreshkarki/Desktop/allthingskathmandu/CLAUDE.md
+/Users/sampreshkarki/Desktop/allthingskathmandu/README.md
+/Users/sampreshkarki/Desktop/allthingskathmandu/docker-compose.yml
+/Users/sampreshkarki/Desktop/allthingskathmandu/docs/HARDENING.md
+/Users/sampreshkarki/Desktop/allthingskathmandu/docs/SPEC.md
+/Users/sampreshkarki/Desktop/allthingskathmandu/render.yaml
+/Users/sampreshkarki/Desktop/allthingskathmandu/client/src/app/icon.svg
