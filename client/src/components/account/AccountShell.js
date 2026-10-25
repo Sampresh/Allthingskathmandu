@@ -13,9 +13,11 @@ const NAV = [
   ['/account/profile', 'account.nav.profile'],
   ['/account/saved', 'account.nav.saved'],
   ['/account/reviews', 'account.nav.reviews'],
+  ['/account/market', 'account.nav.market'],
+  ['/account/events', 'account.nav.events'],
 ]
 
-/** Member area frame: sign-in check and section tabs (Profile, Saved, My reviews). */
+/** Member area frame: sign-in check and section tabs (Part 4 §3, Member account). */
 export function AccountShell({ children }) {
   const pathname = usePathname()
   const router = useRouter()

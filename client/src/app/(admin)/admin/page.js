@@ -35,8 +35,8 @@ export default function AdminHome() {
           <StatTile label="Claims" value={data?.pending.claims ?? '—'} href="/admin/claims" />
           <StatTile label="Reviews" value={data?.pending.reviews ?? '—'} href="/admin/reviews" />
           <StatTile label="Reports" value={data?.pending.reports ?? '—'} href="/admin/reports" />
-          <StatTile label="Events" value={data?.pending.events ?? '—'} />
-          <StatTile label="Market items" value={data?.pending.market ?? '—'} />
+          <StatTile label="Events" value={data?.pending.events ?? '—'} href="/admin/events" />
+          <StatTile label="Market items" value={data?.pending.market ?? '—'} href="/admin/market" />
         </div>
       </section>
 

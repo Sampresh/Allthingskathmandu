@@ -22,3 +22,9 @@ export const getHomeNear = (point) => api.get('/public/home', { params: point })
 export const sendReport = (body) => api.post('/public/reports', body).then(unwrap)
 
 export const sendContact = (body) => api.post('/public/contact', body).then(unwrap)
+
+export const getEvents = (params) =>
+  api.get('/public/events', { params: toParams(params) }).then(unwrapWithMeta)
+
+export const getMarketItems = (params) =>
+  api.get('/public/market', { params: toParams(params) }).then(unwrapWithMeta)

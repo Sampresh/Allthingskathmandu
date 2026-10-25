@@ -4,10 +4,10 @@ import { SectionTitle } from '@/components/common/SectionTitle'
 import { ST as T } from '@/components/common/ST'
 import { CardGrid } from '@/components/listing/ListingCard'
 import { OpenNowSection } from '@/components/listing/OpenNowSection'
+import { EventCard } from '@/components/events/EventCard'
 import { MarketCard } from '@/components/market/MarketCard'
 import { SearchBar } from '@/components/search/SearchBar'
 import { Button } from '@/components/ui/Button'
-import { formatDate } from '@/lib/format'
 import { pageMetadata } from '@/lib/seo'
 import { publicGet } from '@/lib/serverApi'
 import { SITE_NAME } from '@/lib/site'
@@ -48,16 +48,8 @@ function Events({ events }) {
   return (
     <ul className="grid gap-3 md:grid-cols-2">
       {events.map((event) => (
-        <li key={event.id} className="rounded-box border border-border p-4">
-          <p className="text-sm font-semibold text-brand">{formatDate(event.startsAt)}</p>
-          <h3 className="font-semibold">{event.title}</h3>
-          {(event.venue || event.area) && (
-            <p className="text-sm text-text-muted">
-              {event.venue}
-              {event.venue && event.area && ' · '}
-              {event.area && <T en={event.area.nameEn} ne={event.area.nameNe} />}
-            </p>
-          )}
+        <li key={event.id}>
+          <EventCard event={event} />
         </li>
       ))}
     </ul>

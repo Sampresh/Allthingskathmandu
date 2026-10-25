@@ -42,6 +42,21 @@ export const reviews = {
   reject: (id) => api.post(`/admin/reviews/${id}/reject`).then(unwrap),
 }
 
+export const events = {
+  list: (params) => get('/events', params).then(unwrapWithMeta),
+  approve: (id) => api.post(`/admin/events/${id}/approve`).then(unwrap),
+  reject: (id, reason) => api.post(`/admin/events/${id}/reject`, { reason }).then(unwrap),
+  update: (id, body) => api.patch(`/admin/events/${id}`, body).then(unwrap),
+  remove: (id) => api.delete(`/admin/events/${id}`),
+}
+
+export const market = {
+  list: (params) => get('/market', params).then(unwrapWithMeta),
+  approve: (id) => api.post(`/admin/market/${id}/approve`).then(unwrap),
+  reject: (id, reason) => api.post(`/admin/market/${id}/reject`, { reason }).then(unwrap),
+  remove: (id) => api.delete(`/admin/market/${id}`),
+}
+
 export const reports = {
   list: (params) => get('/reports', params).then(unwrapWithMeta),
   update: (id, status) => api.patch(`/admin/reports/${id}`, { status }).then(unwrap),

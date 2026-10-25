@@ -29,3 +29,20 @@ export const myReviews = (cursor) =>
 export const createReview = (body) => api.post('/me/reviews', body).then(unwrap)
 export const updateReview = (id, body) => api.patch(`/me/reviews/${id}`, body).then(unwrap)
 export const deleteReview = (id) => api.delete(`/me/reviews/${id}`)
+
+// Market items (Part 6 §4).
+export const myMarketItems = (cursor) =>
+  api.get('/me/market', { params: { cursor } }).then(unwrapWithMeta)
+export const createMarketItem = (body) => api.post('/me/market', body).then(unwrap)
+export const updateMarketItem = (id, body) => api.patch(`/me/market/${id}`, body).then(unwrap)
+export const deleteMarketItem = (id) => api.delete(`/me/market/${id}`)
+export const markItemSold = (id) => api.post(`/me/market/${id}/sold`).then(unwrap)
+export const signMarketPhoto = () => api.post('/me/market/media/sign').then(unwrap)
+export const marketCategories = () => api.get('/public/market/categories').then(unwrap)
+export const areas = () => api.get('/public/areas').then(unwrap)
+
+// Events (members' submissions).
+export const myEvents = (cursor) =>
+  api.get('/me/events', { params: { cursor } }).then(unwrapWithMeta)
+export const submitEvent = (body) => api.post('/me/events', body).then(unwrap)
+export const signEventCover = () => api.post('/me/events/cover/sign').then(unwrap)

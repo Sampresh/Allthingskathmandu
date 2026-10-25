@@ -19,6 +19,8 @@ const NAV = [
       { href: '/admin/claims', label: 'Claims', min: 'MODERATOR' },
       { href: '/admin/reviews', label: 'Reviews', min: 'MODERATOR' },
       { href: '/admin/reports', label: 'Reports', min: 'MODERATOR' },
+      { href: '/admin/events', label: 'Events', min: 'MODERATOR' },
+      { href: '/admin/market', label: 'Market', min: 'MODERATOR' },
     ],
   },
   {

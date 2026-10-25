@@ -11,6 +11,7 @@ const NAV = [
   ['/business/listing', 'Listing details'],
   ['/business/media', 'Photos & videos'],
   ['/business/offers', 'Offers'],
+  ['/business/events', 'Events'],
   ['/business/plan', 'Plan & billing'],
   ['/business/invoices', 'Invoices'],
 ]

@@ -47,4 +47,6 @@ export function directionsHref({ location, name, address, area }) {
 }
 
 export const listingHref = (slug) => `/listing/${slug}`
+export const eventHref = (slug) => `/events/${slug}`
+export const marketHref = (slug) => `/market/${slug}`
 export const categoryHref = (category) => `/${category.groupSlug}/${category.slug}`

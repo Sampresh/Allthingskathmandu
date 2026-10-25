@@ -39,6 +39,9 @@ export function Uploader({
   onUploaded,
   requireAlt = false,
   accept = 'image/jpeg,image/png,image/webp',
+  altLabel = 'Describe the photo (for people who cannot see it)',
+  buttonLabel = 'Upload',
+  disabled = false,
 }) {
   const id = useId()
   const fileRef = useRef(null)
@@ -82,7 +85,7 @@ export function Uploader({
       {requireAlt && (
         <div className="flex flex-col gap-1">
           <label htmlFor={`${id}-alt`} className="text-sm font-semibold">
-            Describe the photo (for people who cannot see it)
+            {altLabel}
           </label>
           <input
             id={`${id}-alt`}
@@ -106,11 +109,11 @@ export function Uploader({
       <div>
         <Button
           onClick={upload}
-          disabled={!file || (requireAlt && !altText.trim())}
+          disabled={disabled || !file || (requireAlt && !altText.trim())}
           loading={progress !== null}
         >
           <Upload aria-hidden="true" className="size-4" />
-          Upload
+          {buttonLabel}
         </Button>
       </div>
     </div>

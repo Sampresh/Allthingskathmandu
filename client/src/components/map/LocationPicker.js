@@ -16,7 +16,11 @@ const PickerMap = dynamic(() => import('./PickerMap'), {
  * Map pin for a listing: click the map (with a Maps key), use the current location, or type
  * coordinates. `value` = { lat, lng } or null.
  */
-export function LocationPicker({ value, onChange }) {
+export function LocationPicker({
+  value,
+  onChange,
+  hint = 'Use your current location while at the business, or enter the coordinates.',
+}) {
   const [locating, setLocating] = useState(false)
   const [error, setError] = useState(null)
 
@@ -25,7 +29,7 @@ export function LocationPicker({ value, onChange }) {
     setLocating(true)
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
-        onChange({
+        place({
           lat: Number(coords.latitude.toFixed(6)),
           lng: Number(coords.longitude.toFixed(6)),
         })
@@ -39,27 +43,34 @@ export function LocationPicker({ value, onChange }) {
     )
   }
 
+  // While typing, keep the text ("27." is not a number yet) and send numbers when they parse.
+  const [draft, setDraft] = useState(null)
+  const shown = draft ?? { lat: value?.lat ?? '', lng: value?.lng ?? '' }
   const setCoord = (key) => (e) => {
-    const n = e.target.value === '' ? '' : Number(e.target.value)
-    onChange({ lat: value?.lat ?? '', lng: value?.lng ?? '', [key]: n })
+    const next = { ...shown, [key]: e.target.value }
+    setDraft(next)
+    const lat = Number.parseFloat(next.lat)
+    const lng = Number.parseFloat(next.lng)
+    onChange({ lat: Number.isFinite(lat) ? lat : '', lng: Number.isFinite(lng) ? lng : '' })
+  }
+  const place = (point) => {
+    setDraft(null)
+    onChange(point)
   }
 
   return (
     <div className="flex flex-col gap-3">
       {HAS_KEY ? (
-        <PickerMap value={value} onChange={onChange} />
+        <PickerMap value={value} onChange={place} />
       ) : (
-        <p className="text-sm text-text-muted">
-          Use your current location while at the business, or enter the coordinates.
-        </p>
+        <p className="text-sm text-text-muted">{hint}</p>
       )}
       <div className="flex flex-wrap items-end gap-3">
         <label className="flex flex-col text-sm font-semibold">
           Latitude
           <input
-            type="number"
-            step="any"
-            value={value?.lat ?? ''}
+            inputMode="decimal"
+            value={shown.lat}
             onChange={setCoord('lat')}
             className="min-h-11 rounded-box border border-text-muted bg-surface px-3 font-normal"
           />
@@ -67,9 +78,8 @@ export function LocationPicker({ value, onChange }) {
         <label className="flex flex-col text-sm font-semibold">
           Longitude
           <input
-            type="number"
-            step="any"
-            value={value?.lng ?? ''}
+            inputMode="decimal"
+            value={shown.lng}
             onChange={setCoord('lng')}
             className="min-h-11 rounded-box border border-text-muted bg-surface px-3 font-normal"
           />

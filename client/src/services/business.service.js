@@ -1,4 +1,4 @@
-import { api, unwrap } from './api'
+import { api, unwrap, unwrapWithMeta } from './api'
 
 const base = (id) => `/business/listings/${id}`
 
@@ -21,6 +21,9 @@ export const deleteOffer = (id, offerId) => api.delete(`${base(id)}/offers/${off
 export const getStats = (id, params) => api.get(`${base(id)}/stats`, { params }).then(unwrap)
 export const getSubscription = (id) => api.get(`${base(id)}/subscription`).then(unwrap)
 export const getInvoices = (id) => api.get(`${base(id)}/invoices`).then(unwrap)
+export const listingEvents = (id, cursor) =>
+  api.get(`${base(id)}/events`, { params: { cursor } }).then(unwrapWithMeta)
+export const submitListingEvent = (id, body) => api.post(`${base(id)}/events`, body).then(unwrap)
 
 // Plan payments (Part 6 §6): the server sets the price and verifies before activating.
 export const khaltiInitiate = (body) => api.post('/payments/khalti/initiate', body).then(unwrap)

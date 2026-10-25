@@ -9,13 +9,13 @@ import { AccountT as T } from '@/components/common/AccountT'
 import { FormError, FormSuccess } from '@/components/common/FormStatus'
 import { Button } from '@/components/ui/Button'
 import { allAccountMessages } from '@/hooks/useAccountT'
+import { toNepaliDigits } from '@/lib/dates'
 import { createReview, updateReview } from '@/services/member.service'
 
 const MAX = 1000
-const NEPALI_DIGITS = '०१२३४५६७८९'
 const starLabel = (n) => ({
   en: `${n} star${n === 1 ? '' : 's'}`,
-  ne: `${NEPALI_DIGITS[n]} तारा`,
+  ne: `${toNepaliDigits(n)} तारा`,
 })
 
 /**

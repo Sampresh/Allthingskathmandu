@@ -75,3 +75,43 @@ export function listingJsonLd(listing) {
     }),
   }
 }
+
+/** schema.org Event for an event detail page. */
+export function eventJsonLd(event) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: event.title,
+    startDate: event.startsAt,
+    ...(event.endsAt && { endDate: event.endsAt }),
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    url: absoluteUrl(`/events/${event.slug}`),
+    ...(event.description && { description: event.description }),
+    ...(event.coverUrl && { image: [event.coverUrl] }),
+    location: {
+      '@type': 'Place',
+      name: event.venue ?? event.area?.nameEn ?? 'Kathmandu',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: event.area?.nameEn ?? 'Kathmandu',
+        addressCountry: 'NP',
+      },
+      ...(event.location && {
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: event.location.lat,
+          longitude: event.location.lng,
+        },
+      }),
+    },
+    ...(event.business && {
+      organizer: {
+        '@type': 'Organization',
+        name: event.business.name,
+        url: absoluteUrl(`/listing/${event.business.slug}`),
+      },
+    }),
+    ...(event.ticketUrl && { offers: { '@type': 'Offer', url: event.ticketUrl } }),
+  }
+}
