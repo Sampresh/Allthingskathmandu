@@ -1,4 +1,5 @@
 import express, { Router } from 'express'
+import * as events from '../controllers/events.controller.js'
 import * as pub from '../controllers/public.controller.js'
 import { optionalAuth } from '../middleware/auth.js'
 import { cache } from '../middleware/cache.js'
@@ -9,6 +10,8 @@ import {
   trackLimiter,
 } from '../middleware/rateLimit.js'
 import { validate } from '../middleware/validate.js'
+import { eventSlugParams, eventsQuery } from '../validators/events.validators.js'
+import { publicMarketRouter } from './market.routes.js'
 import {
   contactBody,
   homeQuery,
@@ -111,6 +114,21 @@ publicRouter.get(
   cache({ ttl: 60 * MIN, tags: (req) => [`page:${req.params.slug}`] }),
   pub.page,
 )
+
+publicRouter.get(
+  '/events',
+  validate({ query: eventsQuery }),
+  cache({ ttl: 5 * MIN, tags: () => ['events'] }),
+  events.list,
+)
+publicRouter.get(
+  '/events/:slug',
+  validate({ params: eventSlugParams }),
+  cache({ ttl: 10 * MIN, tags: (req, body) => [`event:${body.data.id}`] }),
+  events.detail,
+)
+
+publicRouter.use('/market', publicMarketRouter)
 
 publicRouter.post('/contact', contactLimiter, validate({ body: contactBody }), pub.contact)
 

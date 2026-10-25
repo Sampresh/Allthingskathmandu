@@ -85,3 +85,12 @@ export const contactLimiter = createLimiter({ name: 'contact', windowMs: HOUR, l
 // Search and suggest: 60 per minute per IP. Track: 120 per minute per IP.
 export const searchLimiter = createLimiter({ name: 'search', windowMs: MINUTE, limit: 60 })
 export const trackLimiter = createLimiter({ name: 'track', windowMs: MINUTE, limit: 120 })
+
+// Submissions that create work for moderators (claims, reviews, events, market items):
+// 10 per hour per account. Runs after verifyToken.
+export const submissionLimiter = createLimiter({
+  name: 'submissions',
+  windowMs: HOUR,
+  limit: 10,
+  keyGenerator: (req) => `user:${req.user.id}`,
+})

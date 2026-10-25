@@ -10,6 +10,7 @@ export const QUEUE = {
   IMPORT: 'import',
   MEDIA: 'media',
   SUBSCRIPTIONS: 'subscriptions',
+  MARKET: 'market',
 }
 
 // Retries with backoff; completed jobs are trimmed, failed jobs stay for inspection (Part 3 §9).

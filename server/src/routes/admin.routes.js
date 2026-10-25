@@ -1,7 +1,9 @@
 import { Router } from 'express'
 import * as billing from '../controllers/admin/billing.controller.js'
 import * as content from '../controllers/admin/content.controller.js'
+import * as events from '../controllers/admin/events.controller.js'
 import * as listings from '../controllers/admin/listings.controller.js'
+import * as market from '../controllers/admin/market.controller.js'
 import * as media from '../controllers/admin/media.controller.js'
 import * as moderation from '../controllers/admin/moderation.controller.js'
 import * as taxonomy from '../controllers/admin/taxonomy.controller.js'
@@ -10,6 +12,8 @@ import { verifyToken } from '../middleware/auth.js'
 import { requireRole } from '../middleware/requireRole.js'
 import { validate } from '../middleware/validate.js'
 import * as v from '../validators/admin.validators.js'
+import { eventUpdate } from '../validators/events.validators.js'
+import { adminMarketQuery } from '../validators/market.validators.js'
 
 export const adminRouter = Router()
 
@@ -74,6 +78,25 @@ adminRouter.patch(
   validate({ params: v.idParams, body: v.reportUpdate }),
   moderation.updateReport,
 )
+
+// Events and market items (MODERATOR and up)
+adminRouter.get('/events', validate({ query: v.moderationQuery }), events.list)
+adminRouter.post('/events/:id/approve', id, events.approve)
+adminRouter.post(
+  '/events/:id/reject',
+  validate({ params: v.idParams, body: v.rejectBody }),
+  events.reject,
+)
+adminRouter.patch('/events/:id', validate({ params: v.idParams, body: eventUpdate }), events.update)
+adminRouter.delete('/events/:id', id, events.remove)
+adminRouter.get('/market', validate({ query: adminMarketQuery }), market.list)
+adminRouter.post('/market/:id/approve', id, market.approve)
+adminRouter.post(
+  '/market/:id/reject',
+  validate({ params: v.idParams, body: v.rejectBody }),
+  market.reject,
+)
+adminRouter.delete('/market/:id', id, market.remove)
 
 // Taxonomy (ADMIN)
 adminRouter.get('/categories', admin, taxonomy.listCategories)

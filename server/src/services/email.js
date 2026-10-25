@@ -57,6 +57,13 @@ const templates = {
       `<p>Hi ${escape(name)},</p><p>The ${escape(planName)} plan for <strong>${escape(listingName)}</strong> ends on ${escape(endsAt)}. Renew to keep photos, videos, offers and top placement.</p>${button(url, 'Renew plan')}`,
     ),
   }),
+  'market-expired': ({ name, title, url }) => ({
+    subject: `Your market listing "${title}" has expired`,
+    text: `Hi ${name},\n\n"${title}" was live for 30 days and has now come down from the market. If it is still for sale, edit it to send it for a quick check again:\n${url}`,
+    html: layout(
+      `<p>Hi ${escape(name)},</p><p><strong>${escape(title)}</strong> was live for 30 days and has now come down from the market. If it is still for sale, edit it to send it for a quick check again.</p>${button(url, 'My market items')}`,
+    ),
+  }),
   'contact-message': ({ name, email, message }) => ({
     subject: `Contact form: ${name}`,
     text: `From: ${name} <${email}>\n\n${message}`,

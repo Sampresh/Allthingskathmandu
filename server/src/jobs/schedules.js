@@ -9,6 +9,8 @@ const SCHEDULES = [
   { queue: QUEUE.DIRECTORY, id: 'directory-sync', every: 10 * MINUTE, name: 'sync-listings' },
   { queue: QUEUE.SUBSCRIPTIONS, id: 'subscriptions-expire', every: 60 * MINUTE, name: 'expire' },
   { queue: QUEUE.SUBSCRIPTIONS, id: 'subscriptions-remind', every: 60 * MINUTE, name: 'remind' },
+  // Market items come down 30 days after approval; the seller gets an email.
+  { queue: QUEUE.MARKET, id: 'market-expire', every: 60 * MINUTE, name: 'expire' },
 ]
 
 export async function registerSchedules() {

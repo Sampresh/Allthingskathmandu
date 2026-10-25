@@ -1,10 +1,13 @@
 import { Router } from 'express'
 import * as business from '../controllers/business.controller.js'
+import * as events from '../controllers/events.controller.js'
 import { verifyToken } from '../middleware/auth.js'
 import { requireOwnership } from '../middleware/ownership.js'
+import { submissionLimiter } from '../middleware/rateLimit.js'
 import { requireRole } from '../middleware/requireRole.js'
 import { validate } from '../middleware/validate.js'
 import * as v from '../validators/business.validators.js'
+import { eventBody, pageQuery as eventPageQuery } from '../validators/events.validators.js'
 
 export const businessRouter = Router()
 
@@ -70,3 +73,16 @@ businessRouter.delete(
 businessRouter.get('/listings/:id/stats', ...ownWith({ query: v.statsQuery }), business.stats)
 businessRouter.get('/listings/:id/subscription', ...own, business.subscription)
 businessRouter.get('/listings/:id/invoices', ...own, business.invoices)
+
+// Events for the listing (phase 2): submitted for moderation like members' events.
+businessRouter.get(
+  '/listings/:id/events',
+  ...ownWith({ query: eventPageQuery }),
+  events.listingSubmissions,
+)
+businessRouter.post(
+  '/listings/:id/events',
+  ...ownWith({ body: eventBody }),
+  submissionLimiter,
+  events.ownerSubmit,
+)

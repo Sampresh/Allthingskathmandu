@@ -7,6 +7,7 @@ import { isStaff } from '../middleware/requireRole.js'
 import { audit } from '../services/audit.js'
 import { cardStream, liveSql, toCard } from '../services/directory.js'
 import { afterListingChange, categoryIdsOf, createListing } from '../services/listings.js'
+import { afterItemChange, dropPhotos } from '../services/market.js'
 import { confirmUpload, signUpload } from '../services/media.js'
 import { recomputeRating } from '../services/reviews.js'
 import { revokeAllSessions, revokeSession } from '../services/token.js'
@@ -195,7 +196,8 @@ export async function endSession(req, res) {
 
 /**
  * Soft delete: personal data is cleared and the email freed for a new account. Reviews stay,
- * shown as "Former member"; owned listings go back to unclaimed (paid plans stay with them).
+ * shown as "Former member"; owned listings go back to unclaimed (paid plans stay with them);
+ * market items are removed.
  */
 export async function deleteAccount(req, res) {
   const user = await db.user.findUnique({ where: { id: req.user.id } })
@@ -207,11 +209,15 @@ export async function deleteAccount(req, res) {
   }
   await assertPassword(user, req.body.password, 'password')
 
-  const [owned, reviewed] = await Promise.all([
+  const [owned, reviewed, items] = await Promise.all([
     db.business.findMany({ where: { ownerId: user.id }, select: { id: true, slug: true } }),
     db.review.findMany({
       where: { userId: user.id, status: 'APPROVED' },
       select: { business: { select: { id: true, slug: true } } },
+    }),
+    db.marketItem.findMany({
+      where: { sellerId: user.id, deletedAt: null },
+      select: { id: true, slug: true, status: true, media: { select: { publicId: true } } },
     }),
   ])
   const now = new Date()
@@ -243,9 +249,18 @@ export async function deleteAccount(req, res) {
       data: { status: 'REJECTED', reviewedAt: now },
     })
     await tx.business.updateMany({ where: { ownerId: user.id }, data: { ownerId: null } })
+    // Market items carry the member's phone numbers: they come down with the account.
+    await tx.marketItemMedia.deleteMany({ where: { item: { sellerId: user.id } } })
+    await tx.marketItem.updateMany({
+      where: { sellerId: user.id, deletedAt: null },
+      data: { deletedAt: now },
+    })
     await audit(tx, req, { action: 'user.delete', entity: 'user', entityId: user.id })
   })
   clearAuthCookies(res)
+  await dropPhotos(items.flatMap((i) => i.media.map((m) => m.publicId)))
+  const liveItems = items.filter((i) => i.status === 'LIVE')
+  if (liveItems.length) await afterItemChange(liveItems)
 
   // Listing pages show the claim link again and the reviews as "Former member".
   const listings = new Map([...owned, ...reviewed.map((r) => r.business)].map((l) => [l.id, l]))

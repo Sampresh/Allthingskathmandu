@@ -30,3 +30,13 @@ export function setAreaCenter(client, areaId, { lat, lng }) {
     SET center = ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)::geography
     WHERE id = ${areaId}::uuid`
 }
+
+/** Sets or clears an event's map pin. Pass the transaction client used for the create/update. */
+export function setEventLocation(client, eventId, point) {
+  return point
+    ? client.$executeRaw`
+        UPDATE events
+        SET location = ST_SetSRID(ST_MakePoint(${point.lng}, ${point.lat}), 4326)::geography
+        WHERE id = ${eventId}::uuid`
+    : client.$executeRaw`UPDATE events SET location = NULL WHERE id = ${eventId}::uuid`
+}

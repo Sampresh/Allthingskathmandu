@@ -1,6 +1,7 @@
 import { readDb } from '../config/db.js'
 import { Prisma } from '../generated/prisma/client'
 import { nepalClock, openNowSql } from '../lib/hours.js'
+import { publicItemWhere } from './market.js'
 import {
   cardStream,
   featuredSortSql,
@@ -89,8 +90,8 @@ const loaders = {
 
   MARKET: async (section) => {
     const items = await readDb.marketItem.findMany({
-      where: { status: 'LIVE', deletedAt: null },
-      orderBy: { createdAt: 'desc' },
+      where: publicItemWhere(),
+      orderBy: { id: 'desc' },
       take: limitOf(section),
       include: { area: true, media: { orderBy: { sortOrder: 'asc' }, take: 1 } },
     })

@@ -12,6 +12,7 @@ export const UPLOAD_KINDS = {
   logo: { formats: ['jpg', 'png', 'webp'], maxBytes: 2 * MB },
   photo: { formats: ['jpg', 'png', 'webp'], maxBytes: 5 * MB },
   proof: { formats: ['jpg', 'png', 'webp'], maxBytes: 5 * MB },
+  cover: { formats: ['jpg', 'png', 'webp'], maxBytes: 5 * MB },
 }
 
 function requireCloudinary() {
@@ -81,6 +82,12 @@ export async function confirmUpload({ publicId, scope, id, kind }) {
 }
 
 /** Deletes a Cloudinary asset in the worker. */
+/** Cloudinary public_id of one of our delivery URLs (…/image/upload/v123/<public_id>.<ext>). */
+export function publicIdFromUrl(url) {
+  const match = /\/image\/upload\/(?:v\d+\/)?(.+)\.\w+$/.exec(url ?? '')
+  return match?.[1] ?? null
+}
+
 export function queueMediaDelete(publicId) {
   return publicId ? enqueue(QUEUE.MEDIA, 'delete', { publicId }) : null
 }

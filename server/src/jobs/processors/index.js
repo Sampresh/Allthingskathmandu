@@ -6,6 +6,7 @@ import { importListingsJob } from './import.js'
 import { deleteMediaJob } from './media.js'
 import { revalidateJob } from './revalidate.js'
 import { flushStatsJob } from './stats.js'
+import { expireItemsJob } from './market.js'
 import { expireJob, remindJob } from './subscriptions.js'
 
 /**
@@ -20,6 +21,7 @@ export const processors = {
   [QUEUE.IMPORT]: { concurrency: 1, handlers: { listings: importListingsJob } },
   [QUEUE.MEDIA]: { concurrency: 3, handlers: { delete: deleteMediaJob } },
   [QUEUE.SUBSCRIPTIONS]: { concurrency: 1, handlers: { expire: expireJob, remind: remindJob } },
+  [QUEUE.MARKET]: { concurrency: 1, handlers: { expire: expireItemsJob } },
   [QUEUE.DIRECTORY]: {
     concurrency: 1,
     handlers: { 'refresh-counts': refreshCountsJob, 'sync-listings': syncListingsJob },
