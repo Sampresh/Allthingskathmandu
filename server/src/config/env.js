@@ -33,6 +33,10 @@ const schema = z.object({
   JWT_ACCESS_EXPIRY: blank(z.string().default('15m')),
   JWT_REFRESH_EXPIRY: blank(z.string().default('7d')),
   TOTP_ISSUER: blank(z.string().default('All Things Kathmandu')),
+  // 32 random bytes, base64 (openssl rand -base64 32): AES-256-GCM key for TOTP secrets.
+  TOTP_ENCRYPTION_KEY: z
+    .string()
+    .refine((v) => Buffer.from(v, 'base64').length === 32, 'must be 32 bytes, base64 encoded'),
   GOOGLE_CLIENT_ID: optionalString,
 
   CLOUDINARY_CLOUD_NAME: optionalString,

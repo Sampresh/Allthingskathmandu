@@ -1,4 +1,4 @@
-import { rateLimit } from 'express-rate-limit'
+import { rateLimit, ipKeyGenerator } from 'express-rate-limit'
 import { RedisStore } from 'rate-limit-redis'
 import { redis, isRedisReady } from '../config/redis.js'
 import { ApiError } from '../utils/ApiError.js'
@@ -30,7 +30,7 @@ export function createLimiter({ name, windowMs, limit, keyGenerator, skip = () =
   return rateLimit({
     windowMs,
     limit,
-    keyGenerator,
+    ...(keyGenerator && { keyGenerator }),
     skip: (req, res) => !isRedisReady() || skip(req, res),
     standardHeaders: 'draft-8',
     legacyHeaders: false,
@@ -52,3 +52,30 @@ export const globalLimiter = createLimiter({
   limit: 300,
   skip: (req) => req.path === '/health',
 })
+
+const HOUR = 60 * MINUTE
+const ip = (req) => ipKeyGenerator(req.ip)
+const bodyEmail = (req) =>
+  String(req.body?.email ?? '')
+    .trim()
+    .toLowerCase()
+
+// Login: 5 per 15 min per IP + email; the account lockout grows beyond that (Part 6 §8).
+export const loginLimiter = createLimiter({
+  name: 'login',
+  windowMs: 15 * MINUTE,
+  limit: 5,
+  keyGenerator: (req) => `${ip(req)}:${bodyEmail(req)}`,
+})
+
+// Second login step for staff: same budget, keyed by IP + challenge.
+export const twoFactorLimiter = createLimiter({
+  name: '2fa',
+  windowMs: 15 * MINUTE,
+  limit: 5,
+  keyGenerator: (req) => `${ip(req)}:${String(req.body?.challengeToken ?? '').slice(-32)}`,
+})
+
+// Register, forgot password and other endpoints that send email: 5 per hour per IP.
+export const registerLimiter = createLimiter({ name: 'register', windowMs: HOUR, limit: 5 })
+export const emailLimiter = createLimiter({ name: 'email', windowMs: HOUR, limit: 5 })

@@ -53,6 +53,13 @@ npm install
 npm run dev             # http://localhost:3000
 ```
 
+Local development notes:
+
+- Without `SMTP_HOST`, the worker logs every email (with its verification or reset link) instead of sending it.
+- Without `TURNSTILE_SECRET_KEY`, the bot check is skipped with a warning. Production refuses to start without it.
+- Generate secrets with `openssl rand -base64 48` (JWT) and `openssl rand -base64 32` (`TOTP_ENCRYPTION_KEY`).
+- Super admin, admin and moderator accounts set up TOTP on first login (any authenticator app).
+
 ## Ports
 
 | Service | Port | Notes |

@@ -13,6 +13,7 @@ const base = {
   JWT_REFRESH_SECRET: strong('r'),
   REVALIDATE_URL: 'http://localhost:3000/api/revalidate',
   REVALIDATE_SECRET: strong('v'),
+  TOTP_ENCRYPTION_KEY: Buffer.alloc(32, 7).toString('base64'),
 }
 
 const production = {
@@ -68,6 +69,15 @@ describe('parseEnv', () => {
   it('only warns about identical JWT secrets outside production', () => {
     const { warnings } = parseEnv({ ...base, JWT_REFRESH_SECRET: base.JWT_ACCESS_SECRET })
     expect(warnings.some((w) => w.includes('identical'))).toBe(true)
+  })
+
+  it('requires a 32-byte base64 TOTP_ENCRYPTION_KEY', () => {
+    expect(() => parseEnv({ ...base, TOTP_ENCRYPTION_KEY: 'c2hvcnQ=' })).toThrow(
+      'TOTP_ENCRYPTION_KEY',
+    )
+    const source = { ...base }
+    delete source.TOTP_ENCRYPTION_KEY
+    expect(() => parseEnv(source)).toThrow('TOTP_ENCRYPTION_KEY')
   })
 
   it('accepts a complete production env', () => {

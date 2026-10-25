@@ -47,6 +47,7 @@ jobs:
       SERVER_PUBLIC_URL: http://localhost:5001
       JWT_ACCESS_SECRET: ci-access-secret-0123456789abcdefghijklmnopqrstuv
       JWT_REFRESH_SECRET: ci-refresh-secret-0123456789abcdefghijklmnopqrstu
+      TOTP_ENCRYPTION_KEY: Y2ktb25seS10b3RwLWtleS0wMTIzNDU2Nzg5YWJjZGU=
       REVALIDATE_URL: http://localhost:3000/api/revalidate
       REVALIDATE_SECRET: ci-revalidate-secret-0123456789abcdefghijklmn
       LOG_LEVEL: warn

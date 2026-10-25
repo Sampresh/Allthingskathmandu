@@ -14,6 +14,7 @@ export const testEnv = {
   COOKIE_DOMAIN: '',
   JWT_ACCESS_SECRET: 'test-access-secret-0123456789abcdefghijklmnopqrstuv',
   JWT_REFRESH_SECRET: 'test-refresh-secret-0123456789abcdefghijklmnopqrstu',
+  TOTP_ENCRYPTION_KEY: 'dGVzdC1vbmx5LXRvdHAta2V5LTAxMjM0NTY3ODlhYmM=',
   REVALIDATE_URL: 'http://localhost:3000/api/revalidate',
   REVALIDATE_SECRET: 'test-revalidate-secret-0123456789abcdefghijklmn',
   ADMIN_EMAIL: '',
