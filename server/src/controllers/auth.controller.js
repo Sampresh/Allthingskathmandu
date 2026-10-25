@@ -21,7 +21,7 @@ import { ApiError } from '../utils/ApiError.js'
 import { created, noContent, ok } from '../utils/ApiResponse.js'
 import { logger } from '../utils/logger.js'
 
-const BCRYPT_COST = 12
+export const BCRYPT_COST = 12
 const LOCK_THRESHOLD = 5
 const BASE_LOCK_MS = 15 * 60 * 1000
 const MAX_LOCK_MS = 24 * 60 * 60 * 1000
