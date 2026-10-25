@@ -1,6 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
+import { PayButtons } from '@/components/business/PayButtons'
 import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { useBusinessListing } from '@/hooks/useBusinessListing'
@@ -45,7 +46,9 @@ export default function PlanPage() {
         <ul className="grid gap-3 sm:grid-cols-2">
           {plans?.map((p) => (
             <li key={p.code} className="flex flex-col gap-2 rounded-box border border-border p-4">
-              <p className="font-semibold">{p.name}</p>
+              <p id={`plan-${p.code}`} className="font-semibold">
+                {p.name}
+              </p>
               <p className="text-xl font-semibold">
                 {p.priceNpr ? `${formatNpr(p.priceNpr)} / ${p.durationDays} days` : 'Free'}
               </p>
@@ -55,6 +58,16 @@ export default function PlanPage() {
                 ))}
                 {p.code === 'BASIC' && <li>Listing with contact buttons and map</li>}
               </ul>
+              {p.priceNpr > 0 && (
+                <div className="mt-auto flex flex-col gap-2 pt-2">
+                  {sub.current && (
+                    <p className="text-sm text-text-muted">
+                      Paying now adds {p.durationDays} days after {formatDate(sub.current.endsAt)}.
+                    </p>
+                  )}
+                  <PayButtons listingId={listingId} plan={p} describedBy={`plan-${p.code}`} />
+                </div>
+              )}
             </li>
           ))}
         </ul>

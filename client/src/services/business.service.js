@@ -22,6 +22,12 @@ export const getStats = (id, params) => api.get(`${base(id)}/stats`, { params })
 export const getSubscription = (id) => api.get(`${base(id)}/subscription`).then(unwrap)
 export const getInvoices = (id) => api.get(`${base(id)}/invoices`).then(unwrap)
 
+// Plan payments (Part 6 §6): the server sets the price and verifies before activating.
+export const khaltiInitiate = (body) => api.post('/payments/khalti/initiate', body).then(unwrap)
+export const khaltiVerify = (pidx) => api.post('/payments/khalti/verify', { pidx }).then(unwrap)
+export const esewaInitiate = (body) => api.post('/payments/esewa/initiate', body).then(unwrap)
+export const esewaVerify = (data) => api.post('/payments/esewa/verify', { data }).then(unwrap)
+
 // Member side: claims and "List your business".
 export const myClaims = () => api.get('/me/claims').then(unwrap)
 export const signClaimProof = () => api.post('/me/claims/proof/sign').then(unwrap)
