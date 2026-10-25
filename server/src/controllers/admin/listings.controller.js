@@ -140,6 +140,13 @@ export async function setStatus(req, res) {
       where: { id: before.id },
       data: { status: req.body.status },
     })
+    // A member's "List your business" submission going live makes them a business owner.
+    if (row.status === 'LIVE' && row.ownerId) {
+      await tx.user.updateMany({
+        where: { id: row.ownerId, role: 'MEMBER' },
+        data: { role: 'BUSINESS_OWNER' },
+      })
+    }
     await audit(tx, req, {
       action: 'business.status',
       entity: 'business',

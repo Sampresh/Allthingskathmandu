@@ -2,6 +2,7 @@ import { Router } from 'express'
 import * as billing from '../controllers/admin/billing.controller.js'
 import * as content from '../controllers/admin/content.controller.js'
 import * as listings from '../controllers/admin/listings.controller.js'
+import * as media from '../controllers/admin/media.controller.js'
 import * as moderation from '../controllers/admin/moderation.controller.js'
 import * as taxonomy from '../controllers/admin/taxonomy.controller.js'
 import * as users from '../controllers/admin/users.controller.js'
@@ -162,6 +163,10 @@ adminRouter.put(
   content.putSetting,
 )
 adminRouter.post('/cache/purge', admin, validate({ body: v.cachePurgeBody }), content.purgeCache)
+
+// Media (ADMIN)
+adminRouter.get('/media', admin, validate({ query: v.mediaQuery }), media.listMedia)
+adminRouter.delete('/media/:id', admin, id, media.deleteMedia)
 
 // Plans and payments (ADMIN)
 adminRouter.get('/plans', admin, billing.listPlans)

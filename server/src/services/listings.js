@@ -1,4 +1,5 @@
 import { db } from '../config/db.js'
+import { ApiError } from '../utils/ApiError.js'
 import { QUEUE, enqueue } from '../jobs/queues.js'
 import { uniqueSlug } from '../lib/slug.js'
 import { setBusinessLocation } from './geo.js'
@@ -39,7 +40,24 @@ export const listingSlugTaken = (client, exceptId) => async (slug) =>
     }),
   )
 
+// Listings sit in directory categories (not groups or market categories) and existing tags.
+async function assertRelations(tx, { categoryIds, tagIds }) {
+  if (categoryIds) {
+    const count = await tx.category.count({
+      where: { id: { in: categoryIds }, kind: 'DIRECTORY', parentId: { not: null } },
+    })
+    if (count !== new Set(categoryIds).size)
+      throw ApiError.validation([{ path: 'categoryIds', message: 'Pick categories, not groups' }])
+  }
+  if (tagIds?.length) {
+    const count = await tx.tag.count({ where: { id: { in: tagIds } } })
+    if (count !== new Set(tagIds).size)
+      throw ApiError.validation([{ path: 'tagIds', message: 'Unknown tag' }])
+  }
+}
+
 async function writeRelations(tx, businessId, { categoryIds, tagIds, location }) {
+  await assertRelations(tx, { categoryIds, tagIds })
   if (categoryIds) {
     await tx.businessCategory.deleteMany({ where: { businessId } })
     // The first category is the primary one.

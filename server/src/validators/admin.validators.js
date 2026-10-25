@@ -296,6 +296,8 @@ const planFields = {
 export const planCreate = z.object(planFields)
 export const planUpdate = z.object(planFields).omit({ code: true }).partial()
 
+export const mediaQuery = z.object({ businessId: z.uuid().optional(), cursor, limit })
+
 export const paymentQuery = z.object({
   status: z.enum(['INITIATED', 'COMPLETED', 'FAILED', 'REFUNDED']).optional(),
   gateway: z.enum(['KHALTI', 'ESEWA']).optional(),
