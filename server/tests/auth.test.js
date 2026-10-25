@@ -113,7 +113,9 @@ describe('login', () => {
     expect(rt).toMatch(/HttpOnly/)
     expect(rt).toMatch(/Path=\/api\/v1\/auth/)
     expect(rt).toMatch(/SameSite=Lax/)
-    expect(cookieHeader(res, 'atk_session')).toMatch(/^atk_session=1;.*Path=\//)
+    const hint = cookieHeader(res, 'atk_session')
+    expect(hint).toMatch(/^atk_session=1;.*Path=\//)
+    expect(hint).not.toMatch(/HttpOnly/)
     expect(await db.session.count({ where: { userId: user.id } })).toBe(1)
   })
 

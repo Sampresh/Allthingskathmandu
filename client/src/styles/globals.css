@@ -1,0 +1,126 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens (Part 4 §6). Placeholder values until brand colours and fonts are picked in
+ * Figma: replace the hex values below, nothing else needs to change. Every text/background
+ * pair meets WCAG AA (4.5:1) in both themes.
+ */
+
+:root {
+  --atk-brand: #1d4fd8;
+  --atk-brand-contrast: #ffffff;
+  --atk-surface: #ffffff;
+  --atk-surface-raised: #f5f6f8;
+  --atk-text: #14171c;
+  --atk-text-muted: #4d5562;
+  --atk-border: #d9dde3;
+  --atk-success: #157a3c;
+  --atk-warning: #a8520a;
+  --atk-danger: #b42318;
+  --atk-featured: #8a5a00;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --atk-brand: #8db2ff;
+    --atk-brand-contrast: #0b1426;
+    --atk-surface: #0f1216;
+    --atk-surface-raised: #191d23;
+    --atk-text: #f1f3f5;
+    --atk-text-muted: #a3abb7;
+    --atk-border: #2c323b;
+    --atk-success: #4ade80;
+    --atk-warning: #f5b544;
+    --atk-danger: #ff8a80;
+    --atk-featured: #f7c948;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  /* Colour roles only: the default palette is removed so every colour comes from a token. */
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-brand: var(--atk-brand);
+  --color-brand-contrast: var(--atk-brand-contrast);
+  --color-surface: var(--atk-surface);
+  --color-surface-raised: var(--atk-surface-raised);
+  --color-text: var(--atk-text);
+  --color-text-muted: var(--atk-text-muted);
+  --color-border: var(--atk-border);
+  --color-success: var(--atk-success);
+  --color-warning: var(--atk-warning);
+  --color-danger: var(--atk-danger);
+  --color-featured: var(--atk-featured);
+}
+
+@theme {
+  --font-sans:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'Noto Sans Devanagari',
+    'Kohinoor Devanagari', sans-serif;
+
+  /* Type scale: 12, 14, 16 (body), 18, 20, 24, 30 px; weights 400 and 600. */
+  --text-*: initial;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2rem;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 2.25rem;
+  --font-weight-*: initial;
+  --font-weight-normal: 400;
+  --font-weight-semibold: 600;
+
+  /* Spacing: 4 px base (p-1 = 4, p-2 = 8, p-3 = 12, p-4 = 16, p-6 = 24, p-8 = 32, p-12 = 48). */
+  --spacing: 0.25rem;
+
+  /* Radius: 8 px for cards and inputs, 999 px for chips. */
+  --radius-*: initial;
+  --radius-box: 0.5rem;
+  --radius-pill: 999px;
+
+  /* Elevation: borders first; one soft shadow for sheets and dialogs. */
+  --shadow-*: initial;
+  --shadow-overlay: 0 8px 32px rgb(0 0 0 / 0.18);
+
+  /* Breakpoints: 640, 768, 1024, 1280. */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-surface text-base text-text antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--atk-brand);
+    outline-offset: 2px;
+  }
+}
+
+/*
+ * English / Nepali toggle. Both languages are in the cached HTML; <html data-lang> picks
+ * which one shows, so pages stay static (ISR) and switching costs no request.
+ */
+:root:not([data-lang='ne']) .i18n-ne,
+:root[data-lang='ne'] .i18n-en {
+  display: none;
+}
