@@ -1,0 +1,48 @@
+{
+  "name": "atk-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "All Things Kathmandu API and worker",
+  "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "tsx watch index.js",
+    "start": "tsx index.js",
+    "worker": "tsx worker.js",
+    "worker:dev": "tsx watch worker.js",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev --create-only",
+    "db:seed": "prisma db seed"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "bullmq": "6.4.2",
+    "cookie-parser": "1.4.7",
+    "cors": "2.8.6",
+    "dotenv": "18.0.9",
+    "express": "5.3.0",
+    "express-rate-limit": "8.7.1",
+    "helmet": "8.3.0",
+    "ioredis": "5.11.1",
+    "pg": "8.23.1",
+    "prisma": "7.10.1",
+    "rate-limit-redis": "6.0.1",
+    "tsx": "4.23.15",
+    "winston": "3.19.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.13.0",
+    "globals": "17.13.0",
+    "prettier": "3.9.10",
+    "supertest": "7.3.1",
+    "vitest": "5.0.5"
+  }
+}
