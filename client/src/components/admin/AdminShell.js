@@ -29,6 +29,7 @@ const NAV = [
       { href: '/admin/tags', label: 'Tags', min: 'ADMIN' },
       { href: '/admin/areas', label: 'Areas', min: 'ADMIN' },
       { href: '/admin/synonyms', label: 'Search synonyms', min: 'ADMIN' },
+      { href: '/admin/media', label: 'Media', min: 'ADMIN' },
     ],
   },
   {

@@ -72,6 +72,11 @@ export const settings = {
 
 export const plans = crud('/plans')
 
+export const media = {
+  list: (params) => get('/media', params).then(unwrapWithMeta),
+  remove: (id) => api.delete(`/admin/media/${id}`).then(unwrap),
+}
+
 export const payments = {
   list: (params) => get('/payments', params).then(unwrapWithMeta),
   get: (id) => get(`/payments/${id}`).then(unwrap),

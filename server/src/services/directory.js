@@ -356,6 +356,7 @@ export async function getListing(slug) {
     priceLevel: listing.priceLevel,
     rating: { average: Number(listing.ratingAvg), count: listing.ratingCount },
     isVerified: listing.isVerified,
+    isClaimed: Boolean(listing.ownerId),
     featured,
     category: primary
       ? {
@@ -447,7 +448,7 @@ export async function listSimilar(listing, limit) {
 
 export function listAreas() {
   return readDb.$queryRaw`
-    SELECT slug, "nameEn", "nameNe", district,
+    SELECT id, slug, "nameEn", "nameNe", district,
            ST_Y(center::geometry) AS lat, ST_X(center::geometry) AS lng
     FROM areas WHERE "isVisible" ORDER BY "sortOrder", "nameEn"`
 }

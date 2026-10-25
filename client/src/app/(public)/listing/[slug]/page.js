@@ -213,8 +213,20 @@ export default async function ListingPage({ params }) {
         />
       </Block>
 
-      <div>
+      <div className="flex flex-wrap items-center gap-4">
         <ReportDialog entityId={listing.id} />
+        {!listing.isClaimed && listing.type !== 'HOTLINE' && (
+          <p className="text-sm text-text-muted">
+            <T k="listing.claimPrompt" />{' '}
+            <Link
+              href="/business/dashboard"
+              prefetch={false}
+              className="font-semibold text-brand underline"
+            >
+              <T k="listing.claimLink" />
+            </Link>
+          </p>
+        )}
       </div>
 
       {similar?.data.length > 0 && (

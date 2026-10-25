@@ -54,4 +54,9 @@ export const serverMessages = {
   'common.breadcrumb': { en: 'Breadcrumb', ne: 'ब्रेडक्रम्ब' },
   'contact.title': { en: 'Contact us', ne: 'सम्पर्क गर्नुहोस्' },
   'contact.reach': { en: 'Other ways to reach us', ne: 'सम्पर्कका अन्य माध्यम' },
+  'listing.claimPrompt': { en: 'Is this your business?', ne: 'के यो तपाईंको व्यवसाय हो?' },
+  'listing.claimLink': {
+    en: 'Claim it to keep it up to date',
+    ne: 'अद्यावधिक राख्न दाबी गर्नुहोस्',
+  },
 }
