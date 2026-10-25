@@ -73,31 +73,27 @@ export default async function EventPage({ params }) {
       )}
       <h1 className="text-2xl font-semibold sm:text-3xl">{event.title}</h1>
       <dl className="grid gap-3 sm:grid-cols-2">
-        <div className="flex gap-2">
-          <CalendarDays aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-text-muted" />
-          <div>
-            <dt className="text-sm text-text-muted">
-              <T k="events.when" />
-            </dt>
-            <dd className="font-semibold">
-              {formatDay(event.startsAt)}, {formatClock(event.startsAt)}
-              {event.endsAt && ` – ${formatDay(event.endsAt)}, ${formatClock(event.endsAt)}`}
-            </dd>
-          </div>
+        <div>
+          <dt className="flex items-center gap-1 text-sm text-text-muted">
+            <CalendarDays aria-hidden="true" className="size-4" />
+            <T k="events.when" />
+          </dt>
+          <dd className="font-semibold">
+            {formatDay(event.startsAt)}, {formatClock(event.startsAt)}
+            {event.endsAt && ` – ${formatDay(event.endsAt)}, ${formatClock(event.endsAt)}`}
+          </dd>
         </div>
         {(event.venue || event.area) && (
-          <div className="flex gap-2">
-            <MapPin aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-text-muted" />
-            <div>
-              <dt className="text-sm text-text-muted">
-                <T k="events.where" />
-              </dt>
-              <dd className="font-semibold">
-                {event.venue}
-                {event.venue && event.area && ', '}
-                {event.area && <T en={event.area.nameEn} ne={event.area.nameNe} />}
-              </dd>
-            </div>
+          <div>
+            <dt className="flex items-center gap-1 text-sm text-text-muted">
+              <MapPin aria-hidden="true" className="size-4" />
+              <T k="events.where" />
+            </dt>
+            <dd className="font-semibold">
+              {event.venue}
+              {event.venue && event.area && ', '}
+              {event.area && <T en={event.area.nameEn} ne={event.area.nameNe} />}
+            </dd>
           </div>
         )}
         {event.business && (

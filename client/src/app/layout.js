@@ -1,5 +1,6 @@
 import '@/styles/globals.css'
 import { SITE_NAME, SITE_URL } from '@/lib/site'
+import { ERROR_BUFFER_SCRIPT } from '@/lib/errorBuffer'
 import { LANG_COOKIE } from '@/lib/i18n'
 import { Providers } from './providers'
 
@@ -29,6 +30,9 @@ export default function RootLayout({ children }) {
     <html lang="en" data-lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: LANG_SCRIPT }} />
+        {ERROR_BUFFER_SCRIPT && (
+          <script dangerouslySetInnerHTML={{ __html: ERROR_BUFFER_SCRIPT }} />
+        )}
       </head>
       <body>
         <a

@@ -87,7 +87,8 @@ export default async function ListingPage({ params }) {
             items={[
               { href: '/', label: <T k="nav.home" /> },
               {
-                href: categoryHref(category),
+                // Categories under 5 live listings have no page yet.
+                href: category.isPublic ? categoryHref(category) : undefined,
                 label: <T en={category.nameEn} ne={category.nameNe} />,
               },
               { label: listing.name },
@@ -119,14 +120,19 @@ export default async function ListingPage({ params }) {
             </h1>
             <p className="text-text-muted">{listing.shortDesc}</p>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-text-muted">
-              {category && (
-                <Link
-                  href={categoryHref(category)}
-                  className="font-semibold text-brand hover:underline"
-                >
-                  <T en={category.nameEn} ne={category.nameNe} />
-                </Link>
-              )}
+              {category &&
+                (category.isPublic ? (
+                  <Link
+                    href={categoryHref(category)}
+                    className="font-semibold text-brand hover:underline"
+                  >
+                    <T en={category.nameEn} ne={category.nameNe} />
+                  </Link>
+                ) : (
+                  <span className="font-semibold">
+                    <T en={category.nameEn} ne={category.nameNe} />
+                  </span>
+                ))}
               {listing.area && (
                 <span className="inline-flex items-center gap-1">
                   <MapPin aria-hidden="true" className="size-4" />

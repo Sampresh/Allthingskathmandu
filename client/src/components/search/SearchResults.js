@@ -151,10 +151,12 @@ export function SearchResults({ areas, initial }) {
                 {groupByCategory(cards).map(({ category, cards: group }) => (
                   <section key={category?.slug ?? '_other'} className="flex flex-col gap-3">
                     <h2 className="text-lg font-semibold">
-                      {category ? (
+                      {category?.isPublic ? (
                         <Link href={categoryHref(category)} className="hover:underline">
                           <T en={category.nameEn} ne={category.nameNe} />
                         </Link>
+                      ) : category ? (
+                        <T en={category.nameEn} ne={category.nameNe} />
                       ) : (
                         <T k="search.other" />
                       )}

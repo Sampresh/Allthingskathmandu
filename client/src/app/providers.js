@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { startErrorReporting } from '@/lib/reportError'
 import { hasSessionHint } from '@/lib/session'
 import { useAuthStore } from '@/store/authStore'
 
 function AuthBootstrap() {
+  useEffect(() => startErrorReporting(), [])
   useEffect(() => {
     // Restore the session once per page load, only when the API says one may exist.
     if (useAuthStore.getState().status !== 'idle') return

@@ -1,7 +1,9 @@
 'use client'
 
+import { useEffect } from 'react'
 import { Bilingual } from '@/components/common/Bilingual'
 import { Button } from '@/components/ui/Button'
+import { reportError } from '@/lib/reportError'
 
 // Error boundaries load on every page, so they carry their own strings instead of the
 // dictionary (Part 4 §9 JS budget).
@@ -15,7 +17,10 @@ const TEXT = {
   home: { en: 'Home', ne: 'गृहपृष्ठ' },
 }
 
-export default function PublicError({ reset }) {
+export default function PublicError({ error, reset }) {
+  useEffect(() => {
+    reportError(error)
+  }, [error])
   return (
     <div className="flex flex-col gap-4 py-12">
       <h1 className="text-2xl font-semibold">
