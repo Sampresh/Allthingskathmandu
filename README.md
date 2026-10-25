@@ -93,3 +93,7 @@ The `atk_test` database is created on the first start of an empty Postgres volum
 ## Deployment
 
 See `docs/SPEC.md` Part 8. In short: web on Vercel (`client/`), API and worker on Render (`render.yaml`), database on Neon, DNS and API proxy on Cloudflare.
+
+## Before launch
+
+`docs/HARDENING.md` covers error reporting (Sentry DSNs), rate limits, security headers, the accessibility review, the k6 load test (`server/scripts/load-test.js`), the weekly encrypted database backup (`.github/workflows/backup.yml`, needs the `DIRECT_URL` and `BACKUP_PASSPHRASE` repository secrets) and the Part 8 §6 checklist.

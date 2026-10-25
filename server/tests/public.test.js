@@ -123,9 +123,17 @@ describe('GET /categories/:slug/listings', () => {
       rating: { average: 4.5, count: 0 },
       contact: { phone: '014000001' },
       area: { slug: 'thamel', nameEn: 'Thamel', nameNe: 'ठमेल' },
-      category: { slug: 'restaurants', groupSlug: 'eat-and-drink' },
+      category: { slug: 'restaurants', groupSlug: 'eat-and-drink', isPublic: true },
       location: { lat: expect.closeTo(27.7156, 4), lng: expect.closeTo(85.3125, 4) },
     })
+  })
+
+  it('marks categories without a public page (under 5 live listings)', async () => {
+    const detail = (await get('/listings/bean-cafe')).body.data
+    expect(detail.category).toMatchObject({ slug: 'cafes', isPublic: false })
+    const cards = (await get('/search?q=cafe')).body.data.results
+    expect(cards.find((c) => c.slug === 'bean-cafe').category.isPublic).toBe(false)
+    expect((await get('/listings/pizza-palace')).body.data.category.isPublic).toBe(true)
   })
 
   it.each([

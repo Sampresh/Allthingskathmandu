@@ -1,4 +1,5 @@
 import { Worker } from 'bullmq'
+import { flushSentry, reportError } from './src/config/sentry.js'
 import { db, readDb } from './src/config/db.js'
 import { createQueueConnection } from './src/config/redis.js'
 import { closeQueues } from './src/jobs/queues.js'
@@ -23,12 +24,22 @@ const workers = Object.entries(processors).map(([queueName, { handlers, concurre
     connection,
     concurrency,
   })
-  worker.on('failed', (job, err) =>
+  worker.on('failed', (job, err) => {
     logger.error(`job failed ${queueName}:${job?.name} (${job?.id}): ${err.message}`, {
       attemptsMade: job?.attemptsMade,
-    }),
-  )
-  worker.on('error', (err) => logger.error(`worker error on ${queueName}: ${err.message}`))
+    })
+    // Report once, when BullMQ will not retry it any more.
+    if (!job || job.attemptsMade >= (job.opts.attempts ?? 1)) {
+      reportError(err, {
+        tags: { queue: queueName, job: job?.name ?? 'unknown' },
+        extra: { jobId: job?.id, attemptsMade: job?.attemptsMade },
+      })
+    }
+  })
+  worker.on('error', (err) => {
+    logger.error(`worker error on ${queueName}: ${err.message}`)
+    reportError(err, { tags: { queue: queueName } })
+  })
   return worker
 })
 
@@ -55,6 +66,7 @@ async function shutdown(signal) {
     connection.quit(),
     db.$disconnect(),
     readDb === db ? null : readDb.$disconnect(),
+    flushSentry(),
   ])
   logger.info('worker stopped')
   process.exit(0)
@@ -62,4 +74,5 @@ async function shutdown(signal) {
 
 process.on('SIGTERM', () => shutdown('SIGTERM'))
 process.on('SIGINT', () => shutdown('SIGINT'))
+// Sentry's default integrations report unhandled rejections.
 process.on('unhandledRejection', (reason) => logger.error('unhandled rejection', { reason }))

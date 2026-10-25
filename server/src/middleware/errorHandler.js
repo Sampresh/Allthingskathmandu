@@ -1,5 +1,6 @@
 import { ZodError } from 'zod'
 import { env } from '../config/env.js'
+import { reportError } from '../config/sentry.js'
 import { ApiError } from '../utils/ApiError.js'
 import { logger } from '../utils/logger.js'
 
@@ -40,7 +41,12 @@ export function errorHandler(err, req, res, next) {
     })
   }
 
+  // Unexpected errors only; expected ones (validation, 4xx, known 503s) are not reported.
   logger.error(err, { method: req.method, path: req.originalUrl })
+  reportError(err, {
+    tags: { method: req.method, route: req.route?.path ?? 'unknown' },
+    userId: req.user?.id,
+  })
   return res.status(500).json({
     success: false,
     error: {

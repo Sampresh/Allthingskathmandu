@@ -1,4 +1,5 @@
 import { env } from './src/config/env.js'
+import { flushSentry } from './src/config/sentry.js'
 import { db, readDb } from './src/config/db.js'
 import { redis, connectRedis } from './src/config/redis.js'
 import { createApp } from './src/app.js'
@@ -42,6 +43,7 @@ async function main() {
         readDb === db ? null : readDb.$disconnect(),
         closeQueues(),
         redis.quit(),
+        flushSentry(),
       ])
       logger.info('shutdown complete')
       process.exit(err ? 1 : 0)
@@ -53,10 +55,11 @@ async function main() {
   process.on('SIGINT', () => shutdown('SIGINT'))
 }
 
+// Sentry's default integrations report both of these; flush before exiting.
 process.on('unhandledRejection', (reason) => logger.error('unhandled rejection', { reason }))
 process.on('uncaughtException', (err) => {
   logger.error(err)
-  process.exit(1)
+  flushSentry().finally(() => process.exit(1))
 })
 
 main()

@@ -26,7 +26,7 @@ const cardColumns = (point) => Prisma.sql`
   ${featuredSql} AS featured,
   a.slug AS "areaSlug", a."nameEn" AS "areaNameEn", a."nameNe" AS "areaNameNe",
   pc.slug AS "categorySlug", pc."nameEn" AS "categoryNameEn", pc."nameNe" AS "categoryNameNe",
-  pc."groupSlug",
+  pc."groupSlug", pc."isPublic" AS "categoryIsPublic",
   ${distanceSql(point)} AS meters,
   ST_Y(b.location::geometry) AS lat, ST_X(b.location::geometry) AS lng`
 
@@ -34,7 +34,9 @@ const cardColumns = (point) => Prisma.sql`
 const cardJoins = Prisma.sql`
   LEFT JOIN areas a ON a.id = b."areaId"
   LEFT JOIN LATERAL (
-    SELECT c.slug, c."nameEn", c."nameNe", g.slug AS "groupSlug"
+    SELECT c.slug, c."nameEn", c."nameNe", g.slug AS "groupSlug",
+      (c."isVisible" AND COALESCE(g."isVisible", false)
+        AND c."liveCount" >= ${MIN_LIVE_LISTINGS}) AS "isPublic"
     FROM business_categories bc
     JOIN categories c ON c.id = bc."categoryId"
     LEFT JOIN categories g ON g.id = c."parentId"
@@ -76,6 +78,8 @@ export function toCard(row, clock = nepalClock()) {
           nameEn: row.categoryNameEn,
           nameNe: row.categoryNameNe,
           groupSlug: row.groupSlug,
+          // Hidden categories (under 5 live listings) have no page to link to.
+          isPublic: row.categoryIsPublic,
         }
       : null,
     distanceMeters: row.meters == null ? null : Math.round(row.meters),
@@ -329,6 +333,9 @@ export async function getListing(slug) {
   ])
 
   const primary = listing.categories[0]?.category
+  // A category has a public page only when it and its group are visible with 5+ live listings.
+  const isPublic = (c) =>
+    Boolean(c.isVisible && c.parent?.isVisible && c.liveCount >= MIN_LIVE_LISTINGS)
   return {
     id: listing.id,
     slug: listing.slug,
@@ -365,6 +372,7 @@ export async function getListing(slug) {
           nameEn: primary.nameEn,
           nameNe: primary.nameNe,
           groupSlug: primary.parent?.slug ?? null,
+          isPublic: isPublic(primary),
         }
       : null,
     categories: listing.categories.map(({ category: c, isPrimary }) => ({
@@ -373,6 +381,7 @@ export async function getListing(slug) {
       nameNe: c.nameNe,
       isPrimary,
       groupSlug: c.parent?.slug ?? null,
+      isPublic: isPublic(c),
     })),
     tags: listing.tags.map(({ tag }) => ({
       slug: tag.slug,
