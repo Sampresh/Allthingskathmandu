@@ -3,6 +3,9 @@ import { createQueueConnection } from '../config/redis.js'
 
 export const QUEUE = {
   EMAIL: 'email',
+  STATS: 'stats',
+  DIRECTORY: 'directory',
+  CACHE: 'cache',
 }
 
 // Retries with backoff; completed jobs are trimmed, failed jobs stay for inspection (Part 3 §9).

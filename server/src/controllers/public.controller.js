@@ -1,0 +1,92 @@
+import { ipKeyGenerator } from 'express-rate-limit'
+import { readDb } from '../config/db.js'
+import * as directory from '../services/directory.js'
+import { getHome } from '../services/home.js'
+import * as searchService from '../services/search.js'
+import { trackEvent } from '../services/stats.js'
+import { ApiError } from '../utils/ApiError.js'
+import { noContent, ok } from '../utils/ApiResponse.js'
+
+const pageMeta = (page) => ({ nextCursor: page.nextCursor })
+
+async function liveListingId(slug) {
+  const listing = await readDb.business.findFirst({
+    where: { slug, status: 'LIVE', deletedAt: null },
+    select: { id: true },
+  })
+  if (!listing) throw ApiError.notFound('Listing not found')
+  return listing.id
+}
+
+export async function home(req, res) {
+  return ok(res, await getHome({ point: req.query.point }))
+}
+
+export async function groups(req, res) {
+  return ok(res, await directory.getCategoryTree())
+}
+
+export async function category(req, res) {
+  const found = await directory.getCategory(req.params.slug)
+  if (!found) throw ApiError.notFound('Category not found')
+  return ok(res, found)
+}
+
+export async function categoryListings(req, res) {
+  const found = await directory.getCategory(req.params.slug)
+  if (!found) throw ApiError.notFound('Category not found')
+  const { point, cursor, limit, ...filters } = req.query
+  const page = await directory.listCategoryListings(found, filters, { point, cursor, limit })
+  return ok(res, page.items, { ...pageMeta(page), categoryId: found.id })
+}
+
+export async function listing(req, res) {
+  const found = await directory.getListing(req.params.slug)
+  if (!found) throw ApiError.notFound('Listing not found')
+  return ok(res, found)
+}
+
+export async function listingReviews(req, res) {
+  const businessId = await liveListingId(req.params.slug)
+  const page = await directory.listReviews(businessId, req.query)
+  return ok(res, page.items, { ...pageMeta(page), businessId })
+}
+
+export async function similarListings(req, res) {
+  const found = await directory.getListing(req.params.slug)
+  if (!found) throw ApiError.notFound('Listing not found')
+  return ok(res, await directory.listSimilar(found, req.query.limit), {
+    businessId: found.id,
+    categoryId: found.category?.id ?? null,
+  })
+}
+
+export async function search(req, res) {
+  const result = await searchService.search(req.query)
+  return ok(
+    res,
+    { results: result.items, categories: result.categories, didYouMean: result.didYouMean },
+    pageMeta(result),
+  )
+}
+
+export async function suggest(req, res) {
+  return ok(res, await searchService.suggest(req.query.q))
+}
+
+export async function areas(req, res) {
+  return ok(res, await directory.listAreas())
+}
+
+export async function plans(req, res) {
+  return ok(res, await directory.listPlans())
+}
+
+export async function settings(req, res) {
+  return ok(res, await directory.getPublicSettings())
+}
+
+export async function track(req, res) {
+  await trackEvent({ ...req.body, visitor: ipKeyGenerator(req.ip) })
+  return noContent(res)
+}

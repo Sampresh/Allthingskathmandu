@@ -3,6 +3,7 @@ import { db, readDb } from './src/config/db.js'
 import { createQueueConnection } from './src/config/redis.js'
 import { closeQueues } from './src/jobs/queues.js'
 import { processors } from './src/jobs/processors/index.js'
+import { registerSchedules } from './src/jobs/schedules.js'
 import { logger } from './src/utils/logger.js'
 
 const SHUTDOWN_TIMEOUT_MS = 25_000
@@ -32,6 +33,10 @@ const workers = Object.entries(processors).map(([queueName, { handlers, concurre
 })
 
 logger.info(`worker started: ${workers.length} queue(s)`)
+
+registerSchedules()
+  .then((count) => logger.info(`registered ${count} repeatable job(s)`))
+  .catch((err) => logger.error(`could not register repeatable jobs: ${err.message}`))
 
 let shuttingDown = false
 async function shutdown(signal) {
