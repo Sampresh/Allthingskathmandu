@@ -1,6 +1,25 @@
-# Local development services. The API and web app run with npm, not in Docker.
-# Postgres + PostGIS on 5432 (databases: atk for dev, atk_test for npm test)
-# Valkey on 6379
+# Local services.
+#   docker compose up -d                        Postgres + PostGIS on 5432 (databases: atk for
+#                                               dev, atk_test for npm test) and Valkey on 6379;
+#                                               run the API, worker and web app with npm.
+#   docker compose --profile app up -d --build  Everything in Docker: also migrates and seeds
+#                                               the database, then runs the API on 5001, the
+#                                               worker and the web app on 3000 (production
+#                                               builds). Needs server/.env and client/.env.local.
+
+# Shared by the migrate, api and worker containers: one image, settings from server/.env with
+# the hosts pointed at the other containers.
+x-server: &server
+  build: ./server
+  image: atk-server:local
+  profiles: [app]
+  env_file: server/.env
+  environment:
+    DATABASE_URL: postgresql://atk:atk@postgres:5432/atk
+    DIRECT_URL: postgresql://atk:atk@postgres:5432/atk
+    DATABASE_REPLICA_URL: ""
+    REDIS_URL: redis://valkey:6379
+    REVALIDATE_URL: http://web:3000/api/revalidate
 
 services:
   postgres:
@@ -38,6 +57,67 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+
+  # Applies migrations and runs the (idempotent) seed, then exits; api and worker wait for it.
+  migrate:
+    <<: *server
+    container_name: atk-migrate
+    command: ["sh", "-c", "npx prisma migrate deploy && npx prisma db seed"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    <<: *server
+    container_name: atk-api
+    command: ["npm", "start"]
+    ports:
+      - "5001:5001"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      valkey:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://localhost:5001/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  worker:
+    <<: *server
+    container_name: atk-worker
+    command: ["npm", "run", "worker"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      valkey:
+        condition: service_healthy
+    restart: unless-stopped
+
+  web:
+    build: ./client
+    image: atk-web:local
+    profiles: [app]
+    container_name: atk-web
+    env_file: client/.env.local
+    environment:
+      # Server components reach the API inside the Docker network; the browser still uses
+      # NEXT_PUBLIC_API_URL (http://localhost:5001/api/v1) from .env.local.
+      INTERNAL_API_ORIGIN: http://api:5001
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
 
 volumes:
   atk-postgres-data:

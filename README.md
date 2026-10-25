@@ -60,6 +60,22 @@ Local development notes:
 - Generate secrets with `openssl rand -base64 48` (JWT) and `openssl rand -base64 32` (`TOTP_ENCRYPTION_KEY`).
 - Super admin, admin and moderator accounts set up TOTP on first login (any authenticator app). The admin panel is at http://localhost:3000/admin (login at `/admin/login`).
 
+## Everything in Docker
+
+The whole stack can also run in Docker as production builds (the `app` profile in `docker-compose.yml`):
+
+```bash
+# server/.env and client/.env.local as in Local setup (the Docker containers override the
+# database, Valkey and API hosts themselves). Stop any npm dev servers on 3000 and 5001 first.
+docker compose --profile app up -d --build
+```
+
+This builds `server/Dockerfile` (API and worker) and `client/Dockerfile` (web), applies the migrations and runs the idempotent seed (the `migrate` container), then starts the API on http://localhost:5001, the worker and the web app on http://localhost:3000. Logs: `docker compose --profile app logs -f api worker web`. Stop it with `docker compose --profile app down` (the database volume is kept).
+
+- `NEXT_PUBLIC_*` values from `client/.env.local` are baked into the web image at build time: rebuild (`--build`) after changing them.
+- The web image is built without the API running, so its pages render on request instead of being prerendered; data is still cached by tag and refreshed by the worker.
+- Images are for local use; production runs on Render (`render.yaml`) and Vercel.
+
 ## Ports
 
 | Service | Port | Notes |

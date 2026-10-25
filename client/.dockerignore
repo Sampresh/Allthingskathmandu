@@ -1,0 +1,11 @@
+node_modules
+npm-debug.log*
+.next
+# Only .env.local is used (for the NEXT_PUBLIC_* values baked in at build).
+.env
+.env.development*
+.env.production*
+.env.test*
+.vercel
+Dockerfile
+.dockerignore

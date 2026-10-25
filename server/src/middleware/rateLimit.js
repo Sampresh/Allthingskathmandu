@@ -6,19 +6,25 @@ import { ApiError } from '../utils/ApiError.js'
 /**
  * rate-limit-redis loads its Lua scripts once in init(). If Redis is down at that moment the
  * rejected promise is cached and limits never recover, so reload the scripts on every reconnect.
+ * One shared 'ready' listener reloads every store (one listener per limiter would pass Node's
+ * default limit of 10 and log a leak warning).
  */
+const stores = new Set()
+redis.on('ready', () => stores.forEach((store) => store.loadScripts()))
+
 class ResilientRedisStore extends RedisStore {
   async init(options) {
     this.windowMs = options.windowMs
-    const load = () => {
-      this.incrementScriptSha = this.loadIncrementScript()
-      this.getScriptSha = this.loadGetScript()
-      // A failure surfaces on use and is let through by passOnStoreError.
-      this.incrementScriptSha.catch(() => {})
-      this.getScriptSha.catch(() => {})
-    }
-    if (isRedisReady()) load()
-    redis.on('ready', load)
+    stores.add(this)
+    if (isRedisReady()) this.loadScripts()
+  }
+
+  loadScripts() {
+    this.incrementScriptSha = this.loadIncrementScript()
+    this.getScriptSha = this.loadGetScript()
+    // A failure surfaces on use and is let through by passOnStoreError.
+    this.incrementScriptSha.catch(() => {})
+    this.getScriptSha.catch(() => {})
   }
 }
 
