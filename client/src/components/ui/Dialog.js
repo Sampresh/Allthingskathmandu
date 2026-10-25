@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useId, useRef } from 'react'
 import { X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { useT } from '@/hooks/useLang'
@@ -11,6 +11,7 @@ import { useT } from '@/hooks/useLang'
  */
 export function Dialog({ open, onClose, title, variant = 'dialog', children, footer }) {
   const ref = useRef(null)
+  const titleId = useId()
   const t = useT()
 
   useEffect(() => {
@@ -25,7 +26,7 @@ export function Dialog({ open, onClose, title, variant = 'dialog', children, foo
       ref={ref}
       onClose={onClose}
       onClick={(e) => e.target === ref.current && onClose()}
-      aria-label={typeof title === 'string' ? title : undefined}
+      aria-labelledby={titleId}
       className={clsx(
         'm-auto w-full max-w-lg rounded-box border border-border bg-surface p-0 text-text shadow-overlay backdrop:bg-[rgb(0_0_0/0.5)]',
         variant === 'sheet' &&
@@ -34,7 +35,9 @@ export function Dialog({ open, onClose, title, variant = 'dialog', children, foo
     >
       <div className="flex max-h-[85dvh] flex-col">
         <div className="flex items-center justify-between gap-4 border-b border-border px-4 py-2">
-          <h2 className="text-lg font-semibold">{title}</h2>
+          <h2 id={titleId} className="text-lg font-semibold">
+            {title}
+          </h2>
           <button
             type="button"
             onClick={onClose}

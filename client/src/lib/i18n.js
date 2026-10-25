@@ -18,8 +18,8 @@ export function translate(key, lang = 'en', dictionary = clientMessages) {
  * Message for an API error: a translated message for known codes, else the server's own
  * message (always English), else a generic one. Returns { en, ne }.
  */
-export function errorText(error) {
-  const known = error?.code && clientMessages[`e.${error.code}`]
+export function errorText(error, messages = clientMessages) {
+  const known = error?.code && messages[`e.${error.code}`]
   if (known) return known
   if (error?.message) return { en: error.message, ne: error.message }
   return clientMessages['e.default']

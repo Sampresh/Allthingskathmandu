@@ -10,8 +10,10 @@ import { CardGrid } from '@/components/listing/ListingCard'
 import { OpenStatus } from '@/components/listing/OpenStatus'
 import { ReportDialog } from '@/components/listing/ReportDialog'
 import { ReviewList } from '@/components/listing/ReviewList'
+import { SaveButton } from '@/components/listing/SaveButton'
 import { TrackView } from '@/components/listing/TrackView'
 import { VideoEmbed } from '@/components/listing/VideoEmbed'
+import { WriteReview } from '@/components/listing/WriteReview'
 import { LazyMap } from '@/components/map/LazyMap'
 import { Avatar } from '@/components/ui/Avatar'
 import { Badge } from '@/components/ui/Badge'
@@ -145,6 +147,7 @@ export default async function ListingPage({ params }) {
           </div>
         </div>
         <ActionBar listing={listing} />
+        <SaveButton businessId={listing.id} slug={listing.slug} />
       </div>
 
       {listing.description && (
@@ -206,6 +209,7 @@ export default async function ListingPage({ params }) {
       )}
 
       <Block titleKey="listing.reviews">
+        <WriteReview businessId={listing.id} slug={listing.slug} />
         <ReviewList
           slug={listing.slug}
           initialItems={reviews?.data ?? []}

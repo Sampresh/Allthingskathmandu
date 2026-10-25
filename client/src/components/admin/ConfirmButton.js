@@ -9,6 +9,7 @@ export function ConfirmButton({
   title,
   message,
   confirmLabel = 'Confirm',
+  cancelLabel = 'Cancel',
   variant = 'danger',
   onConfirm,
   children,
@@ -37,7 +38,7 @@ export function ConfirmButton({
         footer={
           <div className="flex justify-end gap-3">
             <Button variant="secondary" onClick={() => setOpen(false)}>
-              Cancel
+              {cancelLabel}
             </Button>
             <Button variant={variant} onClick={confirm} loading={busy}>
               {confirmLabel}

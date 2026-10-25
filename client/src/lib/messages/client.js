@@ -58,6 +58,9 @@ export const clientMessages = {
   'listing.playVideo': { en: 'Play video', ne: 'भिडियो चलाउनुहोस्' },
   'listing.noReviews': { en: 'No reviews yet.', ne: 'अहिलेसम्म कुनै समीक्षा छैन।' },
   'listing.formerMember': { en: 'Former member', ne: 'पूर्व सदस्य' },
+  'listing.save': { en: 'Save', ne: 'सुरक्षित गर्नुहोस्' },
+  'listing.saved': { en: 'Saved', ne: 'सुरक्षित गरियो' },
+  'listing.writeReview': { en: 'Write a review', ne: 'समीक्षा लेख्नुहोस्' },
   'listing.mapUnavailable': {
     en: 'The map is not available here. Use Directions to open Google Maps.',
     ne: 'यहाँ नक्सा उपलब्ध छैन। Google Maps खोल्न "बाटो" थिच्नुहोस्।',

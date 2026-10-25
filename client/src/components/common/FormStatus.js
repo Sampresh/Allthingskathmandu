@@ -3,9 +3,9 @@ import { errorText } from '@/lib/i18n'
 import { T } from './T'
 
 /** Error from a failed API call, announced to screen readers. */
-export function FormError({ error, children }) {
+export function FormError({ error, messages, children }) {
   if (!error) return null
-  const text = errorText(error)
+  const text = errorText(error, messages)
   return (
     <div
       role="alert"
