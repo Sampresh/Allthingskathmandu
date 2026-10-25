@@ -29,8 +29,11 @@ const production = {
   SMTP_PASS: 'pass',
   KHALTI_SECRET_KEY: 'khalti',
   ESEWA_SECRET_KEY: 'esewa',
-  ESEWA_STATUS_URL: 'https://epay.example.com/status',
   TURNSTILE_SECRET_KEY: 'turnstile',
+  KHALTI_BASE_URL: 'https://khalti.com/api/v2',
+  ESEWA_PRODUCT_CODE: 'NP-ES-ATK',
+  ESEWA_FORM_URL: 'https://epay.esewa.com.np/api/epay/main/v2/form',
+  ESEWA_STATUS_URL: 'https://esewa.com.np/api/epay/transaction/status/',
 }
 
 describe('parseEnv', () => {
@@ -94,6 +97,21 @@ describe('parseEnv', () => {
     expect(() =>
       parseEnv({ ...production, JWT_ACCESS_SECRET: 'change-me-64-random-chars' }),
     ).toThrow('placeholder')
+  })
+
+  it('refuses payment sandbox settings in production', () => {
+    expect(() =>
+      parseEnv({ ...production, KHALTI_BASE_URL: 'https://dev.khalti.com/api/v2' }),
+    ).toThrow('KHALTI_BASE_URL')
+    expect(() =>
+      parseEnv({
+        ...production,
+        ESEWA_STATUS_URL: 'https://rc.esewa.com.np/api/epay/transaction/status/',
+      }),
+    ).toThrow('ESEWA_STATUS_URL')
+    expect(() => parseEnv({ ...production, ESEWA_PRODUCT_CODE: 'EPAYTEST' })).toThrow(
+      'ESEWA_PRODUCT_CODE',
+    )
   })
 
   it('requires production-only secrets in production', () => {

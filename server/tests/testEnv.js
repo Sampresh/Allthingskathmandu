@@ -19,6 +19,12 @@ export const testEnv = {
   CLOUDINARY_API_KEY: 'test-key',
   CLOUDINARY_API_SECRET: 'test-cloudinary-secret',
   CLOUDINARY_FOLDER: 'atk-test',
+  // eSewa's published UAT merchant and secret (developer.esewa.com.np); Khalti calls are mocked.
+  KHALTI_SECRET_KEY: 'test-khalti-key',
+  KHALTI_BASE_URL: 'https://dev.khalti.com/api/v2',
+  ESEWA_PRODUCT_CODE: 'EPAYTEST',
+  ESEWA_SECRET_KEY: '8gBm/:&EnhH.1/q',
+  ESEWA_STATUS_URL: 'https://rc.esewa.com.np/api/epay/transaction/status/',
   REVALIDATE_URL: 'http://localhost:3000/api/revalidate',
   REVALIDATE_SECRET: 'test-revalidate-secret-0123456789abcdefghijklmn',
   ADMIN_EMAIL: '',

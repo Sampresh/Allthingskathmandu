@@ -117,6 +117,17 @@ export function parseEnv(source) {
     if (env.JWT_ACCESS_SECRET === env.JWT_REFRESH_SECRET) {
       errors.push('JWT_ACCESS_SECRET and JWT_REFRESH_SECRET must be different')
     }
+    // Payment gateways must not point at their sandboxes in production.
+    const sandbox = [
+      ['KHALTI_BASE_URL', /\/\/dev\.khalti\.com/],
+      ['ESEWA_FORM_URL', /\/\/rc(-epay)?\.esewa\.com\.np/],
+      ['ESEWA_STATUS_URL', /\/\/rc(-epay)?\.esewa\.com\.np/],
+    ]
+    for (const [key, pattern] of sandbox) {
+      if (env[key] && pattern.test(env[key])) errors.push(`${key}: still the sandbox URL`)
+    }
+    if (env.ESEWA_PRODUCT_CODE === 'EPAYTEST')
+      errors.push('ESEWA_PRODUCT_CODE: still the sandbox code')
   } else if (env.JWT_ACCESS_SECRET === env.JWT_REFRESH_SECRET) {
     warnings.push('JWT_ACCESS_SECRET and JWT_REFRESH_SECRET are identical (refused in production)')
   }

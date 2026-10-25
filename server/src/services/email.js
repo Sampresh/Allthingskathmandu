@@ -50,6 +50,13 @@ const templates = {
       `<p>Hi ${escape(name)},</p><p>We could not approve your claim for <strong>${escape(listingName)}</strong>.</p>${reason ? `<p>Reason: ${escape(reason)}</p>` : ''}<p>Reply to this email if you can send more proof.</p>`,
     ),
   }),
+  'renewal-reminder': ({ name, listingName, planName, daysLeft, endsAt, url }) => ({
+    subject: `${planName} for ${listingName} ends in ${daysLeft} day${daysLeft === 1 ? '' : 's'}`,
+    text: `Hi ${name},\n\nThe ${planName} plan for ${listingName} ends on ${endsAt}. Renew to keep photos, videos, offers and top placement:\n${url}`,
+    html: layout(
+      `<p>Hi ${escape(name)},</p><p>The ${escape(planName)} plan for <strong>${escape(listingName)}</strong> ends on ${escape(endsAt)}. Renew to keep photos, videos, offers and top placement.</p>${button(url, 'Renew plan')}`,
+    ),
+  }),
   'contact-message': ({ name, email, message }) => ({
     subject: `Contact form: ${name}`,
     text: `From: ${name} <${email}>\n\n${message}`,

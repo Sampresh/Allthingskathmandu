@@ -7,6 +7,8 @@ const SCHEDULES = [
   { queue: QUEUE.STATS, id: 'stats-flush', every: 5 * MINUTE, name: 'flush' },
   { queue: QUEUE.DIRECTORY, id: 'directory-counts', every: 10 * MINUTE, name: 'refresh-counts' },
   { queue: QUEUE.DIRECTORY, id: 'directory-sync', every: 10 * MINUTE, name: 'sync-listings' },
+  { queue: QUEUE.SUBSCRIPTIONS, id: 'subscriptions-expire', every: 60 * MINUTE, name: 'expire' },
+  { queue: QUEUE.SUBSCRIPTIONS, id: 'subscriptions-remind', every: 60 * MINUTE, name: 'remind' },
 ]
 
 export async function registerSchedules() {

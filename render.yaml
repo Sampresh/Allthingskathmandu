@@ -36,6 +36,10 @@ envVarGroups:
         value: All Things Kathmandu
       - key: KHALTI_BASE_URL
         value: https://khalti.com/api/v2
+      - key: ESEWA_FORM_URL
+        value: https://epay.esewa.com.np/api/epay/main/v2/form
+      - key: ESEWA_STATUS_URL
+        value: https://esewa.com.np/api/epay/transaction/status/
       - key: REVALIDATE_URL
         value: https://allthingskathmandu.com/api/revalidate
       - key: LOG_LEVEL
@@ -102,10 +106,6 @@ services:
         sync: false
       - key: ESEWA_SECRET_KEY
         sync: false
-      - key: ESEWA_FORM_URL            # production form URL from eSewa merchant docs
-        sync: false
-      - key: ESEWA_STATUS_URL          # production status check URL from eSewa merchant docs
-        sync: false
       - key: TURNSTILE_SECRET_KEY
         sync: false
       - key: REVALIDATE_SECRET
@@ -163,10 +163,6 @@ services:
       - key: ESEWA_PRODUCT_CODE
         sync: false
       - key: ESEWA_SECRET_KEY
-        sync: false
-      - key: ESEWA_FORM_URL
-        sync: false
-      - key: ESEWA_STATUS_URL
         sync: false
       - key: TURNSTILE_SECRET_KEY
         sync: false

@@ -9,6 +9,7 @@ export const QUEUE = {
   REVALIDATE: 'revalidate',
   IMPORT: 'import',
   MEDIA: 'media',
+  SUBSCRIPTIONS: 'subscriptions',
 }
 
 // Retries with backoff; completed jobs are trimmed, failed jobs stay for inspection (Part 3 §9).
