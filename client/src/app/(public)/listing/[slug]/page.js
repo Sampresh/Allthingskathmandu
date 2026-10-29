@@ -111,7 +111,7 @@ export default async function ListingPage({ params }) {
               label: <T en={category.groupNameEn} ne={category.groupNameNe} />,
             },
             {
-              // Categories under 5 live listings have no page yet.
+              // Categories without live listings (or hidden by Admin) have no page.
               href: category.isPublic ? categoryHref(category) : undefined,
               label: <T en={category.nameEn} ne={category.nameNe} />,
             },

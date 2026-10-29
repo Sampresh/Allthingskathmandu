@@ -37,13 +37,19 @@ async function allPages(path, limit, pick = (data) => data) {
 }
 
 describe('GET /groups and /categories/:slug', () => {
-  it('lists visible groups with categories that have at least 5 live listings', async () => {
+  it('lists visible groups with every category that has a live listing', async () => {
     const res = await get('/groups')
     expect(res.status).toBe(200)
     expect(
       res.body.data.map((g) => [g.slug, g.categories.map((c) => [c.slug, c.liveCount])]),
     ).toEqual([
-      ['eat-and-drink', [['restaurants', 9]]],
+      [
+        'eat-and-drink',
+        [
+          ['restaurants', 9],
+          ['cafes', 2],
+        ],
+      ],
       ['home-services', [['plumbers', 5]]],
     ])
   })
@@ -60,11 +66,16 @@ describe('GET /groups and /categories/:slug', () => {
 
     const group = (await get('/categories/eat-and-drink')).body.data
     expect(group).toMatchObject({ isGroup: true, group: null })
-    expect(group.categories.map((c) => c.slug)).toEqual(['restaurants'])
+    expect(group.categories.map((c) => c.slug)).toEqual(['restaurants', 'cafes'])
   })
 
-  it('hides categories below the threshold, market categories and unknown slugs', async () => {
-    expect((await get('/categories/cafes')).status).toBe(404)
+  it('hides empty categories, market categories and unknown slugs', async () => {
+    // Cafes has only 2 live listings and still has a page.
+    expect((await get('/categories/cafes')).status).toBe(200)
+    await db.category.create({
+      data: { slug: 'bakeries', nameEn: 'Bakeries', parentId: fx.categories.eat.id },
+    })
+    expect((await get('/categories/bakeries')).status).toBe(404)
     expect((await get('/categories/market-electronics')).status).toBe(404)
     expect((await get('/categories/nope')).status).toBe(404)
     expect((await get('/categories/Bad_Slug!')).status).toBe(400)
@@ -128,12 +139,16 @@ describe('GET /categories/:slug/listings', () => {
     })
   })
 
-  it('marks categories without a public page (under 5 live listings)', async () => {
+  it('marks categories without a public page (hidden by Admin)', async () => {
+    expect((await get('/listings/bean-cafe')).body.data.category.isPublic).toBe(true)
+    await db.category.update({ where: { slug: 'cafes' }, data: { isVisible: false } })
+    await flushRedis()
     const detail = (await get('/listings/bean-cafe')).body.data
     expect(detail.category).toMatchObject({ slug: 'cafes', isPublic: false })
     const cards = (await get('/search?q=cafe')).body.data.results
     expect(cards.find((c) => c.slug === 'bean-cafe').category.isPublic).toBe(false)
     expect((await get('/listings/pizza-palace')).body.data.category.isPublic).toBe(true)
+    await db.category.update({ where: { slug: 'cafes' }, data: { isVisible: true } })
   })
 
   it.each([

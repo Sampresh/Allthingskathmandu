@@ -32,7 +32,7 @@ export async function refreshCategoryCounts() {
 
   if (changed.length) {
     await purgeTags(['groups', 'home', 'market', ...changed.map((c) => `category:${c.id}`)])
-    // A category crossing the 5-listing threshold appears or disappears on public pages.
+    // A category crossing the live-listing threshold appears or disappears on public pages.
     await queueRevalidate(pageTagsFor({ categories: changed, extra: ['groups', 'home'] }))
   }
   return { changed: changed.length }

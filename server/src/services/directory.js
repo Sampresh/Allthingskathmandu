@@ -4,8 +4,9 @@ import { Prisma } from '../generated/prisma/client'
 import { decodeCursor, encodeCursor, keysetSchema } from '../lib/cursor.js'
 import { isOpenAt, nepalClock, openNowSql, openState } from '../lib/hours.js'
 
-// A category is public only with this many LIVE listings (Part 3 §8).
-export const MIN_LIVE_LISTINGS = 5
+// A category is public once it has this many LIVE listings. Part 3 §8 says 5; lowered to 1
+// so every category with a live listing shows (an empty category stays hidden).
+export const MIN_LIVE_LISTINGS = 1
 // At most this many Featured cards per results page, always labelled (Part 3 §8).
 export const FEATURED_SLOTS = 2
 // Sort key for listings without a map pin when sorting by distance: they go last.
@@ -80,7 +81,7 @@ export function toCard(row, clock = nepalClock()) {
           nameEn: row.categoryNameEn,
           nameNe: row.categoryNameNe,
           groupSlug: row.groupSlug,
-          // Hidden categories (under 5 live listings) have no page to link to.
+          // Hidden categories (no live listings, or hidden by Admin) have no page to link to.
           isPublic: row.categoryIsPublic,
         }
       : null,
@@ -302,7 +303,7 @@ const EMERGENCY_LIMIT = 50
 /**
  * Emergency page: LIVE hotlines (short codes first, then file order) and the other
  * categories of the group the hotlines sit in (e.g. 24h Hospitals) with their LIVE listings.
- * Emergency information is shown whatever the 5-listing threshold says.
+ * Emergency information is shown whatever the live-listing threshold says.
  */
 export async function getEmergency() {
   const clock = nepalClock()

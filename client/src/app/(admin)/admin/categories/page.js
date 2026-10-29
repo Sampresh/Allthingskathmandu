@@ -13,7 +13,7 @@ import { Dialog } from '@/components/ui/Dialog'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { categories } from '@/services/admin.service'
 
-const MIN_LIVE = 5 // a category is public with 5+ live listings (Part 3 §8)
+const MIN_LIVE = 1 // a category is public once it has a live listing (MIN_LIVE_LISTINGS on the API)
 
 function CategoryDialog({ editing, groups, onClose, onSaved }) {
   const toast = useToast()
