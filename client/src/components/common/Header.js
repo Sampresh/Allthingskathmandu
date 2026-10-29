@@ -11,9 +11,16 @@ const navLink =
 /** Desktop: logo, search, Market, Events, Saved, account, List your business. Mobile: logo, search, account. */
 export function Header() {
   return (
-    <header className="sticky top-0 z-20 border-b border-border bg-surface">
+    <header className="sticky top-0 z-20 border-b border-border bg-surface/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-2">
-        <Link href="/" className="inline-flex min-h-11 shrink-0 items-center text-lg font-semibold">
+        <Link
+          href="/"
+          className="inline-flex min-h-11 shrink-0 items-center gap-2 font-display text-lg font-semibold"
+        >
+          <span
+            aria-hidden="true"
+            className="inline-block size-3 rotate-45 rounded-[2px] bg-brand"
+          />
           <T k="site.name" />
         </Link>
         <div className="hidden flex-1 lg:block">

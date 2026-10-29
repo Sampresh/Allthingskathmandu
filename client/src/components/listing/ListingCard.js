@@ -1,90 +1,125 @@
 import Link from 'next/link'
 import { BadgeCheck, MapPin } from 'lucide-react'
 import { T } from '@/components/common/T'
-import { Avatar } from '@/components/ui/Avatar'
-import { Badge } from '@/components/ui/Badge'
 import { Rating } from '@/components/ui/Rating'
 import { formatDistance, listingHref, telHref, whatsappHref } from '@/lib/format'
+import { ListingLogo } from './ListingLogo'
 import { OpenStatus } from './OpenStatus'
 import { TrackedLink } from './TrackedLink'
 
-// One main action per card (Part 4 §4): Download for apps, otherwise Call.
+// One main action per card (Part 4 §4): Download for apps, tap-to-call for hotlines,
+// otherwise Call, then WhatsApp, then Website. Text only: cards render in the client bundle
+// on results pages, which has a tight size budget (Part 4 §9).
 function mainAction(card) {
   const { contact } = card
   if (card.type === 'APP') {
-    const url = contact.playStoreUrl ?? contact.appStoreUrl
-    return url && { href: url, kind: 'website', label: 'listing.download', external: true }
+    const store = contact.playStoreUrl ?? contact.appStoreUrl
+    if (store) return { href: store, kind: 'website', label: 'listing.download' }
+    if (contact.website) return { href: contact.website, kind: 'website', label: 'listing.website' }
+    return null
   }
-  if (contact.phone)
-    return { href: telHref(contact.phone), kind: 'call', label: 'listing.call', external: false }
+  if (contact.phone) {
+    return {
+      href: telHref(contact.phone),
+      kind: 'call',
+      label: 'listing.call',
+      internal: true,
+      // Hotlines show the number itself: it is what people need to see.
+      number: card.type === 'HOTLINE' ? contact.phone : null,
+    }
+  }
   if (contact.whatsapp) {
     return {
       href: whatsappHref(contact.whatsapp),
       kind: 'whatsapp',
       label: 'listing.whatsapp',
-      external: true,
     }
   }
-  if (contact.website)
-    return { href: contact.website, kind: 'website', label: 'listing.website', external: true }
+  if (contact.website) return { href: contact.website, kind: 'website', label: 'listing.website' }
   return null
 }
 
-/** Logo, name, one line, area and distance, open now, one button, Featured label. */
+/**
+ * Listing card: logo (or category-tinted monogram), name, verified badge, one line, area and
+ * distance, open status with the next change, and one main action. Featured cards say so.
+ */
 export function ListingCard({ card, priority = false, headingLevel = 3 }) {
   const Heading = `h${headingLevel}`
   const action = mainAction(card)
   const distance = formatDistance(card.distanceMeters)
+  const hasRating = card.rating.count > 0
 
   return (
-    <article className="relative flex gap-3 rounded-box border border-border bg-surface p-4">
-      <Avatar src={card.logoUrl} name={card.name} size={56} priority={priority} />
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <div className="flex flex-wrap items-center gap-2">
-          <Heading className="text-base font-semibold">
-            {/* Stretched link: the whole card opens the listing; the action button stays separate. */}
-            <Link href={listingHref(card.slug)} className="after:absolute after:inset-0">
+    <article
+      className={card.featured ? 'group lcard border-featured/50' : 'group lcard border-border'}
+    >
+      {card.featured && (
+        <span className="lcard-flag">
+          <T k="listing.featured" />
+        </span>
+      )}
+      <div className="flex gap-3">
+        <ListingLogo
+          name={card.name}
+          logoUrl={card.logoUrl}
+          tintKey={card.category?.slug}
+          size={56}
+          priority={priority}
+        />
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <Heading className="lcard-title">
+            {/* Stretched link: the whole card opens the listing; the action stays separate. */}
+            <Link href={listingHref(card.slug)} className="lcard-link">
               <T en={card.name} ne={card.nameNe} />
             </Link>
-          </Heading>
-          {card.isVerified && (
-            <span className="inline-flex text-brand">
-              <BadgeCheck aria-hidden="true" className="size-4" />
-              <span className="sr-only">
-                <T k="listing.verified" />
+            {card.isVerified && (
+              <span className="mt-0.5 inline-flex shrink-0 text-brand">
+                <BadgeCheck aria-hidden="true" className="size-4" />
+                <span className="sr-only">
+                  <T k="listing.verified" />
+                </span>
               </span>
-            </span>
+            )}
+          </Heading>
+          {card.shortDesc && (
+            <p className="line-clamp-2 text-sm text-text-muted">{card.shortDesc}</p>
           )}
-          {card.featured && (
-            <Badge tone="featured">
-              <T k="listing.featured" />
-            </Badge>
+          {(card.area || distance || hasRating) && (
+            <p className="lcard-meta">
+              {(card.area || distance) && (
+                <span className="inline-flex items-center gap-1">
+                  <MapPin aria-hidden="true" className="size-3.5" />
+                  {card.area && <T en={card.area.nameEn} ne={card.area.nameNe} />}
+                  {card.area && distance && ' · '}
+                  {distance}
+                </span>
+              )}
+              {hasRating && <Rating value={card.rating.average} count={card.rating.count} />}
+            </p>
           )}
-        </div>
-        <p className="line-clamp-2 text-sm text-text-muted">{card.shortDesc}</p>
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-text-muted">
-          {(card.area || distance) && (
-            <span className="inline-flex items-center gap-1">
-              <MapPin aria-hidden="true" className="size-4" />
-              {card.area && <T en={card.area.nameEn} ne={card.area.nameNe} />}
-              {card.area && distance && ' · '}
-              {distance}
-            </span>
-          )}
-          <Rating value={card.rating.average} count={card.rating.count} />
-          <OpenStatus hours={card.hours} initial={card.openNow} />
         </div>
       </div>
-      {action && (
-        <TrackedLink
-          businessId={card.id}
-          kind={action.kind}
-          href={action.href}
-          external={action.external}
-          className="relative z-10 inline-flex min-h-11 items-center self-center rounded-box border border-brand px-3 text-sm font-semibold text-brand hover:bg-surface-raised"
-        >
-          <T k={action.label} />
-        </TrackedLink>
+      {(card.hours || action) && (
+        <div className="lcard-foot">
+          <OpenStatus hours={card.hours} initial={card.openState} />
+          {action && (
+            <TrackedLink
+              businessId={card.id}
+              kind={action.kind}
+              href={action.href}
+              external={!action.internal}
+              className={action.number ? 'lcard-act lcard-act-sos' : 'lcard-act'}
+            >
+              {action.number ? (
+                <>
+                  <T k="listing.call" /> {action.number}
+                </>
+              ) : (
+                <T k={action.label} />
+              )}
+            </TrackedLink>
+          )}
+        </div>
       )}
     </article>
   )
@@ -92,7 +127,7 @@ export function ListingCard({ card, priority = false, headingLevel = 3 }) {
 
 export function CardGrid({ cards, priorityCount = 2, headingLevel = 3 }) {
   return (
-    <ul className="grid gap-3 md:grid-cols-2">
+    <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {cards.map((card, i) => (
         <li key={card.id}>
           <ListingCard card={card} priority={i < priorityCount} headingLevel={headingLevel} />

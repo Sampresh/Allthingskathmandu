@@ -14,7 +14,9 @@ function secretMatches(given) {
 
 /**
  * Called by the API worker after content changes: { tags: [...] } with the shared secret in
- * x-revalidate-secret. Pages are marked stale and rebuilt on their next request.
+ * x-revalidate-secret. The tagged data expires at once ({ expire: 0 }, as Next recommends
+ * when the change comes from another service): the next request rebuilds the page instead of
+ * being served the stale copy, so a listing moved to Trash is gone for the very next visitor.
  */
 export async function POST(request) {
   if (!secretMatches(request.headers.get('x-revalidate-secret'))) {
@@ -27,6 +29,6 @@ export async function POST(request) {
     : []
   if (!tags.length) return Response.json({ error: 'No valid tags' }, { status: 400 })
 
-  for (const tag of tags) revalidateTag(tag, 'max')
+  for (const tag of tags) revalidateTag(tag, { expire: 0 })
   return Response.json({ revalidated: tags.length })
 }

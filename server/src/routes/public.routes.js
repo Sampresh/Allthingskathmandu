@@ -41,6 +41,8 @@ publicRouter.get(
 
 publicRouter.get('/groups', cache({ ttl: 30 * MIN, tags: () => ['groups'] }), pub.groups)
 
+publicRouter.get('/emergency', cache({ ttl: 10 * MIN, tags: () => ['emergency'] }), pub.emergency)
+
 publicRouter.get(
   '/categories/:slug',
   validate({ params: slugParams }),

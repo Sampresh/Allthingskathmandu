@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Breadcrumbs } from '@/components/common/Breadcrumbs'
 import { GroupIcon } from '@/components/common/GroupIcon'
+import { tintFor } from '@/components/listing/ListingLogo'
 import { ST as T } from '@/components/common/ST'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { pageMetadata } from '@/lib/seo'
@@ -42,9 +43,15 @@ export default async function GroupPage({ params }) {
           { label: <T en={group.nameEn} ne={group.nameNe} /> },
         ]}
       />
-      <h1 className="flex items-center gap-3 text-3xl font-semibold">
-        <span className="text-brand">
-          <GroupIcon name={group.icon} className="size-8" />
+      <h1 className="flex items-center gap-4 text-3xl font-semibold">
+        <span
+          className="inline-flex size-12 items-center justify-center rounded-panel"
+          style={{
+            background: `var(--tint-${tintFor(group.slug)}-bg)`,
+            color: `var(--tint-${tintFor(group.slug)}-fg)`,
+          }}
+        >
+          <GroupIcon name={group.icon} className="size-7" />
         </span>
         <T en={group.nameEn} ne={group.nameNe} />
       </h1>
@@ -54,10 +61,12 @@ export default async function GroupPage({ params }) {
             <li key={c.slug}>
               <Link
                 href={`/${group.slug}/${c.slug}`}
-                className="flex min-h-16 items-center justify-between gap-3 rounded-box border border-border bg-surface p-4 font-semibold hover:bg-surface-raised"
+                className="group flex min-h-20 items-center justify-between gap-3 rounded-panel border border-border bg-surface p-5 font-semibold shadow-card transition-colors hover:border-brand/40"
               >
-                <T en={c.nameEn} ne={c.nameNe} />
-                <span className="text-sm font-normal text-text-muted">
+                <span className="group-hover:text-brand">
+                  <T en={c.nameEn} ne={c.nameNe} />
+                </span>
+                <span className="shrink-0 rounded-pill bg-surface-raised px-2.5 py-0.5 text-sm font-normal text-text-muted">
                   {c.liveCount} <T k="listing.listings" />
                 </span>
               </Link>

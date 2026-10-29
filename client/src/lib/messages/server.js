@@ -10,6 +10,7 @@ export const serverMessages = {
   'nav.events': { en: 'Events', ne: 'कार्यक्रम' },
   'nav.listBusiness': { en: 'List your business', ne: 'आफ्नो व्यवसाय राख्नुहोस्' },
   'footer.emergency': { en: 'Emergency numbers', ne: 'आपतकालीन नम्बर' },
+  'footer.emergencyAll': { en: 'All emergency numbers', ne: 'सबै आपतकालीन नम्बर' },
   'footer.about': { en: 'About', ne: 'हाम्रोबारे' },
   'footer.contact': { en: 'Contact', ne: 'सम्पर्क' },
   'footer.terms': { en: 'Terms', ne: 'सर्तहरू' },

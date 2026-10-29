@@ -30,6 +30,10 @@ export async function groups(req, res) {
   return ok(res, await directory.getCategoryTree())
 }
 
+export async function emergency(req, res) {
+  return ok(res, await directory.getEmergency())
+}
+
 export async function category(req, res) {
   const found = await directory.getCategory(req.params.slug)
   if (!found) throw ApiError.notFound('Category not found')

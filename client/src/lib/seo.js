@@ -32,8 +32,43 @@ const DAY_SCHEMA = {
   sun: 'Sunday',
 }
 
-/** schema.org LocalBusiness for a listing detail page. */
+const rating = (listing) =>
+  listing.rating.count > 0 && {
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: listing.rating.average,
+      reviewCount: listing.rating.count,
+    },
+  }
+
+/**
+ * schema.org data for a listing detail page: MobileApplication for apps, TouristAttraction for
+ * places, LocalBusiness otherwise.
+ */
 export function listingJsonLd(listing) {
+  const url = absoluteUrl(`/listing/${listing.slug}`)
+  const description = listing.description ?? listing.shortDesc
+  if (listing.type === 'APP') {
+    const stores = [listing.contact.playStoreUrl, listing.contact.appStoreUrl].filter(Boolean)
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'MobileApplication',
+      name: listing.name,
+      description,
+      url,
+      applicationCategory: listing.category?.nameEn ?? 'LifestyleApplication',
+      operatingSystem:
+        [listing.contact.playStoreUrl && 'Android', listing.contact.appStoreUrl && 'iOS']
+          .filter(Boolean)
+          .join(', ') || undefined,
+      ...(listing.logoUrl && { image: listing.logoUrl }),
+      ...(stores.length && { downloadUrl: stores[0] }),
+      ...((listing.contact.website || stores.length) && {
+        sameAs: [listing.contact.website, ...stores].filter(Boolean),
+      }),
+      ...rating(listing),
+    }
+  }
   const hours = listing.hours
     ? Object.entries(listing.hours).flatMap(([day, slots]) =>
         (Array.isArray(slots) ? slots : []).map(([opens, closes]) => ({
@@ -48,14 +83,17 @@ export function listingJsonLd(listing) {
     '@context': 'https://schema.org',
     '@type': listing.type === 'PLACE' ? 'TouristAttraction' : 'LocalBusiness',
     name: listing.name,
-    description: listing.description ?? listing.shortDesc,
-    url: absoluteUrl(`/listing/${listing.slug}`),
+    description,
+    url,
     ...(listing.logoUrl && { image: listing.logoUrl }),
     ...(listing.contact.phone && { telephone: listing.contact.phone }),
+    ...(listing.contact.website && { sameAs: [listing.contact.website] }),
+    ...(listing.priceLevel && { priceRange: 'Rs '.repeat(listing.priceLevel).trim() }),
     address: {
       '@type': 'PostalAddress',
       ...(listing.address && { streetAddress: listing.address }),
       ...(listing.area && { addressLocality: listing.area.nameEn }),
+      addressRegion: 'Bagmati',
       addressCountry: 'NP',
     },
     ...(listing.location && {
@@ -66,13 +104,7 @@ export function listingJsonLd(listing) {
       },
     }),
     ...(hours?.length && { openingHoursSpecification: hours }),
-    ...(listing.rating.count > 0 && {
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: listing.rating.average,
-        reviewCount: listing.rating.count,
-      },
-    }),
+    ...rating(listing),
   }
 }
 

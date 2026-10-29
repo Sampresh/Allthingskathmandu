@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { readDb } from '../config/db.js'
 import { Prisma } from '../generated/prisma/client'
 import { decodeCursor, encodeCursor, keysetSchema } from '../lib/cursor.js'
-import { isOpenAt, nepalClock, openNowSql } from '../lib/hours.js'
+import { isOpenAt, nepalClock, openNowSql, openState } from '../lib/hours.js'
 
 // A category is public only with this many LIVE listings (Part 3 §8).
 export const MIN_LIVE_LISTINGS = 5
@@ -67,6 +67,8 @@ export function toCard(row, clock = nepalClock()) {
     isVerified: row.isVerified,
     featured: row.featured,
     openNow: isOpenAt(row.hours, clock),
+    // Open/closed and the next change, so cached pages render a sensible first state.
+    openState: openState(row.hours, clock),
     // Sent so the browser can recompute openNow on pages that were cached a while ago.
     hours: row.hours,
     area: row.areaSlug
@@ -293,6 +295,56 @@ export async function listCategoryListings(category, filters, { point, cursor, l
   })
 }
 
+// ---------- Emergency ----------
+
+const EMERGENCY_LIMIT = 50
+
+/**
+ * Emergency page: LIVE hotlines (short codes first, then file order) and the other
+ * categories of the group the hotlines sit in (e.g. 24h Hospitals) with their LIVE listings.
+ * Emergency information is shown whatever the 5-listing threshold says.
+ */
+export async function getEmergency() {
+  const clock = nepalClock()
+  const hotlineRows = await cardStream({
+    where: Prisma.sql`${liveSql} AND b.type = 'HOTLINE'`,
+    sortKey: Prisma.sql`length(regexp_replace(COALESCE(b.phone, ''), '[^0-9]', '', 'g'))`,
+    limit: EMERGENCY_LIMIT,
+  })
+  const groups = await readDb.category.findMany({
+    where: {
+      parentId: null,
+      isVisible: true,
+      children: {
+        some: {
+          businesses: { some: { business: { type: 'HOTLINE', status: 'LIVE', deletedAt: null } } },
+        },
+      },
+    },
+    include: { children: { where: { isVisible: true }, orderBy: [{ sortOrder: 'asc' }] } },
+  })
+  const sections = []
+  for (const group of groups) {
+    for (const category of group.children) {
+      const rows = await cardStream({
+        where: Prisma.sql`${liveSql} AND b.type <> 'HOTLINE' AND ${inCategoriesSql([category.id])}`,
+        sortKey: Prisma.sql`-b."profileScore"`,
+        limit: EMERGENCY_LIMIT,
+      })
+      if (!rows.length) continue
+      sections.push({
+        category: { ...categoryOut(category), groupSlug: group.slug },
+        items: rows.map((row) => toCard(row, clock)),
+      })
+    }
+  }
+  return {
+    group: groups[0] ? categoryOut(groups[0]) : null,
+    hotlines: hotlineRows.map((row) => toCard(row, clock)),
+    sections,
+  }
+}
+
 // ---------- Listing detail ----------
 
 export async function getListing(slug) {
@@ -360,6 +412,7 @@ export async function getListing(slug) {
     location: location ? { lat: location.lat, lng: location.lng } : null,
     hours: listing.hours,
     openNow: isOpenAt(listing.hours),
+    openState: openState(listing.hours),
     priceLevel: listing.priceLevel,
     rating: { average: Number(listing.ratingAvg), count: listing.ratingCount },
     isVerified: listing.isVerified,
@@ -372,6 +425,8 @@ export async function getListing(slug) {
           nameEn: primary.nameEn,
           nameNe: primary.nameNe,
           groupSlug: primary.parent?.slug ?? null,
+          groupNameEn: primary.parent?.nameEn ?? null,
+          groupNameNe: primary.parent?.nameNe ?? null,
           isPublic: isPublic(primary),
         }
       : null,

@@ -1,8 +1,19 @@
 import '@/styles/globals.css'
+import { Fraunces, Source_Sans_3 } from 'next/font/google'
 import { SITE_NAME, SITE_URL } from '@/lib/site'
 import { ERROR_BUFFER_SCRIPT } from '@/lib/errorBuffer'
 import { LANG_COOKIE } from '@/lib/i18n'
 import { Providers } from './providers'
+
+// Self-hosted at build time (no request to Google from the browser). Headings use one
+// static weight of Fraunces; body text the Source Sans 3 variable font.
+const heading = Fraunces({
+  subsets: ['latin'],
+  weight: '600',
+  display: 'swap',
+  variable: '--font-heading',
+})
+const body = Source_Sans_3({ subsets: ['latin'], display: 'swap', variable: '--font-body' })
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
@@ -16,8 +27,8 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0f1216' },
+    { media: '(prefers-color-scheme: light)', color: '#fbf9f6' },
+    { media: '(prefers-color-scheme: dark)', color: '#15120f' },
   ],
 }
 
@@ -27,7 +38,12 @@ const LANG_SCRIPT = `(function(){try{var m=document.cookie.match(/(?:^|; )${LANG
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      data-lang="en"
+      className={`${heading.variable} ${body.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: LANG_SCRIPT }} />
         {ERROR_BUFFER_SCRIPT && (

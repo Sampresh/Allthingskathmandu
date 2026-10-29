@@ -86,6 +86,8 @@ const securityHeaders = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // The end-to-end tests build into their own folder so they never overwrite a dev build.
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   poweredByHeader: false,
   images: {
     // Cloudinary resizes (f_auto,q_auto, width per breakpoint); only its host is allowed.

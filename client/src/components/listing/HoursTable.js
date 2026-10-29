@@ -24,20 +24,33 @@ export function HoursTable({ hours }) {
         <T k="listing.hours" />
       </caption>
       <tbody>
-        {WEEK.map((day) => (
-          <tr
-            key={day}
-            className={clsx(
-              'border-b border-border last:border-0',
-              day === today && 'font-semibold',
-            )}
-          >
-            <th scope="row" className="py-2 pr-4 text-left font-normal">
-              <T k={`day.${day}`} />
-            </th>
-            <td className="py-2 text-right">{slotText(daySlots(hours, day))}</td>
-          </tr>
-        ))}
+        {WEEK.map((day) => {
+          const isToday = day === today
+          return (
+            <tr
+              key={day}
+              aria-current={isToday ? 'date' : undefined}
+              className={clsx(
+                'border-b border-border last:border-0',
+                isToday && 'bg-brand/5 font-semibold',
+              )}
+            >
+              <th scope="row" className="py-2.5 pr-4 pl-2 text-left font-normal">
+                <span className={clsx(isToday && 'font-semibold')}>
+                  <T k={`day.${day}`} />
+                </span>
+                {isToday && (
+                  <span className="ml-2 rounded-pill bg-brand px-1.5 py-0.5 text-xs text-brand-contrast">
+                    <T en="Today" ne="आज" />
+                  </span>
+                )}
+              </th>
+              <td className="py-2.5 pr-2 text-right tabular-nums">
+                {slotText(daySlots(hours, day))}
+              </td>
+            </tr>
+          )
+        })}
       </tbody>
     </table>
   )

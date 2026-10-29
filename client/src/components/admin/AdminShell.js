@@ -108,6 +108,7 @@ export function AdminShell({ user, children }) {
   return (
     <ToastProvider>
       <div
+        data-area="admin"
         className="flex min-h-dvh"
         // Width of the desktop sidebar, for full-width bars fixed beside it (listing save bar).
         style={{ '--admin-sidebar': collapsed ? '4rem' : '16rem' }}

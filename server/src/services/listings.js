@@ -145,6 +145,7 @@ export async function afterListingsChange(listings, categoryIds = []) {
         ...categories.map((c) => `category:${c.id}`),
         'home',
         'search',
+        'emergency',
       ],
       pageTags: pageTagsFor({
         listings: listings.map(({ id, slug, oldSlug }) => ({

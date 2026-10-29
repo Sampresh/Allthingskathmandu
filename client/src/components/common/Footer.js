@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import { Phone } from 'lucide-react'
+import { ArrowRight, Phone } from 'lucide-react'
 import { telHref } from '@/lib/format'
 import { ST as T } from './ST'
 
 const LINKS = [
+  ['/emergency', 'footer.emergency'],
   ['/about', 'footer.about'],
   ['/contact', 'footer.contact'],
   ['/terms', 'footer.terms'],
@@ -40,6 +41,12 @@ export function Footer({ settings }) {
                 </li>
               ))}
             </ul>
+            <Link
+              href="/emergency"
+              className="mt-3 inline-flex min-h-11 items-center gap-1 font-semibold text-brand hover:underline"
+            >
+              <T k="footer.emergencyAll" /> <ArrowRight aria-hidden="true" className="size-4" />
+            </Link>
           </section>
         )}
         <nav aria-labelledby="footer-links">

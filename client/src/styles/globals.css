@@ -1,40 +1,90 @@
 @import 'tailwindcss';
 
 /*
- * Design tokens (Part 4 §6). Placeholder values until brand colours and fonts are picked in
- * Figma: replace the hex values below, nothing else needs to change. Every text/background
- * pair meets WCAG AA (4.5:1) in both themes.
+ * Design tokens (Part 4 §6): warm, local and quiet. Brick accent (#A3302A) on warm paper
+ * (#FBF9F6), ink text, a clear green for "Open now". Every text/background pair meets WCAG AA
+ * (4.5:1) in both themes. Cards are `surface`; the page and quiet panels are `surface-raised`.
  */
 
 :root {
-  --atk-brand: #1d4fd8;
+  --atk-brand: #a3302a;
   --atk-brand-contrast: #ffffff;
   --atk-surface: #ffffff;
-  --atk-surface-raised: #f5f6f8;
-  --atk-text: #14171c;
-  --atk-text-muted: #4d5562;
-  --atk-border: #d9dde3;
-  --atk-success: #157a3c;
-  --atk-warning: #a8520a;
+  --atk-surface-raised: #fbf9f6;
+  --atk-text: #1f2328;
+  --atk-text-muted: #6b6560;
+  --atk-border: #e3ddd6;
+  --atk-success: #18794e;
+  --atk-warning: #a35a00;
   --atk-danger: #b42318;
   --atk-featured: #8a5a00;
+  --atk-page: #fbf9f6;
+
+  /* Category tints for logo-less monogram tiles: background / text (≥ 6:1). */
+  --tint-1-bg: #f7e4e0;
+  --tint-1-fg: #8a2a24;
+  --tint-2-bg: #f8ebd3;
+  --tint-2-fg: #6e4400;
+  --tint-3-bg: #e3efdf;
+  --tint-3-fg: #2f5d2a;
+  --tint-4-bg: #ddefec;
+  --tint-4-fg: #1f5f58;
+  --tint-5-bg: #e3e6f5;
+  --tint-5-fg: #33407f;
+  --tint-6-bg: #efe2ee;
+  --tint-6-fg: #6b2f66;
+  --tint-7-bg: #e6e9ec;
+  --tint-7-fg: #3c4650;
+  --tint-8-bg: #fce8d5;
+  --tint-8-fg: #7f3f0e;
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --atk-brand: #e8837a;
+    --atk-brand-contrast: #1a1310;
+    --atk-surface: #1e1a17;
+    --atk-surface-raised: #15120f;
+    --atk-text: #f2ede7;
+    --atk-text-muted: #b5aca2;
+    --atk-border: #3a332c;
+    --atk-success: #4cc38a;
+    --atk-warning: #f0b455;
+    --atk-danger: #ff8a80;
+    --atk-featured: #f2c14e;
+    --atk-page: #15120f;
+
+    --tint-1-bg: #3b2320;
+    --tint-1-fg: #f4b4aa;
+    --tint-2-bg: #3a2e17;
+    --tint-2-fg: #f0c878;
+    --tint-3-bg: #22301f;
+    --tint-3-fg: #a9d79b;
+    --tint-4-bg: #1c302d;
+    --tint-4-fg: #93d6cb;
+    --tint-5-bg: #232843;
+    --tint-5-fg: #b4bdf2;
+    --tint-6-bg: #33223a;
+    --tint-6-fg: #e0b4da;
+    --tint-7-bg: #262b30;
+    --tint-7-fg: #c3ccd5;
+    --tint-8-bg: #3a2817;
+    --tint-8-fg: #f5be8c;
+    color-scheme: dark;
+  }
+}
+
+/* The admin area keeps a blue brand so staff always know they are in the back office, and
+   primary buttons never look like the red danger ones. */
+[data-area='admin'] {
+  --atk-brand: #1d4fd8;
+  --atk-brand-contrast: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  [data-area='admin'] {
     --atk-brand: #8db2ff;
     --atk-brand-contrast: #0b1426;
-    --atk-surface: #0f1216;
-    --atk-surface-raised: #191d23;
-    --atk-text: #f1f3f5;
-    --atk-text-muted: #a3abb7;
-    --atk-border: #2c323b;
-    --atk-success: #4ade80;
-    --atk-warning: #f5b544;
-    --atk-danger: #ff8a80;
-    --atk-featured: #f7c948;
-    color-scheme: dark;
   }
 }
 
@@ -54,12 +104,16 @@
   --color-warning: var(--atk-warning);
   --color-danger: var(--atk-danger);
   --color-featured: var(--atk-featured);
+  --color-page: var(--atk-page);
 }
 
 @theme {
+  /* Body: Source Sans 3; headings: Fraunces. Nepali falls back to the system Devanagari font. */
   --font-sans:
-    system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'Noto Sans Devanagari',
+    var(--font-body), system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans Devanagari',
     'Kohinoor Devanagari', sans-serif;
+  --font-display:
+    var(--font-heading), Georgia, 'Noto Serif Devanagari', 'Kohinoor Devanagari', serif;
 
   /* Type scale: 12, 14, 16 (body), 18, 20, 24, 30 px; weights 400 and 600. */
   --text-*: initial;
@@ -84,14 +138,16 @@
   /* Spacing: 4 px base (p-1 = 4, p-2 = 8, p-3 = 12, p-4 = 16, p-6 = 24, p-8 = 32, p-12 = 48). */
   --spacing: 0.25rem;
 
-  /* Radius: 8 px for cards and inputs, 999 px for chips. */
+  /* Radius: 8 px for cards and inputs, 14 px for large panels, 999 px for chips. */
   --radius-*: initial;
   --radius-box: 0.5rem;
+  --radius-panel: 0.875rem;
   --radius-pill: 999px;
 
   /* Elevation: borders first; one soft shadow for sheets and dialogs. */
   --shadow-*: initial;
   --shadow-overlay: 0 8px 32px rgb(0 0 0 / 0.18);
+  --shadow-card: 0 1px 2px rgb(31 35 40 / 0.06), 0 4px 12px rgb(31 35 40 / 0.04);
 
   /* Breakpoints: 640, 768, 1024, 1280. */
   --breakpoint-*: initial;
@@ -107,12 +163,58 @@
   }
 
   body {
-    @apply bg-surface text-base text-text antialiased;
+    @apply bg-page text-base text-text antialiased;
+  }
+
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
+  /* The back office stays in one plain face. */
+  [data-area='admin'] :is(h1, h2) {
+    font-family: var(--font-sans);
+    letter-spacing: normal;
   }
 
   :focus-visible {
     outline: 2px solid var(--atk-brand);
     outline-offset: 2px;
+  }
+}
+
+/*
+ * Listing card (components/listing/ListingCard.js). Its styles live here rather than in class
+ * strings because cards ship in the client bundle of results pages (Part 4 §9 budget).
+ */
+@layer components {
+  .lcard {
+    @apply relative flex h-full flex-col rounded-panel border bg-surface p-4 shadow-card transition-colors hover:border-brand/40;
+  }
+  .lcard-flag {
+    @apply absolute -top-2.5 right-4 inline-flex items-center gap-1 rounded-pill bg-featured px-2 py-0.5 text-xs font-semibold text-surface;
+  }
+  .lcard-title {
+    @apply flex items-start gap-1.5 text-base leading-snug font-semibold;
+  }
+  .lcard-link {
+    @apply group-hover:text-brand after:absolute after:inset-0 after:rounded-panel;
+  }
+  .lcard-meta {
+    @apply mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-sm text-text-muted;
+  }
+  .lcard-foot {
+    @apply mt-auto flex items-center justify-between gap-3 border-t border-border pt-3;
+  }
+  .lcard-foot:not(:first-child) {
+    @apply mt-3;
+  }
+  .lcard-act {
+    @apply relative z-10 ml-auto inline-flex min-h-11 items-center rounded-box border border-brand px-4 text-sm font-semibold text-brand transition-colors hover:bg-brand hover:text-brand-contrast;
+  }
+  .lcard-act-sos {
+    @apply border-danger bg-danger text-surface hover:bg-danger hover:text-surface hover:opacity-90;
   }
 }
 
