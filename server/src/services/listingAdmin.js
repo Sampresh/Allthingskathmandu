@@ -1,7 +1,11 @@
 import { db } from '../config/db.js'
 import { uniqueSlug } from '../lib/slug.js'
 import { ApiError } from '../utils/ApiError.js'
-import { VERIFICATION_ITEMS, publishProblems } from '../validators/listing.schema.js'
+import {
+  PUBLISH_RULES_ENFORCED,
+  VERIFICATION_ITEMS,
+  publishProblems,
+} from '../validators/listing.schema.js'
 import { audit } from './audit.js'
 import { afterListingsChange, listingSlugTaken, refreshProfileScore } from './listings.js'
 import { assertPublishable, publishBlocked, ruleInputs } from './listingRules.js'
@@ -170,7 +174,8 @@ export async function bulkAction(req, { ids, action, categoryId, areaId, feature
       throw ApiError.validation([{ path: 'areaId', message: 'Unknown area' }])
   }
 
-  const rules = action === 'publish' ? await ruleInputs(db, [...found]) : new Map()
+  const checkRules = action === 'publish' && PUBLISH_RULES_ENFORCED
+  const rules = checkRules ? await ruleInputs(db, [...found]) : new Map()
   const until =
     action === 'feature'
       ? new Date(featuredUntil ?? Date.now() + DEFAULT_FEATURE_DAYS * DAY_MS)
@@ -179,7 +184,7 @@ export async function bulkAction(req, { ids, action, categoryId, areaId, feature
   const touchedCategories = new Set()
 
   for (const listing of listings) {
-    if (action === 'publish' && listing.status !== 'LIVE') {
+    if (checkRules && listing.status !== 'LIVE') {
       const problems = publishProblems(rules.get(listing.id))
       if (problems.length) {
         failed.push({

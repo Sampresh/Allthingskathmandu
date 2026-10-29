@@ -25,6 +25,7 @@ import { googlePlaceHref, listingHref } from '@/lib/format'
 import {
   DESCRIPTION_MAX,
   LISTING_TYPES,
+  PUBLISH_RULES_ENFORCED,
   SHORT_DESC_MAX,
   listingCreate,
   listingUpdate,
@@ -288,7 +289,7 @@ export function ListingEditor({ listing, canEdit }) {
       return showErrors(errorsFrom(parsed.error.issues))
     }
     const goingLive = (status ?? state.status) === 'LIVE'
-    if (goingLive && problems.length) {
+    if (PUBLISH_RULES_ENFORCED && goingLive && problems.length) {
       toast('Not ready to publish yet', 'error')
       return showErrors(errorsFrom(problems.map((p) => ({ path: p.field, message: p.message }))))
     }
@@ -424,7 +425,7 @@ export function ListingEditor({ listing, canEdit }) {
                     </option>
                   ))}
                 </SelectField>
-                <TextField label="Name" required maxLength={120} {...field('name')} />
+                <TextField label="Name" maxLength={120} {...field('name')} />
                 <TextField
                   label="Nepali name"
                   lang="ne"
@@ -656,7 +657,8 @@ export function ListingEditor({ listing, canEdit }) {
                 <LocationPicker
                   value={state.location}
                   onChange={(location) => set({ location })}
-                  hint="Click the map, use your location at the business, or paste coordinates from Google Maps."
+                  hint="Use your location while at the business."
+                  showCoordinates={false}
                 />
                 {errors.location && <p className="text-sm text-danger">{errors.location}</p>}
               </div>
@@ -777,8 +779,7 @@ export function ListingEditor({ listing, canEdit }) {
 
             <Section id="verification" title="Verification">
               <p className="text-sm text-text-muted">
-                Tick each item once confirmed with the business. Phone and hours must be confirmed
-                before publishing.
+                Tick each item once confirmed with the business.
               </p>
               <div className="flex flex-col">
                 {VERIFICATION.map(({ key, label }) => (
@@ -872,7 +873,9 @@ export function ListingEditor({ listing, canEdit }) {
 
             <div className="rounded-box border border-border bg-surface p-4">
               <div className="mb-3 flex items-center justify-between">
-                <p className="font-semibold">Ready to publish?</p>
+                <p className="font-semibold">
+                  {PUBLISH_RULES_ENFORCED ? 'Ready to publish?' : 'Profile'}
+                </p>
                 <span className="text-sm text-text-muted">{score}% complete</span>
               </div>
               <div
@@ -890,8 +893,8 @@ export function ListingEditor({ listing, canEdit }) {
               </div>
               {problems.length === 0 ? (
                 <p className="flex items-center gap-2 text-sm text-success">
-                  <CircleCheck aria-hidden="true" className="size-4" /> Meets the publish rules for{' '}
-                  {TYPES[state.type].toLowerCase()} listings.
+                  <CircleCheck aria-hidden="true" className="size-4" /> Has everything a{' '}
+                  {TYPES[state.type].toLowerCase()} listing usually shows.
                 </p>
               ) : (
                 <ul className="flex flex-col gap-1.5 text-sm">

@@ -151,7 +151,8 @@ export async function putLocation(req, res) {
       where: { id: req.listing.id },
       data: { ...(address !== undefined && { address }), ...(areaId !== undefined && { areaId }) },
     })
-    await setBusinessLocation(tx, req.listing.id, { lat, lng })
+    if (lat !== undefined && lng !== undefined)
+      await setBusinessLocation(tx, req.listing.id, { lat, lng })
     await audit(tx, req, {
       action: 'business.location',
       entity: 'business',

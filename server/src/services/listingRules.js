@@ -1,5 +1,5 @@
 import { ApiError } from '../utils/ApiError.js'
-import { publishProblems } from '../validators/listing.schema.js'
+import { PUBLISH_RULES_ENFORCED, publishProblems } from '../validators/listing.schema.js'
 
 /**
  * What the publish rules need for each listing, read from the saved rows (pass the
@@ -50,8 +50,9 @@ export const publishBlocked = (problems) =>
     problems.map(({ field, message }) => ({ path: field, message })),
   )
 
-/** Throws a 422 listing what is missing when this listing may not go LIVE. */
+/** Throws a 422 listing what is missing when this listing may not go LIVE (if enforced). */
 export async function assertPublishable(client, id) {
+  if (!PUBLISH_RULES_ENFORCED) return
   const input = (await ruleInputs(client, [id])).get(id)
   const problems = input ? publishProblems(input) : []
   if (problems.length) throw publishBlocked(problems)

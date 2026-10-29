@@ -182,6 +182,14 @@ describe('editing', () => {
     })
   })
 
+  it('saves an address and area without a map pin', async () => {
+    const loc = await call('put', `/business/listings/${listing.id}/location`, owner.token, {
+      address: 'Jhamsikhel Road',
+    })
+    expect(loc.status).toBe(200)
+    expect(loc.body.data).toMatchObject({ address: 'Jhamsikhel Road', location: null })
+  })
+
   it('signs logo uploads under this listing and checks the result on Cloudinary', async () => {
     const sign = await call('post', `/business/listings/${listing.id}/logo/sign`, owner.token)
     const params = sign.body.data
@@ -418,6 +426,13 @@ describe('claims and new listings (members)', () => {
     expect((await call('get', '/me/claims', member.token)).body.data.map((c) => c.status)).toEqual([
       'PENDING',
     ])
+  })
+
+  it('"List your business" accepts a submission with nothing filled in', async () => {
+    const member = await session('MEMBER')
+    const res = await call('post', '/me/listings', member.token, {})
+    expect(res.status).toBe(201)
+    expect(res.body.data).toMatchObject({ name: '', status: 'PENDING' })
   })
 
   it('"List your business" creates a pending listing that makes the member an owner when it goes live', async () => {

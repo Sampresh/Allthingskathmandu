@@ -133,7 +133,7 @@ describe('create and update', () => {
     })
     expect(bad.status).toBe(400)
     expect(bad.body.error.details.map((d) => d.path)).toEqual(
-      expect.arrayContaining(['logoUrl', 'website', 'categoryIds']),
+      expect.arrayContaining(['logoUrl', 'website', 'hours.mon.0']),
     )
 
     const listing = await make({ status: 'DRAFT' })
@@ -169,62 +169,41 @@ describe('create and update', () => {
   })
 })
 
-describe('publish rules', () => {
-  it('blocks LIVE with a 422 listing what is missing, by type', async () => {
-    const res = await call('post', '/listings', admin.token, {
-      ...body(),
-      areaId: null,
-      location: null,
-      verification: { phone: true },
-    })
-    expect(res.status).toBe(422)
-    expect(res.body.error.code).toBe('PUBLISH_BLOCKED')
-    expect(res.body.error.details.map((d) => d.path)).toEqual([
-      'areaId',
-      'location',
-      'verification.hours',
-    ])
-    expect(await db.business.count()).toBe(0)
-
-    const app = await make({
-      type: 'APP',
+describe('optional fields and advisory publish rules', () => {
+  it('creates a listing with nothing filled in', async () => {
+    const res = await call('post', '/listings', admin.token, {})
+    expect(res.status).toBe(201)
+    expect(res.body.data).toMatchObject({
+      name: '',
+      slug: 'listing',
+      type: 'BUSINESS',
       status: 'DRAFT',
-      phone: null,
-      hours: null,
-      areaId: null,
-      location: null,
+      categoryIds: [],
     })
-    const blocked = await call('post', `/listings/${app.id}/status`, admin.token, {
-      status: 'LIVE',
-    })
-    expect(blocked.status).toBe(422)
-    expect(blocked.body.error.details.map((d) => d.path)).toEqual(['logoUrl', 'website'])
-    await call('patch', `/listings/${app.id}`, admin.token, {
-      playStoreUrl: 'https://play.google.com/store/apps/details?id=np.pathao',
-      logoUrl: 'https://res.cloudinary.com/atk/image/upload/v1/logo.png',
-    })
-    expect(
-      (await call('post', `/listings/${app.id}/status`, admin.token, { status: 'LIVE' })).status,
-    ).toBe(200)
-
-    const hotline = await make({ type: 'HOTLINE', phone: null, status: 'DRAFT' })
-    expect(
-      (await call('post', `/listings/${hotline.id}/status`, admin.token, { status: 'LIVE' }))
-        .status,
-    ).toBe(422)
   })
 
-  it('keeps a LIVE listing valid: an edit that breaks the rules is refused', async () => {
-    const listing = await make()
-    const res = await call('patch', `/listings/${listing.id}`, admin.token, { location: null })
-    expect(res.status).toBe(422)
-    expect((await call('get', `/listings/${listing.id}`, admin.token)).body.data.location).not.toBe(
-      null,
-    )
-    // A suspended listing may be edited freely.
-    await call('post', `/listings/${listing.id}/status`, admin.token, { status: 'SUSPENDED' })
+  it('publishes with fields missing and still lists what could be added', async () => {
+    const listing = await make({
+      status: 'DRAFT',
+      areaId: null,
+      location: null,
+      verification: null,
+    })
+    const res = await call('post', `/listings/${listing.id}/status`, admin.token, {
+      status: 'LIVE',
+    })
+    expect(res.status).toBe(200)
+    const detail = (await call('get', `/listings/${listing.id}`, admin.token)).body.data
+    expect(detail.status).toBe('LIVE')
+    expect(detail.publishProblems.map((p) => p.field)).toEqual([
+      'areaId',
+      'location',
+      'verification.phone',
+      'verification.hours',
+    ])
+    // Edits to a LIVE listing may remove fields too.
     expect(
-      (await call('patch', `/listings/${listing.id}`, admin.token, { location: null })).status,
+      (await call('patch', `/listings/${listing.id}`, admin.token, { shortDesc: '' })).status,
     ).toBe(200)
   })
 })
@@ -360,19 +339,17 @@ describe('table', () => {
 })
 
 describe('bulk actions', () => {
-  it('publishes what passes the rules and reports the rest', async () => {
+  it('publishes every selected listing, complete or not', async () => {
     const ready = await make({ status: 'PENDING' })
     const notReady = await make({ name: 'No Pin', status: 'PENDING', location: null })
     const res = await call('post', '/listings/bulk', admin.token, {
       ids: [ready.id, notReady.id],
       action: 'publish',
     })
-    expect(res.body.data.done).toEqual([ready.id])
-    expect(res.body.data.failed).toEqual([
-      { id: notReady.id, name: 'No Pin', message: 'Not ready to publish: pin the map location' },
-    ])
-    expect((await db.business.findUnique({ where: { id: ready.id } })).status).toBe('LIVE')
-    expect(await db.auditLog.count({ where: { action: 'business.bulk_publish' } })).toBe(1)
+    expect(res.body.data.done).toEqual([ready.id, notReady.id])
+    expect(res.body.data.failed).toEqual([])
+    expect(await db.business.count({ where: { status: 'LIVE' } })).toBe(2)
+    expect(await db.auditLog.count({ where: { action: 'business.bulk_publish' } })).toBe(2)
   })
 
   it('verifies, suspends, unpublishes, deletes and restores', async () => {

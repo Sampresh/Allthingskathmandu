@@ -12,6 +12,9 @@ export const WEEK_DAYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 // What staff confirm with the business before publishing.
 export const VERIFICATION_ITEMS = ['phone', 'hours', 'location', 'logo', 'description']
 export const SHORT_DESC_MAX = 120
+// Publish rules are suggestions for now: listings may go LIVE with any fields filled in.
+// Set to true to block publishing until publishProblems() is empty.
+export const PUBLISH_RULES_ENFORCED = false
 export const DESCRIPTION_MAX = 600
 
 const text = (max) => z.string().trim().max(max)
@@ -73,10 +76,11 @@ export const verificationSchema = z
   .object(Object.fromEntries(VERIFICATION_ITEMS.map((k) => [k, z.boolean().optional()])))
   .transform((v) => Object.fromEntries(VERIFICATION_ITEMS.map((k) => [k, v[k] === true])))
 
+// Every field is optional: staff fill in what they know.
 export const listingFields = {
-  name: text(120).min(1, 'Enter a name'),
+  name: text(120).optional(),
   nameNe: optionalText(120),
-  type: z.enum(LISTING_TYPES),
+  type: z.enum(LISTING_TYPES).optional(),
   slug: slugSchema.optional(),
   // May stay empty while a listing is a draft; publishing requires it.
   shortDesc: text(SHORT_DESC_MAX).optional(),
@@ -98,7 +102,7 @@ export const listingFields = {
   verification: verificationSchema.nullable().optional(),
   featuredUntil: z.iso.datetime({ offset: true }).nullable().optional(),
   // First id is the primary category.
-  categoryIds: z.array(z.uuid()).min(1, 'Pick a category').max(5),
+  categoryIds: z.array(z.uuid()).max(5).optional(),
   tagIds: z.array(z.uuid()).max(20).optional(),
   seoTitle: optionalText(70),
   seoDescription: optionalText(160),

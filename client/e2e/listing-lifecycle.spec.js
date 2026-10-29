@@ -10,7 +10,7 @@ test('create → publish → on category and detail pages; Trash → gone; resto
   const name = `E2E Momo Corner ${Date.now() % 100000}`
   await login(page, 'admin')
 
-  // Create a draft, then publish once the rules pass.
+  // Create a draft, then publish it (no field is required).
   await page.goto('/admin/listings/new')
   await page.getByLabel('Name', { exact: true }).fill(name)
   await page.getByLabel('Primary category').selectOption({ label: 'Restaurants' })
@@ -19,16 +19,12 @@ test('create → publish → on category and detail pages; Trash → gone; resto
     .fill('Jhol momo and laphing by the stupa')
   await page.getByLabel('Phone', { exact: true }).fill('+9779800000001')
   await page.getByLabel('Area', { exact: true }).selectOption({ label: 'Thamel' })
-  await page.getByLabel('Latitude').fill('27.7149')
-  await page.getByLabel('Longitude').fill('85.3109')
+  // No coordinate fields: the map pin is optional.
+  await expect(page.getByLabel('Latitude')).toHaveCount(0)
   await page.getByRole('button', { name: 'Save draft' }).click()
   await page.waitForURL(/\/admin\/listings\/[0-9a-f-]{36}$/)
   await toast(page, 'Saved')
 
-  await page.getByRole('button', { name: 'Publish' }).click()
-  await toast(page, 'Not ready to publish yet')
-  await expect(page.getByText('Confirm the phone number').first()).toBeVisible()
-  await page.getByLabel('Phone number confirmed with the business').check()
   await page.getByRole('button', { name: 'Publish' }).click()
   await toast(page, 'Published')
   const slug = await page.getByLabel('Web address').inputValue()

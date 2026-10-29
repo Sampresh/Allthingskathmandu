@@ -224,7 +224,8 @@ function Location({ listing, onSaved }) {
   const [point, setPoint] = useState(listing.location)
   const [address, setAddress] = useState(listing.address ?? '')
   const [areaId, setAreaId] = useState(listing.areaId ?? '')
-  const ready = point && point.lat !== '' && point.lng !== ''
+  // The pin is optional; address and area save on their own.
+  const pinned = point && point.lat !== '' && point.lng !== ''
   return (
     <section className="flex flex-col gap-3">
       <h2 className="text-lg font-semibold">Location</h2>
@@ -239,15 +240,18 @@ function Location({ listing, onSaved }) {
         </SelectField>
         <TextField label="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
       </div>
-      <LocationPicker value={point} onChange={setPoint} />
+      <LocationPicker
+        value={point}
+        onChange={setPoint}
+        hint="Use your location while at the business."
+        showCoordinates={false}
+      />
       <div>
         <Button
-          disabled={!ready}
           onClick={async () => {
             try {
               await putLocation(listing.id, {
-                lat: Number(point.lat),
-                lng: Number(point.lng),
+                ...(pinned && { lat: Number(point.lat), lng: Number(point.lng) }),
                 address: address.trim() || null,
                 areaId: areaId || null,
               })

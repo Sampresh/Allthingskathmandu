@@ -522,7 +522,7 @@ function Row({
       </td>
       <td className="max-w-72 px-2 py-2">
         <Link href={editHref} className="font-semibold hover:text-brand hover:underline">
-          {row.name}
+          {row.name || 'Untitled listing'}
         </Link>
         <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-xs text-text-muted">
           {row.featured && (

@@ -14,12 +14,13 @@ const PickerMap = dynamic(() => import('./PickerMap'), {
 
 /**
  * Map pin for a listing: click the map (with a Maps key), use the current location, or type
- * coordinates. `value` = { lat, lng } or null.
+ * coordinates (unless `showCoordinates` is false). `value` = { lat, lng } or null.
  */
 export function LocationPicker({
   value,
   onChange,
   hint = 'Use your current location while at the business, or enter the coordinates.',
+  showCoordinates = true,
 }) {
   const [locating, setLocating] = useState(false)
   const [error, setError] = useState(null)
@@ -66,24 +67,28 @@ export function LocationPicker({
         <p className="text-sm text-text-muted">{hint}</p>
       )}
       <div className="flex flex-wrap items-end gap-3">
-        <label className="flex flex-col text-sm font-semibold">
-          Latitude
-          <input
-            inputMode="decimal"
-            value={shown.lat}
-            onChange={setCoord('lat')}
-            className="min-h-11 rounded-box border border-text-muted bg-surface px-3 font-normal"
-          />
-        </label>
-        <label className="flex flex-col text-sm font-semibold">
-          Longitude
-          <input
-            inputMode="decimal"
-            value={shown.lng}
-            onChange={setCoord('lng')}
-            className="min-h-11 rounded-box border border-text-muted bg-surface px-3 font-normal"
-          />
-        </label>
+        {showCoordinates && (
+          <>
+            <label className="flex flex-col text-sm font-semibold">
+              Latitude
+              <input
+                inputMode="decimal"
+                value={shown.lat}
+                onChange={setCoord('lat')}
+                className="min-h-11 rounded-box border border-text-muted bg-surface px-3 font-normal"
+              />
+            </label>
+            <label className="flex flex-col text-sm font-semibold">
+              Longitude
+              <input
+                inputMode="decimal"
+                value={shown.lng}
+                onChange={setCoord('lng')}
+                className="min-h-11 rounded-box border border-text-muted bg-surface px-3 font-normal"
+              />
+            </label>
+          </>
+        )}
         <Button variant="secondary" onClick={here} loading={locating}>
           <LocateFixed aria-hidden="true" className="size-4" />
           Use my current location

@@ -104,10 +104,11 @@ export async function refreshProfileScore(tx, id) {
 
 /** Creates a listing with its categories, tags and map pin. Run inside a transaction. */
 export async function createListing(tx, input) {
-  const slug = input.slug ?? (await uniqueSlug(input.name, listingSlugTaken(tx), 'listing'))
+  const slug = input.slug ?? (await uniqueSlug(input.name ?? '', listingSlugTaken(tx), 'listing'))
   const listing = await tx.business.create({
     data: {
       ...pick(input, LISTING_SCALARS),
+      name: input.name ?? '',
       shortDesc: input.shortDesc ?? '',
       slug,
       ownerId: input.ownerId ?? null,

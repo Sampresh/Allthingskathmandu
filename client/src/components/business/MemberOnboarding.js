@@ -148,7 +148,7 @@ function AddBusiness() {
       await submitListing({
         name: form.name.trim(),
         shortDesc: form.shortDesc.trim(),
-        categoryIds: [form.categoryId],
+        categoryIds: form.categoryId ? [form.categoryId] : [],
         phone: form.phone.trim() || null,
         areaId: form.areaId || null,
         address: form.address.trim() || null,
@@ -202,12 +202,7 @@ function AddBusiness() {
           </SelectField>
           <TextField label="Address" value={form.address} onChange={set('address')} />
           <div>
-            <Button
-              onClick={send}
-              disabled={!form.name.trim() || !form.shortDesc.trim() || !form.categoryId}
-            >
-              Submit for review
-            </Button>
+            <Button onClick={send}>Submit for review</Button>
           </div>
         </>
       )}

@@ -40,7 +40,8 @@ export const ownerListingUpdate = z
 
 export const hoursBody = z.object({ hours: hoursSchema.nullable() })
 
-export const locationBody = locationSchema.extend({
+// The map pin is optional: owners may save only an address and area.
+export const locationBody = locationSchema.partial().extend({
   address: optionalText(200),
   areaId: z.uuid().nullable().optional(),
 })
@@ -89,10 +90,11 @@ export const claimBody = z
     path: ['note'],
   })
 
+// "List your business": every field optional; staff complete the listing before it goes live.
 export const newListingBody = z.object({
-  name: text(120).min(1),
-  shortDesc: text(120).min(1),
-  categoryIds: z.array(z.uuid()).min(1).max(5),
+  name: text(120).optional(),
+  shortDesc: text(120).optional(),
+  categoryIds: z.array(z.uuid()).max(5).optional(),
   phone: phone.nullable().optional(),
   whatsapp: phone.nullable().optional(),
   website: httpUrl.nullable().optional(),
