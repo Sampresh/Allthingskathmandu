@@ -3,6 +3,7 @@ import { clsx } from 'clsx'
 const tones = {
   neutral: 'border-border text-text-muted',
   success: 'border-success text-success',
+  warning: 'border-warning text-warning',
   featured: 'border-featured text-featured',
   brand: 'border-brand text-brand',
   danger: 'border-danger text-danger',

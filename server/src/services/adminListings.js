@@ -100,8 +100,16 @@ const columns = Prisma.sql`
   pc.id AS "categoryId", pc."nameEn" AS "categoryNameEn", pc."groupNameEn",
   o.id AS "ownerId", o.name AS "ownerName", o.email AS "ownerEmail"`
 
+// What a listing of each type is expected to have (apps have no address, hotlines no logo).
+const EXPECTED = {
+  BUSINESS: ['phone', 'hours', 'location', 'logo', 'description', 'area'],
+  PLACE: ['hours', 'location', 'logo', 'description', 'area'],
+  APP: ['logo', 'description'],
+  HOTLINE: ['phone'],
+}
+
 const rowOut = (r) => {
-  const missing = {
+  const absent = {
     phone: !r.phone,
     hours: !r.hours,
     location: !r.pinned,
@@ -109,6 +117,7 @@ const rowOut = (r) => {
     description: !r.shortDesc,
     area: !r.areaId,
   }
+  const missing = Object.fromEntries(EXPECTED[r.type].map((k) => [k, absent[k]]))
   const rules = { ...r, categoryIds: r.categoryId ? [r.categoryId] : [], location: r.pinned }
   return {
     id: r.id,

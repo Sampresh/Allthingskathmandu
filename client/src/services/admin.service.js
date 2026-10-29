@@ -17,17 +17,36 @@ const crud = (path) => ({
 
 export const overview = () => get('/overview').then(unwrap)
 
+const listingPath = (id, rest = '') => `/admin/listings/${id}${rest}`
+const blob = (path, params) =>
+  api.get(`/admin${path}`, { params: clean(params), responseType: 'blob' }).then((r) => r.data)
+
 export const listings = {
   list: (params) => get('/listings', params).then(unwrapWithMeta),
   get: (id) => get(`/listings/${id}`).then(unwrap),
   create: (body) => api.post('/admin/listings', body).then(unwrap),
-  update: (id, body) => api.patch(`/admin/listings/${id}`, body).then(unwrap),
-  remove: (id) => api.delete(`/admin/listings/${id}`).then(unwrap),
-  setStatus: (id, status) => api.post(`/admin/listings/${id}/status`, { status }).then(unwrap),
-  assignOwner: (id, email) =>
-    api.post(`/admin/listings/${id}/assign-owner`, { email }).then(unwrap),
-  importCsv: (csv) => api.post('/admin/listings/import', { csv }).then(unwrap),
+  update: (id, body) => api.patch(listingPath(id), body).then(unwrap),
+  remove: (id) => api.delete(listingPath(id)).then(unwrap),
+  restore: (id) => api.post(listingPath(id, '/restore')).then(unwrap),
+  removePermanently: (id, confirmName) =>
+    api.delete(listingPath(id, '/permanent'), { data: { confirmName } }).then(unwrap),
+  setStatus: (id, status) => api.post(listingPath(id, '/status'), { status }).then(unwrap),
+  duplicate: (id) => api.post(listingPath(id, '/duplicate')).then(unwrap),
+  assignOwner: (id, email) => api.post(listingPath(id, '/assign-owner'), { email }).then(unwrap),
+  history: (id, params) => get(`/listings/${id}/history`, params).then(unwrapWithMeta),
+  bulk: (body) => api.post('/admin/listings/bulk', body).then(unwrap),
+  exportCsv: (filters) => blob('/listings/export', filters),
+  signLogo: (id) => api.post(listingPath(id, '/logo/sign')).then(unwrap),
+  setLogo: (id, publicId) => api.put(listingPath(id, '/logo'), { publicId }).then(unwrap),
+  signMedia: (id) => api.post(listingPath(id, '/media/sign')).then(unwrap),
+  addMedia: (id, body) => api.post(listingPath(id, '/media'), body).then(unwrap),
+  reorderMedia: (id, ids) => api.patch(listingPath(id, '/media/order'), { ids }).then(unwrap),
+  updateMedia: (id, mediaId, altText) =>
+    api.patch(listingPath(id, `/media/${mediaId}`), { altText }).then(unwrap),
+  removeMedia: (id, mediaId) => api.delete(listingPath(id, `/media/${mediaId}`)).then(unwrap),
+  importCsv: (csv, dryRun) => api.post('/admin/listings/import', { csv, dryRun }).then(unwrap),
   importStatus: (jobId) => get(`/listings/import/${jobId}`).then(unwrap),
+  importResult: (jobId) => blob(`/listings/import/${jobId}/result.csv`),
 }
 
 export const claims = {

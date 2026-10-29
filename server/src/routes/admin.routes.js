@@ -153,8 +153,8 @@ adminRouter.post(
 )
 adminRouter.delete('/market/:id', id, market.remove)
 
-// Taxonomy (ADMIN)
-adminRouter.get('/categories', admin, taxonomy.listCategories)
+// Taxonomy: MODERATOR may read (listing filters); changes are ADMIN
+adminRouter.get('/categories', taxonomy.listCategories)
 adminRouter.post(
   '/categories',
   admin,
@@ -174,7 +174,7 @@ adminRouter.patch(
   taxonomy.updateCategory,
 )
 adminRouter.delete('/categories/:id', admin, id, taxonomy.deleteCategory)
-adminRouter.get('/tags', admin, taxonomy.listTags)
+adminRouter.get('/tags', taxonomy.listTags)
 adminRouter.post('/tags', admin, validate({ body: v.tagCreate }), taxonomy.createTag)
 adminRouter.patch(
   '/tags/:id',
@@ -183,7 +183,7 @@ adminRouter.patch(
   taxonomy.updateTag,
 )
 adminRouter.delete('/tags/:id', admin, id, taxonomy.deleteTag)
-adminRouter.get('/areas', admin, taxonomy.listAreas)
+adminRouter.get('/areas', taxonomy.listAreas)
 adminRouter.post('/areas', admin, validate({ body: v.areaCreate }), taxonomy.createArea)
 adminRouter.patch(
   '/areas/:id',

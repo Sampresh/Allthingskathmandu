@@ -49,7 +49,9 @@ describe('access', () => {
     expect((await call('get', '/reports', mod.token)).status).toBe(200)
     // Moderators read listings (tests/adminListings.test.js covers what they cannot change).
     expect((await call('get', '/listings', mod.token)).status).toBe(200)
-    expect((await call('get', '/categories', mod.token)).status).toBe(403)
+    expect((await call('get', '/categories', mod.token)).status).toBe(200)
+    expect((await call('post', '/categories', mod.token, { nameEn: 'X' })).status).toBe(403)
+    expect((await call('get', '/plans', mod.token)).status).toBe(403)
 
     expect((await call('get', '/listings', admin.token)).status).toBe(200)
     expect((await call('get', '/audit', admin.token)).status).toBe(403)

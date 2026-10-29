@@ -6,7 +6,8 @@ import { Button } from './Button'
 
 const MB = 1024 * 1024
 
-function send(params, file, onProgress) {
+/** Posts a file (or Blob) to Cloudinary with the API's signed params; resolves the result. */
+export function uploadSigned(params, file, onProgress = () => {}) {
   return new Promise((resolve, reject) => {
     const form = new FormData()
     form.append('file', file)
@@ -57,7 +58,7 @@ export function Uploader({
       if (file.size > params.maxBytes)
         throw new Error(`Choose a file up to ${Math.round(params.maxBytes / MB)} MB`)
       setProgress(0)
-      const result = await send(params, file, setProgress)
+      const result = await uploadSigned(params, file, setProgress)
       await onUploaded({ publicId: result.public_id, altText: altText.trim() })
       setFile(null)
       setAltText('')

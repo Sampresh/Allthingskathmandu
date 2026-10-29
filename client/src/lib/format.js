@@ -50,3 +50,7 @@ export const listingHref = (slug) => `/listing/${slug}`
 export const eventHref = (slug) => `/events/${slug}`
 export const marketHref = (slug) => `/market/${slug}`
 export const categoryHref = (category) => `/${category.groupSlug}/${category.slug}`
+
+/** Google Maps page for a place id (the only Google data we store). */
+export const googlePlaceHref = (placeId) =>
+  `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(placeId)}`

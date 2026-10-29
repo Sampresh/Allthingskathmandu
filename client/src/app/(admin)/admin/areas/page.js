@@ -21,6 +21,12 @@ export default function AreasPage() {
         { key: 'nameNe', header: 'Nepali' },
         { key: 'district', header: 'District' },
         {
+          key: 'aliases',
+          header: 'Also matches',
+          render: (a) => (a.aliases.length ? a.aliases.join(', ') : '—'),
+          className: 'max-w-64 text-text-muted',
+        },
+        {
           key: 'center',
           header: 'Centre',
           render: (a) => (a.lat == null ? '—' : `${a.lat.toFixed(4)}, ${a.lng.toFixed(4)}`),
@@ -42,6 +48,11 @@ export default function AreasPage() {
           type: 'select',
           options: DISTRICTS.map((d) => [d, d]),
         },
+        {
+          name: 'aliases',
+          label: 'Also matches (comma separated)',
+          hint: 'Streets, toles and landmarks in this area, e.g. paknajol, jyatha. The CSV import uses them to match addresses.',
+        },
         { name: 'lat', label: 'Centre latitude', type: 'number' },
         { name: 'lng', label: 'Centre longitude', type: 'number' },
         { name: 'sortOrder', label: 'Order', type: 'number' },
@@ -52,6 +63,7 @@ export default function AreasPage() {
         nameNe: a?.nameNe ?? '',
         slug: a?.slug ?? '',
         district: a?.district ?? 'Kathmandu',
+        aliases: a?.aliases?.join(', ') ?? '',
         lat: a?.lat ?? '',
         lng: a?.lng ?? '',
         sortOrder: a?.sortOrder ?? 0,
@@ -61,6 +73,10 @@ export default function AreasPage() {
         nameEn: f.nameEn.trim(),
         nameNe: f.nameNe.trim() || null,
         district: f.district,
+        aliases: f.aliases
+          .split(',')
+          .map((alias) => alias.trim().toLowerCase())
+          .filter(Boolean),
         center: f.lat !== '' && f.lng !== '' ? { lat: Number(f.lat), lng: Number(f.lng) } : null,
         sortOrder: Number(f.sortOrder) || 0,
         isVisible: f.isVisible,

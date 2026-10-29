@@ -18,7 +18,8 @@ export const emptyWeek = () => Object.fromEntries(DAYS.map(([d]) => [d, []]))
 
 /**
  * Weekly opening hours in Nepal time: per day closed, open 24 hours, or up to four time
- * slots. A slot that closes before it opens runs past midnight. `value` null = no hours.
+ * slots. A slot that closes before it opens runs past midnight (16:00 to 02:00 belongs to the
+ * day it opens). `value` null = no hours.
  */
 export function HoursEditor({ value, onChange }) {
   const week = value ?? emptyWeek()
@@ -43,7 +44,17 @@ export function HoursEditor({ value, onChange }) {
         const allDay = isAllDay(slots)
         return (
           <fieldset key={day} className="flex flex-col gap-2 border-b border-border pb-3">
-            <legend className="mb-1 font-semibold">{label}</legend>
+            <legend className="mb-1 flex w-full items-center justify-between gap-2 font-semibold">
+              {label}
+              <button
+                type="button"
+                onClick={() => onChange(Object.fromEntries(DAYS.map(([d]) => [d, slots])))}
+                className="text-sm font-semibold text-brand"
+              >
+                Copy to all days
+                <span className="sr-only"> from {label}</span>
+              </button>
+            </legend>
             <div className="flex flex-wrap gap-4">
               <label className="inline-flex min-h-11 items-center gap-2 text-sm">
                 <input
@@ -95,6 +106,11 @@ export function HoursEditor({ value, onChange }) {
                       className="min-h-11 rounded-box border border-text-muted bg-surface px-2"
                     />
                   </label>
+                  {close !== '24:00' && close < open && (
+                    <span className="min-h-11 content-center text-sm text-text-muted">
+                      closes next day
+                    </span>
+                  )}
                   <button
                     type="button"
                     aria-label={`Remove ${label} slot ${i + 1}`}
@@ -123,13 +139,6 @@ export function HoursEditor({ value, onChange }) {
         )
       })}
       <div className="flex flex-wrap gap-3">
-        <button
-          type="button"
-          onClick={() => onChange(Object.fromEntries(DAYS.map(([d]) => [d, week.mon ?? []])))}
-          className="inline-flex min-h-11 items-center rounded-box border border-border px-4 text-sm font-semibold hover:bg-surface-raised"
-        >
-          Copy Monday to every day
-        </button>
         <button
           type="button"
           onClick={() => onChange(null)}

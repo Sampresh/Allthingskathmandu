@@ -13,6 +13,7 @@ import {
   changeStatus,
   deletePermanently,
   duplicateListing,
+  promoteOwner,
 } from '../../services/listingAdmin.js'
 import { parseListingsCsv, planImport, resultCsv } from '../../services/listingImport.js'
 import * as media from '../../services/listingMedia.js'
@@ -138,6 +139,7 @@ export async function update(req, res) {
     const row = await updateListing(tx, id, body)
     // A LIVE listing must still pass the publish rules after the edit.
     if (row.status === 'LIVE') await assertPublishable(tx, id)
+    if (row.status !== before.status) await promoteOwner(tx, row)
     await audit(tx, req, {
       action: 'business.update',
       entity: 'business',
