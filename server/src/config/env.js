@@ -37,6 +37,13 @@ const schema = z.object({
   TOTP_ENCRYPTION_KEY: z
     .string()
     .refine((v) => Buffer.from(v, 'base64').length === 32, 'must be 32 bytes, base64 encoded'),
+  // Staff TOTP 2FA. Turning it off is a local-development escape hatch; refused in production.
+  STAFF_TWO_FACTOR: blank(
+    z
+      .enum(['true', 'false'])
+      .default('true')
+      .transform((v) => v === 'true'),
+  ),
   GOOGLE_CLIENT_ID: optionalString,
 
   CLOUDINARY_CLOUD_NAME: optionalString,
@@ -128,8 +135,12 @@ export function parseEnv(source) {
     }
     if (env.ESEWA_PRODUCT_CODE === 'EPAYTEST')
       errors.push('ESEWA_PRODUCT_CODE: still the sandbox code')
+    if (!env.STAFF_TWO_FACTOR) errors.push('STAFF_TWO_FACTOR: staff 2FA cannot be off in production')
   } else if (env.JWT_ACCESS_SECRET === env.JWT_REFRESH_SECRET) {
     warnings.push('JWT_ACCESS_SECRET and JWT_REFRESH_SECRET are identical (refused in production)')
+  }
+  if (!isProduction && !env.STAFF_TWO_FACTOR) {
+    warnings.push('STAFF_TWO_FACTOR is off: staff sign in without 2FA (refused in production)')
   }
 
   for (const key of LENGTH_CHECKED) {

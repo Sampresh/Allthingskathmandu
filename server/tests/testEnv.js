@@ -15,6 +15,7 @@ export const testEnv = {
   JWT_ACCESS_SECRET: 'test-access-secret-0123456789abcdefghijklmnopqrstuv',
   JWT_REFRESH_SECRET: 'test-refresh-secret-0123456789abcdefghijklmnopqrstu',
   TOTP_ENCRYPTION_KEY: 'dGVzdC1vbmx5LXRvdHAta2V5LTAxMjM0NTY3ODlhYmM=',
+  STAFF_TWO_FACTOR: 'true',
   CLOUDINARY_CLOUD_NAME: 'atk-test',
   CLOUDINARY_API_KEY: 'test-key',
   CLOUDINARY_API_SECRET: 'test-cloudinary-secret',

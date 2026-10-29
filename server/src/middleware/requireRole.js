@@ -1,3 +1,4 @@
+import { env } from '../config/env.js'
 import { ApiError } from '../utils/ApiError.js'
 
 // Staff roles include the ones below them: SUPER_ADMIN ⊇ ADMIN ⊇ MODERATOR (Part 3 §7).
@@ -7,7 +8,8 @@ export const isStaff = (role) => role in STAFF_RANK
 
 /**
  * Allows the listed roles (staff roles also admit higher staff). Staff reaching a staff
- * route must have TOTP enabled and a session that passed the 2FA step.
+ * route must have TOTP enabled and a session that passed the 2FA step (unless
+ * STAFF_TWO_FACTOR is off, which env.js only allows outside production).
  * Use after verifyToken.
  */
 export function requireRole(...roles) {
@@ -20,7 +22,8 @@ export function requireRole(...roles) {
     const viaStaffRank = isStaff(role) && STAFF_RANK[role] >= lowestStaffRank
     if (!roles.includes(role) && !viaStaffRank) throw ApiError.forbidden()
 
-    if (isStaff(role) && lowestStaffRank !== Infinity && !(totpEnabled && req.auth?.mfa)) {
+    const needsTwoFactor = env.STAFF_TWO_FACTOR && isStaff(role) && lowestStaffRank !== Infinity
+    if (needsTwoFactor && !(totpEnabled && req.auth?.mfa)) {
       throw ApiError.forbidden('Two-factor authentication is required', 'TWO_FACTOR_REQUIRED')
     }
     next()

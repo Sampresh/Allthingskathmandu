@@ -120,4 +120,12 @@ describe('parseEnv', () => {
     delete source.TURNSTILE_SECRET_KEY
     expect(() => parseEnv(source)).toThrow(/KHALTI_SECRET_KEY[\s\S]*TURNSTILE_SECRET_KEY/)
   })
+
+  it('keeps staff 2FA on by default, warns when off in development, refuses it in production', () => {
+    expect(parseEnv(base).env.STAFF_TWO_FACTOR).toBe(true)
+    const { env, warnings } = parseEnv({ ...base, STAFF_TWO_FACTOR: 'false' })
+    expect(env.STAFF_TWO_FACTOR).toBe(false)
+    expect(warnings.some((w) => w.includes('STAFF_TWO_FACTOR'))).toBe(true)
+    expect(() => parseEnv({ ...production, STAFF_TWO_FACTOR: 'false' })).toThrow(/STAFF_TWO_FACTOR/)
+  })
 })

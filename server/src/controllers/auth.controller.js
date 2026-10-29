@@ -177,7 +177,7 @@ export async function login(req, res) {
     throw ApiError.forbidden('Verify your email before logging in', 'EMAIL_NOT_VERIFIED')
   }
 
-  if (isStaff(user.role)) return ok(res, staffChallenge(user))
+  if (isStaff(user.role) && env.STAFF_TWO_FACTOR) return ok(res, staffChallenge(user))
   return ok(res, await issueSession(req, res, user, { mfa: false }))
 }
 
@@ -225,7 +225,7 @@ export async function google(req, res) {
 
   assertCanSignIn(user)
   assertActive(user)
-  if (isStaff(user.role)) return ok(res, staffChallenge(user))
+  if (isStaff(user.role) && env.STAFF_TWO_FACTOR) return ok(res, staffChallenge(user))
   return ok(res, await issueSession(req, res, user, { mfa: false }))
 }
 
