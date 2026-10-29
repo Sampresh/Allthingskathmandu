@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { errorMessage, useToast } from '@/components/admin/Toast'
+import { PageHeader } from '@/components/admin/PageHeader'
 import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { categories } from '@/services/admin.service'
@@ -82,7 +83,7 @@ export default function SeoPage() {
   if (isPending) return <Skeleton className="h-96 w-full" />
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold">SEO</h1>
+      <PageHeader title="SEO" />
       <p className="text-sm text-text-muted">
         Empty fields use a default from the name. Listings and pages have SEO fields in their own
         editors.

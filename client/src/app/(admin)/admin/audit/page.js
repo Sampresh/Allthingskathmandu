@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { DataTable } from '@/components/admin/DataTable'
 import { TextField } from '@/components/admin/Fields'
+import { PageHeader } from '@/components/admin/PageHeader'
 import { Button } from '@/components/ui/Button'
 import { useAdminList } from '@/hooks/useAdminList'
 import { audit } from '@/services/admin.service'
@@ -22,7 +23,7 @@ export default function AuditPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold">Audit log</h1>
+      <PageHeader title="Audit log" />
       <form
         className="flex flex-wrap items-end gap-3"
         onSubmit={(e) => {

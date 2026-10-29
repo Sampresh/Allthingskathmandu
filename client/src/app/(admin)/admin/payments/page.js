@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { DataTable } from '@/components/admin/DataTable'
 import { SelectField } from '@/components/admin/Fields'
+import { PageHeader } from '@/components/admin/PageHeader'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Dialog } from '@/components/ui/Dialog'
@@ -59,7 +60,7 @@ export default function PaymentsPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold">Payments</h1>
+      <PageHeader title="Payments" />
       <div className="flex flex-wrap gap-3">
         <SelectField label="Status" value={status} onChange={(e) => setStatus(e.target.value)}>
           <option value="">Any</option>

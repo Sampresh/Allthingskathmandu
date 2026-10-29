@@ -34,13 +34,13 @@ export function DataTable({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="overflow-x-auto rounded-box border border-border">
+      <div className="overflow-x-auto rounded-box border border-border bg-surface">
         <table className="w-full text-left text-sm">
           <caption className="sr-only">{caption}</caption>
           <thead className="bg-surface-raised">
             <tr>
               {selectable && (
-                <th scope="col" className="w-12 px-3 py-2">
+                <th scope="col" className="w-12 px-4 py-3">
                   <input
                     type="checkbox"
                     aria-label="Select all rows"
@@ -54,7 +54,10 @@ export function DataTable({
                 <th
                   key={c.key}
                   scope="col"
-                  className={clsx('px-3 py-2 font-semibold', c.className)}
+                  className={clsx(
+                    'px-4 py-3 text-xs font-semibold tracking-wide text-text-muted uppercase',
+                    c.className,
+                  )}
                 >
                   {c.header}
                 </th>
@@ -72,9 +75,12 @@ export function DataTable({
               ))}
             {!loading &&
               rows.map((row) => (
-                <tr key={row.id} className="border-t border-border align-top">
+                <tr
+                  key={row.id}
+                  className="border-t border-border align-top transition-colors hover:bg-surface-raised"
+                >
                   {selectable && (
-                    <td className="px-3 py-2">
+                    <td className="px-4 py-3">
                       <input
                         type="checkbox"
                         aria-label={`Select ${rowLabel(row)}`}
@@ -85,7 +91,7 @@ export function DataTable({
                     </td>
                   )}
                   {columns.map((c) => (
-                    <td key={c.key} className={clsx('px-3 py-2', c.className)}>
+                    <td key={c.key} className={clsx('px-4 py-3', c.className)}>
                       {c.render ? c.render(row) : row[c.key]}
                     </td>
                   ))}

@@ -5,6 +5,7 @@ import { ConfirmButton } from '@/components/admin/ConfirmButton'
 import { DataTable } from '@/components/admin/DataTable'
 import { QueueTabs } from '@/components/admin/QueueTabs'
 import { errorMessage, useToast } from '@/components/admin/Toast'
+import { PageHeader } from '@/components/admin/PageHeader'
 import { Button } from '@/components/ui/Button'
 import { CloudImage } from '@/components/ui/CloudImage'
 import { useAdminList } from '@/hooks/useAdminList'
@@ -134,7 +135,7 @@ export default function AdminMarketPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold">Market</h1>
+      <PageHeader title="Market" />
       <QueueTabs
         options={['PENDING', 'LIVE', 'SOLD', 'EXPIRED', 'REJECTED']}
         value={status}

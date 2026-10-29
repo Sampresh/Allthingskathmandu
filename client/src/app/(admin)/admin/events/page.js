@@ -6,6 +6,7 @@ import { ConfirmButton } from '@/components/admin/ConfirmButton'
 import { DataTable } from '@/components/admin/DataTable'
 import { QueueTabs } from '@/components/admin/QueueTabs'
 import { errorMessage, useToast } from '@/components/admin/Toast'
+import { PageHeader } from '@/components/admin/PageHeader'
 import { Button } from '@/components/ui/Button'
 import { Dialog } from '@/components/ui/Dialog'
 import { useAdminList } from '@/hooks/useAdminList'
@@ -99,7 +100,7 @@ export default function AdminEventsPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold">Events</h1>
+      <PageHeader title="Events" />
       <QueueTabs
         options={['PENDING', 'APPROVED', 'REJECTED']}
         value={status}

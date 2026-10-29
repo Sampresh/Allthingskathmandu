@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ListingForm } from '@/components/admin/ListingForm'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { listings } from '@/services/admin.service'
+import { PageHeader } from '@/components/admin/PageHeader'
 
 export default function EditListingPage({ params }) {
   const { id } = use(params)
@@ -23,7 +24,7 @@ export default function EditListingPage({ params }) {
       {isError && <p className="text-danger">This listing could not be loaded.</p>}
       {data && (
         <>
-          <h1 className="text-2xl font-semibold">{data.name}</h1>
+          <PageHeader title={data.name} />
           <ListingForm key={data.updatedAt} listing={data} />
         </>
       )}

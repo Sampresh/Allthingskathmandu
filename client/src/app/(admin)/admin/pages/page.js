@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 import { DataTable } from '@/components/admin/DataTable'
+import { PageHeader } from '@/components/admin/PageHeader'
 import { Badge } from '@/components/ui/Badge'
 import { CMS_PAGES } from '@/lib/cmsPages'
 import { formatDate } from '@/lib/format'
@@ -20,7 +21,7 @@ export default function PagesPage() {
 
   return (
     <div className="flex max-w-3xl flex-col gap-6">
-      <h1 className="text-2xl font-semibold">Pages</h1>
+      <PageHeader title="Pages" />
       <DataTable
         caption="Pages"
         loading={isPending}

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { Dialog } from '@/components/ui/Dialog'
 import { ConfirmButton } from './ConfirmButton'
 import { DataTable } from './DataTable'
+import { PageHeader } from './PageHeader'
 import { Checkbox, SelectField, TextField } from './Fields'
 import { errorMessage, useToast } from './Toast'
 
@@ -92,7 +93,7 @@ export function CrudPage({
   return (
     <div className="flex max-w-5xl flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold">{title}</h1>
+        <PageHeader title={title} />
         <Button onClick={() => open(null)}>Add</Button>
       </div>
       <DataTable

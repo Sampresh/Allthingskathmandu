@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { pages } from '@/services/admin.service'
 import { CMS_PAGES } from '@/lib/cmsPages'
+import { PageHeader } from '@/components/admin/PageHeader'
 
 function Editor({ slug, label, existing }) {
   const toast = useToast()
@@ -49,7 +50,7 @@ function Editor({ slug, label, existing }) {
   return (
     <div className="flex max-w-3xl flex-col gap-6">
       <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-2xl font-semibold">{label}</h1>
+        <PageHeader title={label} />
         {page &&
           (page.isPublished ? <Badge tone="success">Published</Badge> : <Badge>Draft</Badge>)}
       </div>

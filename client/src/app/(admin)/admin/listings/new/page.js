@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { ListingForm } from '@/components/admin/ListingForm'
+import { PageHeader } from '@/components/admin/PageHeader'
 
 export default function NewListingPage() {
   return (
@@ -9,7 +10,7 @@ export default function NewListingPage() {
       <Link href="/admin/listings" className="text-sm font-semibold text-brand">
         ← Listings
       </Link>
-      <h1 className="text-2xl font-semibold">New listing</h1>
+      <PageHeader title="New listing" />
       <ListingForm />
     </div>
   )

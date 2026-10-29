@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { DataTable } from '@/components/admin/DataTable'
 import { QueueTabs } from '@/components/admin/QueueTabs'
 import { errorMessage, useToast } from '@/components/admin/Toast'
+import { PageHeader } from '@/components/admin/PageHeader'
 import { Button } from '@/components/ui/Button'
 import { useAdminList } from '@/hooks/useAdminList'
 import { formatDate } from '@/lib/format'
@@ -86,7 +87,7 @@ export default function ReportsPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold">Reports</h1>
+      <PageHeader title="Reports" />
       <QueueTabs options={['OPEN', 'RESOLVED', 'DISMISSED']} value={status} onChange={setStatus} />
       <DataTable
         caption="Reports"

@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Trash2 } from 'lucide-react'
 import { TextField } from '@/components/admin/Fields'
 import { errorMessage, useToast } from '@/components/admin/Toast'
+import { PageHeader } from '@/components/admin/PageHeader'
 import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { settings } from '@/services/admin.service'
@@ -123,7 +124,7 @@ export default function SettingsPage() {
   if (isPending) return <Skeleton className="h-96 w-full max-w-3xl" />
   return (
     <div className="flex max-w-3xl flex-col gap-6">
-      <h1 className="text-2xl font-semibold">Settings</h1>
+      <PageHeader title="Settings" />
       <PairList
         title="Emergency numbers (footer)"
         settingKey="emergency_numbers"

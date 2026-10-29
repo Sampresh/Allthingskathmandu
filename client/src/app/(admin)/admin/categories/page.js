@@ -6,6 +6,7 @@ import { ConfirmButton } from '@/components/admin/ConfirmButton'
 import { Checkbox, SelectField, TextArea, TextField } from '@/components/admin/Fields'
 import { SortableList } from '@/components/admin/SortableList'
 import { errorMessage, useToast } from '@/components/admin/Toast'
+import { PageHeader } from '@/components/admin/PageHeader'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Dialog } from '@/components/ui/Dialog'
@@ -254,7 +255,7 @@ export default function CategoriesPage() {
   return (
     <div className="flex max-w-4xl flex-col gap-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold">Categories</h1>
+        <PageHeader title="Categories" />
         <Button onClick={() => setEditing({ kind: 'DIRECTORY', parentId: null })}>Add group</Button>
       </div>
       <p className="text-sm text-text-muted">

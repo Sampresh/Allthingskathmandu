@@ -6,6 +6,7 @@ import { ConfirmButton } from '@/components/admin/ConfirmButton'
 import { Checkbox, SelectField, TextField } from '@/components/admin/Fields'
 import { SortableList } from '@/components/admin/SortableList'
 import { errorMessage, useToast } from '@/components/admin/Toast'
+import { PageHeader } from '@/components/admin/PageHeader'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Dialog } from '@/components/ui/Dialog'
@@ -228,7 +229,7 @@ export default function HomepagePage() {
   return (
     <div className="flex max-w-3xl flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold">Homepage</h1>
+        <PageHeader title="Homepage" />
         <div className="flex gap-2">
           <Button variant="secondary" href="/" target="_blank">
             View homepage

@@ -1,11 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { canSee } from '@/components/admin/AdminShell'
+import { canSee } from '@/components/admin/adminNav'
 import { ConfirmButton } from '@/components/admin/ConfirmButton'
 import { DataTable } from '@/components/admin/DataTable'
 import { SelectField, TextField } from '@/components/admin/Fields'
 import { errorMessage, useToast } from '@/components/admin/Toast'
+import { PageHeader } from '@/components/admin/PageHeader'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { useAdminList } from '@/hooks/useAdminList'
@@ -144,7 +145,7 @@ export default function UsersPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold">Users</h1>
+      <PageHeader title="Users" />
       <form
         role="search"
         className="flex flex-wrap items-end gap-3"

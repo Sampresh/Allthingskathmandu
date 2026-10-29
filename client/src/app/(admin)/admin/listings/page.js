@@ -6,6 +6,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { DataTable } from '@/components/admin/DataTable'
 import { SelectField, TextArea, TextField } from '@/components/admin/Fields'
 import { errorMessage, useToast } from '@/components/admin/Toast'
+import { PageHeader } from '@/components/admin/PageHeader'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Dialog } from '@/components/ui/Dialog'
@@ -179,7 +180,7 @@ export default function ListingsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold">Listings</h1>
+        <PageHeader title="Listings" />
         <div className="flex gap-2">
           <Button variant="secondary" onClick={() => setImporting(true)}>
             Import CSV
