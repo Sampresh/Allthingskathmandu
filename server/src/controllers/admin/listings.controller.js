@@ -2,6 +2,7 @@ import { db, readDb } from '../../config/db.js'
 import { QUEUE, getQueue, enqueue } from '../../jobs/queues.js'
 import { idPage } from '../../lib/cursor.js'
 import { audit, changedFields } from '../../services/audit.js'
+import { parseListingsCsv, planImport, resultCsv } from '../../services/listingImport.js'
 import {
   afterListingChange,
   createListing,
@@ -187,25 +188,51 @@ export async function assignOwner(req, res) {
   return ok(res, await loadDetail(before.id))
 }
 
-/** Queues a CSV import (parsed and written by the worker). */
+/**
+ * CSV import (docs/LISTINGS.md format). A dry run answers at once with counts and a row
+ * report; a real run is queued for the worker.
+ */
 export async function importCsv(req, res) {
-  // One attempt only: a retry after partial progress would create duplicates.
+  const { csv, dryRun } = req.body
+  if (dryRun) {
+    const { counts, rows } = await planImport(csv)
+    return ok(res, { dryRun: true, counts, rows })
+  }
+  parseListingsCsv(csv) // a malformed file is a 400 now, not a failed job later
+  // One attempt only: a retry after partial progress would only repeat finished rows.
   const job = await enqueue(
     QUEUE.IMPORT,
     'listings',
-    { csv: req.body.csv, actorId: req.user.id, ip: req.ip },
+    { csv, actorId: req.user.id, ip: req.ip },
     { attempts: 1 },
   )
   return created(res, { jobId: job.id })
 }
 
-export async function importStatus(req, res) {
-  const job = await getQueue(QUEUE.IMPORT).getJob(req.params.jobId)
+async function importJob(jobId) {
+  const job = await getQueue(QUEUE.IMPORT).getJob(jobId)
   if (!job) throw ApiError.notFound('Import not found')
+  return job
+}
+
+export async function importStatus(req, res) {
+  const job = await importJob(req.params.jobId)
+  const state = await job.getState()
   return ok(res, {
     jobId: job.id,
-    state: await job.getState(),
-    result: job.returnvalue ?? null,
+    state,
+    progress: typeof job.progress === 'object' ? job.progress : null,
+    counts: job.returnvalue?.counts ?? null,
+    rows: state === 'completed' ? job.returnvalue.rows : null,
     error: job.failedReason ?? null,
   })
+}
+
+/** Row-level result of a finished import, as CSV. */
+export async function importResult(req, res) {
+  const job = await importJob(req.params.jobId)
+  if (!job.returnvalue?.rows) throw ApiError.conflict('This import has not finished')
+  res.set('Content-Type', 'text/csv; charset=utf-8')
+  res.set('Content-Disposition', `attachment; filename="import-${job.id}.csv"`)
+  return res.send(resultCsv(job.returnvalue.rows))
 }

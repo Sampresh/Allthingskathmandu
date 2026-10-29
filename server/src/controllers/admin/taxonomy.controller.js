@@ -245,7 +245,7 @@ export async function listAreas(req, res) {
   return ok(
     res,
     await readDb.$queryRaw`
-      SELECT a.id, a.slug, a."nameEn", a."nameNe", a.district, a."sortOrder", a."isVisible",
+      SELECT a.id, a.slug, a."nameEn", a."nameNe", a.district, a.aliases, a."sortOrder", a."isVisible",
              ST_Y(a.center::geometry) AS lat, ST_X(a.center::geometry) AS lng,
              (SELECT count(*)::int FROM businesses b WHERE b."areaId" = a.id AND b."deletedAt" IS NULL) AS "listingCount"
       FROM areas a ORDER BY a."sortOrder", a."nameEn"`,

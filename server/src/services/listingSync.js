@@ -1,6 +1,7 @@
 import { db } from '../config/db.js'
 import { Prisma } from '../generated/prisma/client'
 import { purgeTags } from './cache.js'
+import { refreshProfileScore } from './listings.js'
 import { pageTagsFor, queueRevalidate } from './revalidate.js'
 
 /**
@@ -39,8 +40,9 @@ export async function refreshCategoryCounts() {
 
 /**
  * Keeps businesses.searchExtra (category, group, tag and area names in both languages, so a
- * search for "plumber" or "Thamel" finds listings) and profileScore (0 to 100, how complete
- * the listing is, used in ranking) current. The search trigger rebuilds searchVector.
+ * search for "plumber" or "Thamel" finds listings) current; the search trigger rebuilds
+ * searchVector. Also recomputes profileScore, which saves set at once, so changes made outside
+ * a listing save (owner hours or map pin, media) are counted too.
  */
 export async function syncListings(businessIds) {
   const only = businessIds?.length
@@ -60,23 +62,24 @@ export async function syncListings(businessIds) {
              FROM business_tags bt JOIN tags t ON t.id = bt."tagId"
              WHERE bt."businessId" = b.id),
           (SELECT concat_ws(' ', a."nameEn", a."nameNe") FROM areas a WHERE a.id = b."areaId")
-        ), '') AS extra,
-        (CASE WHEN b."logoUrl" IS NOT NULL THEN 15 ELSE 0 END
-         + CASE WHEN b.description IS NOT NULL AND b.description <> '' THEN 15 ELSE 0 END
-         + CASE WHEN COALESCE(b.phone, b.whatsapp, b."playStoreUrl", b."appStoreUrl") IS NOT NULL THEN 20 ELSE 0 END
-         + CASE WHEN b.website IS NOT NULL THEN 10 ELSE 0 END
-         + CASE WHEN b.hours IS NOT NULL AND b.hours <> 'null'::jsonb THEN 15 ELSE 0 END
-         + CASE WHEN b.location IS NOT NULL THEN 15 ELSE 0 END
-         + CASE WHEN b."areaId" IS NOT NULL THEN 10 ELSE 0 END) AS score
+        ), '') AS extra
       FROM businesses b
       WHERE b."deletedAt" IS NULL ${only}
     )
     UPDATE businesses b
-    SET "searchExtra" = computed.extra, "profileScore" = computed.score
+    SET "searchExtra" = computed.extra
     FROM computed
-    WHERE b.id = computed.id
-      AND (b."searchExtra" IS DISTINCT FROM computed.extra
-           OR b."profileScore" IS DISTINCT FROM computed.score)
+    WHERE b.id = computed.id AND b."searchExtra" IS DISTINCT FROM computed.extra
     RETURNING b.id`
-  return { updated: updated.length }
+
+  const ids = businessIds?.length
+    ? businessIds
+    : (await db.business.findMany({ where: { deletedAt: null }, select: { id: true } })).map(
+        (b) => b.id,
+      )
+  for (const id of ids) {
+    const exists = await db.business.findUnique({ where: { id }, select: { id: true } })
+    if (exists) await refreshProfileScore(db, id)
+  }
+  return { updated: updated.length, scored: ids.length }
 }

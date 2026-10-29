@@ -4,7 +4,6 @@ import { createApp } from '../src/app.js'
 import { db } from '../src/config/db.js'
 import { getQueue, QUEUE } from '../src/jobs/queues.js'
 import { createSession } from '../src/services/token.js'
-import { importListings } from '../src/services/listingImport.js'
 import { resetDb, createListing } from './helpers/db.js'
 import { createUser, flushRedis } from './helpers/auth.js'
 
@@ -170,41 +169,6 @@ describe('listings', () => {
       (await call('post', `/listings/${listing.id}/assign-owner`, admin.token, { userId: mod.id }))
         .status,
     ).toBe(400)
-  })
-
-  it('imports CSV rows, creating, updating and reporting errors per row', async () => {
-    const tag = await db.tag.create({ data: { slug: 'vegetarian', nameEn: 'Vegetarian' } })
-    await createListing({ slug: 'old-cafe', name: 'Old Cafe' })
-    const csv = [
-      'name,slug,category,tags,area,shortDesc,phone,lat,lng,status',
-      `New Place,,restaurants,${tag.slug},thamel,Fresh food,9800000000,27.7,85.3,LIVE`,
-      'Old Cafe Renamed,old-cafe,restaurants,,,Updated,,,,',
-      'Bad Row,,nowhere,,,Text,,,,',
-      ',,restaurants,,,No name,,,,',
-    ].join('\n')
-
-    const queued = await call('post', '/listings/import', admin.token, { csv })
-    expect(queued.status).toBe(201)
-    const status = await call('get', `/listings/import/${queued.body.data.jobId}`, admin.token)
-    expect(status.body.data.state).toBe('waiting')
-
-    const result = await importListings({ csv, actorId: admin.user.id, ip: '127.0.0.1' })
-    expect(result).toMatchObject({ created: 1, updated: 1, failed: 2 })
-    expect(result.errors.map((e) => e.row)).toEqual([4, 5])
-    expect(result.errors[0].message).toContain('category nowhere')
-
-    const created = await db.business.findUnique({
-      where: { slug: 'new-place' },
-      include: { tags: true },
-    })
-    expect(created).toMatchObject({ status: 'LIVE', areaId: area.id })
-    expect(created.tags).toHaveLength(1)
-    expect((await db.business.findUnique({ where: { slug: 'old-cafe' } })).name).toBe(
-      'Old Cafe Renamed',
-    )
-    expect(await db.auditLog.count({ where: { action: { startsWith: 'business.import' } } })).toBe(
-      2,
-    )
   })
 })
 

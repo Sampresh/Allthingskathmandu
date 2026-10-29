@@ -2,6 +2,7 @@ import { db } from '../config/db.js'
 import { ApiError } from '../utils/ApiError.js'
 import { QUEUE, enqueue } from '../jobs/queues.js'
 import { uniqueSlug } from '../lib/slug.js'
+import { profileScore } from '../validators/listing.schema.js'
 import { setBusinessLocation } from './geo.js'
 import { pageTagsFor, queueContentChange } from './revalidate.js'
 
@@ -26,8 +27,12 @@ export const LISTING_SCALARS = [
   'priceLevel',
   'status',
   'isVerified',
+  'verification',
+  'featuredUntil',
   'seoTitle',
   'seoDescription',
+  'googlePlaceId',
+  'adminNote',
 ]
 
 const pick = (input, keys) =>
@@ -76,24 +81,48 @@ async function writeRelations(tx, businessId, { categoryIds, tagIds, location })
   }
 }
 
+/**
+ * Recomputes profileScore (how complete the listing is, used in ranking) from the saved row.
+ * Run in the same transaction as the change. Returns the listing as saved.
+ */
+export async function refreshProfileScore(tx, id) {
+  const row = await tx.business.findUniqueOrThrow({
+    where: { id },
+    include: { categories: { select: { categoryId: true } } },
+  })
+  const [{ pinned }] = await tx.$queryRaw`
+    SELECT location IS NOT NULL AS pinned FROM businesses WHERE id = ${id}::uuid`
+  const { categories, ...listing } = row
+  const score = profileScore({
+    ...listing,
+    categoryIds: categories.map((c) => c.categoryId),
+    location: pinned,
+  })
+  if (score === listing.profileScore) return listing
+  return tx.business.update({ where: { id }, data: { profileScore: score } })
+}
+
 /** Creates a listing with its categories, tags and map pin. Run inside a transaction. */
 export async function createListing(tx, input) {
   const slug = input.slug ?? (await uniqueSlug(input.name, listingSlugTaken(tx), 'listing'))
   const listing = await tx.business.create({
-    data: { ...pick(input, LISTING_SCALARS), slug, ownerId: input.ownerId ?? null },
+    data: {
+      ...pick(input, LISTING_SCALARS),
+      shortDesc: input.shortDesc ?? '',
+      slug,
+      ownerId: input.ownerId ?? null,
+    },
   })
   await writeRelations(tx, listing.id, input)
-  return listing
+  return refreshProfileScore(tx, listing.id)
 }
 
 /** Applies a partial update; relations are replaced only when given. Run in a transaction. */
 export async function updateListing(tx, id, input) {
   const data = pick(input, [...LISTING_SCALARS, 'slug'])
-  const listing = Object.keys(data).length
-    ? await tx.business.update({ where: { id }, data })
-    : await tx.business.findUniqueOrThrow({ where: { id } })
+  if (Object.keys(data).length) await tx.business.update({ where: { id }, data })
   await writeRelations(tx, id, input)
-  return listing
+  return refreshProfileScore(tx, id)
 }
 
 /**

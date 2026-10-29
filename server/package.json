@@ -17,7 +17,9 @@
     "format": "prettier --write .",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev --create-only",
-    "db:seed": "prisma db seed"
+    "db:seed": "prisma db seed",
+    "import:listings": "tsx scripts/import-listings.js",
+    "areas:aliases": "tsx scripts/area-aliases.js"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.1",

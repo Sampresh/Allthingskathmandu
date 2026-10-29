@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { DEFAULT_LIMIT, MAX_LIMIT } from '../lib/cursor.js'
-import { DAYS } from '../lib/hours.js'
+import { LISTING_STATUSES, LISTING_TYPES, locationSchema } from './listing.schema.js'
 import { slug } from './common.js'
 
 // ---------- Shared pieces ----------
@@ -17,12 +17,6 @@ const optionalText = (max) =>
     .optional()
     .transform((v) => (v === '' ? null : v))
 const httpUrl = z.url({ protocol: /^https?$/ }).max(500)
-const optionalUrl = httpUrl.nullable().optional()
-// Logos and photos are uploaded to Cloudinary only.
-const cloudinaryUrl = httpUrl.refine(
-  (v) => v.startsWith('https://res.cloudinary.com/'),
-  'Must be a Cloudinary URL',
-)
 const phone = z
   .string()
   .trim()
@@ -47,74 +41,79 @@ export const RESERVED_SLUGS = [
   'register',
 ]
 
-const hhmm = z.string().regex(/^(?:[01]\d|2[0-3]):[0-5]\d$|^24:00$/, 'Use HH:MM')
-const slot = z
-  .tuple([hhmm, hhmm])
-  .refine(
-    ([open, close]) => open !== close && open !== '24:00',
-    'Opening and closing times must differ',
-  )
-// Every day present; a missing day means closed.
-export const hoursSchema = z
-  .object(Object.fromEntries(DAYS.map((d) => [d, z.array(slot).max(4).optional()])))
-  .transform((h) => Object.fromEntries(DAYS.map((d) => [d, h[d] ?? []])))
-
-export const locationSchema = z.object({
-  lat: z.number().min(-90).max(90),
-  lng: z.number().min(-180).max(180),
-})
+export { hoursSchema, locationSchema, listingCreate, listingUpdate } from './listing.schema.js'
 
 // ---------- Listings ----------
 
-const listingFields = {
-  name: text(120).min(1),
-  nameNe: optionalText(120),
-  type: z.enum(['BUSINESS', 'APP', 'PLACE', 'HOTLINE']),
-  slug: slug.optional(),
-  shortDesc: text(120).min(1),
-  description: optionalText(600),
-  logoUrl: cloudinaryUrl.nullable().optional(),
-  phone: phone.nullable().optional(),
-  whatsapp: phone.nullable().optional(),
-  email: z.email().nullable().optional(),
-  website: optionalUrl,
-  playStoreUrl: optionalUrl,
-  appStoreUrl: optionalUrl,
-  address: optionalText(200),
-  areaId: z.uuid().nullable().optional(),
-  location: locationSchema.nullable().optional(),
-  hours: hoursSchema.nullable().optional(),
-  priceLevel: z.number().int().min(1).max(4).nullable().optional(),
-  status: z.enum(['DRAFT', 'PENDING', 'LIVE', 'SUSPENDED']).optional(),
-  isVerified: z.boolean().optional(),
-  // First id is the primary category.
-  categoryIds: z.array(z.uuid()).min(1).max(5),
-  tagIds: z.array(z.uuid()).max(20).optional(),
-  seoTitle: optionalText(70),
-  seoDescription: optionalText(160),
-}
+const LISTING_SORTS = ['updated', 'name', 'category', 'area', 'type', 'status', 'verified', 'logo']
+export const MISSING_FIELDS = ['phone', 'hours', 'location', 'logo', 'description', 'area']
+const flag = z.enum(['true', 'false']).transform((v) => v === 'true')
+const csvList = (values) =>
+  z
+    .string()
+    .transform((v) => v.split(',').filter(Boolean))
+    .pipe(z.array(z.enum(values)).max(values.length))
 
-export const listingCreate = z.object(listingFields)
-export const listingUpdate = z.object(listingFields).partial()
-
-export const listingListQuery = z.object({
+// Filters shared by the table and the CSV export. status TRASH lists soft-deleted listings.
+export const listingFilters = z.object({
   q: search,
-  status: z.enum(['DRAFT', 'PENDING', 'LIVE', 'SUSPENDED']).optional(),
+  status: z.enum([...LISTING_STATUSES, 'TRASH']).optional(),
+  group: z.uuid().optional(),
   category: z.uuid().optional(),
-  area: z.uuid().optional(),
+  area: z.union([z.uuid(), z.literal('none')]).optional(),
+  type: z.enum(LISTING_TYPES).optional(),
+  verified: flag.optional(),
+  featured: flag.optional(),
+  hasOwner: flag.optional(),
+  missing: csvList(MISSING_FIELDS).optional(),
+})
+
+export const listingListQuery = listingFilters.extend({
+  sort: z.enum(LISTING_SORTS).default('updated'),
+  dir: z.enum(['asc', 'desc']).optional(),
   cursor,
   limit,
 })
 
-export const listingStatusBody = z.object({
-  status: z.enum(['DRAFT', 'PENDING', 'LIVE', 'SUSPENDED']),
-})
+export const listingStatusBody = z.object({ status: z.enum(LISTING_STATUSES) })
 
 export const assignOwnerBody = z
   .object({ userId: z.uuid().optional(), email: z.email().optional() })
   .refine((v) => v.userId || v.email, 'Send userId or email')
 
-export const importBody = z.object({ csv: z.string().min(1).max(2_000_000) })
+export const permanentDeleteBody = z.object({ confirmName: z.string().trim().min(1).max(120) })
+
+export const BULK_ACTIONS = [
+  'publish',
+  'unpublish',
+  'suspend',
+  'verify',
+  'delete',
+  'restore',
+  'set-category',
+  'set-area',
+  'feature',
+  'unfeature',
+]
+export const bulkBody = z
+  .object({
+    ids: z.array(z.uuid()).min(1).max(500),
+    action: z.enum(BULK_ACTIONS),
+    categoryId: z.uuid().optional(),
+    areaId: z.uuid().nullable().optional(),
+    featuredUntil: z.iso.datetime({ offset: true }).optional(),
+  })
+  .superRefine((v, ctx) => {
+    if (v.action === 'set-category' && !v.categoryId)
+      ctx.addIssue({ code: 'custom', path: ['categoryId'], message: 'Pick a category' })
+    if (v.action === 'set-area' && v.areaId === undefined)
+      ctx.addIssue({ code: 'custom', path: ['areaId'], message: 'Pick an area' })
+  })
+
+export const importBody = z.object({
+  csv: z.string().min(1).max(2_000_000),
+  dryRun: z.boolean().default(false),
+})
 export const jobParams = z.object({ jobId: z.string().min(1).max(100) })
 
 // ---------- Moderation ----------
@@ -185,6 +184,12 @@ const areaFields = {
   nameNe: optionalText(60),
   district: z.enum(['Kathmandu', 'Lalitpur', 'Bhaktapur']),
   center: locationSchema.nullable().optional(),
+  // Place names in addresses that belong to this area; the CSV import matches on them.
+  aliases: z
+    .array(text(60).min(1).toLowerCase())
+    .max(50)
+    .transform((list) => [...new Set(list)])
+    .optional(),
   sortOrder: z.number().int().min(0).max(10_000).optional(),
   isVisible: z.boolean().optional(),
 }

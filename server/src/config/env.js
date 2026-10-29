@@ -135,7 +135,8 @@ export function parseEnv(source) {
     }
     if (env.ESEWA_PRODUCT_CODE === 'EPAYTEST')
       errors.push('ESEWA_PRODUCT_CODE: still the sandbox code')
-    if (!env.STAFF_TWO_FACTOR) errors.push('STAFF_TWO_FACTOR: staff 2FA cannot be off in production')
+    if (!env.STAFF_TWO_FACTOR)
+      errors.push('STAFF_TWO_FACTOR: staff 2FA cannot be off in production')
   } else if (env.JWT_ACCESS_SECRET === env.JWT_REFRESH_SECRET) {
     warnings.push('JWT_ACCESS_SECRET and JWT_REFRESH_SECRET are identical (refused in production)')
   }

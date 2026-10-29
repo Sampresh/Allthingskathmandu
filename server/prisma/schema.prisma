@@ -234,6 +234,7 @@ model Area {
   nameEn    String
   nameNe    String?
   district  String // Kathmandu | Lalitpur | Bhaktapur
+  aliases   String[]                               @default([]) // lower-case names found in addresses, e.g. "paknajol"
   center    Unsupported("geography(Point, 4326)")?
   sortOrder Int                                    @default(0)
   isVisible Boolean                                @default(true)
@@ -281,6 +282,9 @@ model Business {
   searchVector   Unsupported("tsvector")? // set by trigger
   seoTitle       String?
   seoDescription String?
+  googlePlaceId  String?                                @unique // Google Maps place id (link only)
+  adminNote      String? // staff only, never public
+  verification   Json? // { phone, hours, location, logo, description }: booleans checked by staff
   createdAt      DateTime                               @default(now())
   updatedAt      DateTime                               @updatedAt
   deletedAt      DateTime?

@@ -1,0 +1,329 @@
+category,type,name,address,phone,hours,website,desc,g_rating,g_reviews,place_id
+Restaurants,BUSINESS,Thirsty Newari Restaurant,"Amrit Marg, Thamel",,,,,4.9,161,ChIJxWRuIwAZ6zkR2HxAVMxW6QE
+Restaurants,BUSINESS,Green Villy Restaurant,"16 Paknajol Marg, Thamel",+9779812885154,07:30-22:30,,,4.8,2397,ChIJz1cN6fUZ6zkRnKbHIihOgYE
+Restaurants,BUSINESS,Graveaty Restaurant and Bar,"Chhusya Galli, Thamel",+97715913958,08:00-23:30,,,4.8,860,ChIJKRoo4lMZ6zkRPbStKEegYA8
+Restaurants,BUSINESS,Jasper Restaurant,"Thabahi Road, Thamel",+9779803050739,10:00-01:00,,,4.7,4761,ChIJD3hJz3kZ6zkRWXOu725x47Q
+Restaurants,BUSINESS,Nepalaya Rooftop Restaurant,"Kwabahal, inside Hotel Nepalaya, Thamel",+97715901321,07:30-22:30,,,4.7,1088,ChIJ0eBjuSgZ6zkRFrzS1BS9v-w
+Restaurants,BUSINESS,Forest & Plate,"Mandala Street, Thamel",+97714701161,11:00-21:30,,,4.7,928,ChIJ3a3w4fwY6zkRu2fzV1SUQBE
+Restaurants,BUSINESS,Samaya Rooftop Garden,"Narsingh Chowk Marg, Thamel",+97714701566,09:00-22:00,,,4.7,645,ChIJc4PrOoAZ6zkRto9Fbm_efiA
+Restaurants,BUSINESS,Pasa Newari Kitchen,"Mandala Street, Thamel",+9779803471523,06:00-23:00,,,4.7,278,ChIJwad9LPsZ6zkR1KX1cLMriNw
+Restaurants,BUSINESS,Pulukisi Newari Restaurant,"53 Lal Colony Marga, Kathmandu",+97715923454,12:00-22:00,,,4.6,101,ChIJFTEGCF0Z6zkRAUlWTVR50Ks
+Cafes,BUSINESS,Drift Cafe,"Thamel Marga, Thamel",+9779860803824,Sun-Fri 09:00-19:30; Sat 11:30-18:30,,,5.0,214,ChIJX2Y4lGkZ6zkRXmYl-Bc_L_Y
+Cafes,BUSINESS,Five10 Cafe,"Thabahi Sadak, Thamel",+9779851417282,08:00-21:00,,,4.9,177,ChIJByvwWoAZ6zkR5zBU344MF-4
+Cafes,BUSINESS,Yala Cafe & Coffee Shop,"Kwabahal, Thamel Marg",+97715367554,07:45-22:00,,,4.8,1870,ChIJs2JFIqEZ6zkRglJGdkpIc2Q
+Cafes,BUSINESS,Cinnamon Garden Cafe & Restaurant,"Hattisar Sadak, Kathmandu",+9779709999599,08:00-20:30,,,4.8,340,ChIJ3SQpXzAZ6zkRzekDC-FcoSY
+Cafes,BUSINESS,Avocado Cafe,"Thamel Marg, Thamel",+97714512805,07:00-23:00,,,4.7,572,ChIJIfVwibEZ6zkR8AlriF6HIJs
+Cafes,BUSINESS,"Roadhouse Cafe, Thamel","Chaksibari Road, Thamel",+97715367885,08:00-23:00,,,4.6,3945,ChIJFaOQ8PwY6zkRWxO1NNCiy04
+Cafes,BUSINESS,Apricus Garden Restaurant,"Naxal, Kathmandu",+9779761888741,"Mon-Thu, Sun 08:00-22:00; Fri 08:00-23:00; Sat 08:00-22:30",,,4.6,1798,ChIJKc7950UZ6zkRIDoTfViKQyw
+Bars & Nightlife,BUSINESS,Three Monkeys Restro and Bar,"410 Chaksibari Marg, Kathmandu",+9779745363353,24h,,,4.9,240,ChIJ7ZIM7oYZ6zkRmJsZoSZ6LFY
+Bars & Nightlife,BUSINESS,Dancing Yak,"Thamel Marg, Kathmandu",+97715909565,06:00-04:00,,,4.8,1583,ChIJW0op8fwY6zkRYAZElQ330Lc
+Bars & Nightlife,BUSINESS,Titos Pub,"Near Chhaya Center, Amrit Marg, Kathmandu",+97714528102,Mon-Thu 16:00-02:00; Fri-Sat 16:00-03:00; Sun 16:00-02:00,,,4.8,218,ChIJ93fS7kkZ6zkRIqSzgvSEeVg
+Bars & Nightlife,BUSINESS,BlackBird,"Thamel, Kathmandu",+9779813828806,Mon 16:00-01:00; Tue 17:00-00:00; Wed-Thu 16:00-01:00; Fri 16:00-03:00; Sat 16:00-02:00; Sun 16:00-01:00,,,4.8,217,ChIJhRHqqzsZ6zkRwBsi6A8EPJU
+Bars & Nightlife,BUSINESS,Mandala Deck,"Mandala Street, Kathmandu",+9779826045960,Mon 16:30-23:30; Tue-Sun 15:30-23:30,,,4.8,170,ChIJiXQRgp0Z6zkRhlng3WVxE4E
+Bars & Nightlife,BUSINESS,Purple Haze Rock Bar,"Paryatan Marg, Kathmandu",+97715910126,19:00-01:30,,,4.4,3711,ChIJB-JS5PwY6zkR4_zkxaiJvnA
+Bakeries,BUSINESS,The Midpoint Bakery,"Gwarko Hattiban Marg, Lalitpur",+9779842532756,06:00-21:00,,,5.0,2235,ChIJazuZYAcR6zkRFureagVcfwk
+Bakeries,BUSINESS,Italian Bakery and Cakes,"Saraswatinagar Rd, Kathmandu",+9779851168270,07:00-21:00,,,4.8,666,ChIJL21rS2EZ6zkRnhxjtuQwCQg
+Bakeries,BUSINESS,L'Artisan Patisserie (Thahity Jyatha),"Thamel Marg, Kathmandu",+97715921880,07:00-23:00,,,4.8,224,ChIJXzZkLAAZ6zkR21OYCLqeOU8
+Bakeries,BUSINESS,Bloom Bakery,Kathmandu,+9779709166453,06:00-22:00,,,4.9,71,ChIJW5SXy-UZ6zkRtDWIDadFRJ8
+Bakeries,BUSINESS,L'Artisan Patisserie & Boulangerie,"Narsingh Chowk Marg, Kathmandu",+97714547335,07:00-22:30,,,4.7,260,ChIJi3UENQAZ6zkReZw0VORWPz4
+Bakeries,BUSINESS,Kharayo Bakes,"Makhan Tole, Kathmandu",+9779851132172,09:00-22:00,,,4.6,3209,ChIJE6B3X-kZ6zkRApl8rtqZ_Uo
+Food Delivery Apps,APP,Foodmandu,,,,foodmandu.com,"Food delivery from 1,000+ restaurants; OneMart grocery delivery in the same app",,,
+Food Delivery Apps,APP,Pathao Food,,,,pathao.com,Food delivery inside the Pathao app,,,
+Food Delivery Apps,APP,Bhoj (formerly Bhojdeals),,,,,Food delivery and dine-in deals,,,
+Food Delivery Apps,APP,Foodganj,,,,,"Food delivery, open late",,,
+Groceries & Marts,BUSINESS,"Bhat-Bhateni Superstore, Tangal","Bhat Bhateni Marg, Kathmandu",+97714419181,08:00-20:45,,,4.0,585,ChIJ_4DjZNUZ6zkRmtajS5IEdCM
+Groceries & Marts,BUSINESS,Bhat-Bhateni Super-Store Bouddha,"Boudhanath Sadak, Kathmandu",+97714485398,08:00-20:30,,,4.0,2810,ChIJv9bV0WIZ6zkRn4l_Vp7v_EM
+Groceries & Marts,BUSINESS,Bhat-Bhateni Supermarket,Kathmandu,+97715234988,07:30-20:30,,,4.0,3865,ChIJk3GupG8Y6zkR5jezS34nhJU
+Groceries & Marts,BUSINESS,Thamel Supermarket,"Paryatan Marg, Kathmandu",+97714701720,08:30-23:00,,,3.7,45,ChIJISro5fwY6zkRpJAl8RgOvRA
+Groceries & Marts,BUSINESS,Bigmart Lazimpat,"Lazimpat Rd, Kathmandu",+97714327856,06:00-21:00,,,3.6,534,ChIJx5ZemhsZ6zkRKKU6kudDj9I
+Grocery Delivery,APP,Bhat-Bhateni Online,,,,bhatbhateni.com,Online orders from the Bhat-Bhateni supermarket chain,,,
+Grocery Delivery,APP,Foodmandu OneMart,,,,foodmandu.com,Quick grocery delivery inside the Foodmandu app,,,
+Grocery Delivery,APP,My Mart,,,,,Same-day delivery of daily goods (IME Group),,,
+Grocery Delivery,APP,Metrotarkari,,,,metrotarkari.com,"Vegetables, fruit and groceries delivered",,,
+Ride Apps,APP,Pathao,,,,pathao.com,"Bike and car rides, food and parcel delivery",,,
+Ride Apps,APP,inDrive,,,,indrive.com,Ride app where you offer your own fare,,,
+Ride Apps,APP,Uber,,,,uber.com,Reported launched in Kathmandu in May 2026; confirm before listing,,,
+Ride Apps,APP,Tootle,,,,,"Nepal's first ride-sharing app, relaunched under new management",,,
+Ride Apps,APP,Taximandu,,,,,"Taxi booking, including airport pickups",,,
+Bus Tickets,APP,BusSewa,,,,bussewa.com,"Bus tickets across Nepal, plus domestic flights and hotels",,,
+Bus Tickets,APP,GoMyGo,,,,,Bus ticket booking app,,,
+Bus Tickets,APP,eSewa / Khalti / Namaste Pay,,,,,Wallet apps that also sell bus tickets,,,
+Domestic Flights,APP,Buddha Air,,,,buddhaair.com,Domestic airline; book on its site or through Khalti or eSewa,,,
+Domestic Flights,APP,Yeti Airlines,,,,yetiairlines.com,Domestic airline,,,
+Domestic Flights,APP,Nepal Airlines,,,,nepalairlines.com.np,"National carrier, domestic and international",,,
+Car & Bike Rental,BUSINESS,Sky Arrow Vehicle Rental,"Shambhu Marga, Kathmandu",+9779851249175,24h,,,5.0,223,ChIJ210m5JcZ6zkR8IvHE9owYrA
+Car & Bike Rental,BUSINESS,Mountain Vehicle Nepal,Kathmandu,+9779849715753,24h,,,5.0,211,ChIJU33VCvYZ6zkR_Sva-XNr41s
+Car & Bike Rental,BUSINESS,Namaste Motorbike,"Paknajol Marg, Kathmandu",+9779841249989,08:30-18:30,,,4.9,464,ChIJbQe-Fk8Z6zkR1O-9qeng1xM
+Car & Bike Rental,BUSINESS,Bike Rental Kathmandu,Kathmandu,+9779845857035,09:00-17:00,,,4.9,412,ChIJ9bFRL4oZ6zkRFzVD5hBPnSY
+Car & Bike Rental,BUSINESS,Thrill on Motorbike Nepal,"JP Rd, Kathmandu",+9779843360610,Mon-Fri 10:00-19:00; Sat 11:00-18:00; Sun 10:00-19:00,,,4.8,818,ChIJp5PvGvwY6zkRSbcpfb8Bq1U
+Car & Bike Rental,BUSINESS,Bike Rental Nepal,"Narephant, Nawa Parbat Marg",+9779802491147,Mon-Fri 09:00-20:30; Sat 09:00-19:00; Sun 09:00-20:00,,,4.8,516,ChIJ5VM9MbIZ6zkRnTpKThN7DKE
+Hotels,BUSINESS,Hotel Euphoria Inn,"Nagpokhari, Kathmandu",+97715916733,,,,4.8,315,ChIJycqWnO8Z6zkRogyrq9aIEbg
+Hotels,BUSINESS,Kathmandu Marriott Hotel,"Manakamana Marg, Kathmandu",+97715970300,,,,4.6,3692,ChIJ22EEQw8Z6zkRNLliH5pm8Js
+Hotels,BUSINESS,The Dwarika's,"Battisputali Rd, Kathmandu",+97714579488,24h,,,4.6,2167,ChIJl5e0Yp0Z6zkRDxN8Z67TOCE
+Hotels,BUSINESS,Arushi Boutique Hotel,"Kunphen Marg, Thamel",+97715366868,,,,4.6,1149,ChIJyWXMFkcZ6zkRyTLh8jsTeiE
+Hotels,BUSINESS,Kathmandu Suite Home,"16 Thamel Marg, Kathmandu",+9779801026351,24h,,,4.6,602,ChIJO0h2NPsY6zkRwy_BjgIwBsU
+Hotels,BUSINESS,Hyatt Regency Kathmandu,"Taragaon, Kathmandu",+97715171234,,,,4.5,5583,ChIJY859itgb6zkRtWuB2jZ6di8
+Hostels,BUSINESS,Kwabahal Boutique Hostel,"Wak Bajra Marg, Kathmandu",+97715344174,,,,4.7,347,ChIJQbBkAkAZ6zkRwSPJitVBqgA
+Hostels,BUSINESS,Yakety Yak Hostel,"350 Amrit Marg, Kathmandu",+97715366216,24h,,,4.7,324,ChIJyRHtMU4Z6zkRg9GBkQ4YLqo
+Hostels,BUSINESS,Best Hostel & Aananda Garden Restaurant,"Lazimpat Road, Kathmandu",,07:00-21:00,,,4.7,301,ChIJXUNKJi4Z6zkRb8C7P8vvQ78
+Hostels,BUSINESS,WanderThirst Hostel,Kathmandu,+97714984434,24h,,,4.6,626,ChIJ9XEqyuQY6zkRQfqBDxl_GzQ
+Hostels,BUSINESS,Alobar1000 Hostel,"Kaldhara Marg, Thamel",+97715350563,24h,,,4.6,531,ChIJE1FivAIZ6zkR4FovowVXajc
+Hostels,BUSINESS,Rest Up Kathmandu Hostel,"16 Paknajol Marg, Kathmandu",+97715351693,24h,,,4.6,451,ChIJi2eMm_wY6zkRAD-Hq_6Kq6k
+Homestays,BUSINESS,Melo Pomelo - The Courtyard,"Naradevi, Kathmandu",+9779803834635,,,,4.9,97,ChIJmTY1JO0Z6zkRAfxIYf-i4BI
+Homestays,BUSINESS,New Shiva Guest House,Bhaktapur,+97716618960,,,,4.8,61,ChIJJ3ocz8Ib6zkR8AMGa-G6Kxw
+Homestays,BUSINESS,Cityview Guest House,"Basantapur, Kathmandu",+9779851411430,,,,4.9,26,ChIJRQvj7J0Z6zkRkdJcz0OlCV0
+Homestays,BUSINESS,Dalucha Heritage,"Kwalakhu Road, Patan",+9779818295235,,,,4.7,37,ChIJB4xyytYZ6zkR3HfPLJHOrUw
+Homestays,BUSINESS,Kumari Guest House,Bhaktapur,+97716618266,,,,4.6,50,ChIJX_eNo68a6zkRdglhdEJqEYE
+Homestays,BUSINESS,Shiva Guest House,"Durbar Square, Bhaktapur",+9779851129912,,,,4.3,28,ChIJXS_u6e8b6zkRXuKM9ZM8qM0
+SIM & Mobile,APP,Ncell,,,,ncell.axiata.com,Mobile operator; tourist SIM and eSIM at the airport counter,,,
+SIM & Mobile,APP,Nepal Telecom (NTC),,,,ntc.net.np,State mobile operator; tourist packs and SIM counter at the airport,,,
+Home Internet,APP,WorldLink,,,,worldlink.com.np,Fibre internet provider,,,
+Home Internet,APP,Vianet,,,,vianet.com.np,Fibre internet and TV,,,
+Home Internet,APP,Nepal Telecom FTTH,,,,ntc.net.np,Fibre internet from Nepal Telecom,,,
+Wallets & Payments,APP,eSewa,,,,esewa.com.np,"Digital wallet: bills, tickets, QR payments",,,
+Wallets & Payments,APP,Khalti,,,,khalti.com,"Digital wallet: bills, flights, movies, events",,,
+Wallets & Payments,APP,Fonepay,,,,fonepay.com,QR payment network accepted at most shops,,,
+Wallets & Payments,APP,Namaste Pay,,,,,Nepal Telecom's wallet,,,
+Money Exchange & ATMs,BUSINESS,Goodwill Money Exchange P. Ltd,"Near Kathmandu Guest House, Kathmandu",+9779862733199,08:00-21:00,,,5.0,26,ChIJD3b5Z2QZ6zkR9kTenXLxBrw
+Money Exchange & ATMs,BUSINESS,Annapurna Money Exchange,"Thamel Marg, Kathmandu",+97714218091,09:00-21:00,,,4.6,74,ChIJM22Pyv0Y6zkR7qUr1vk0wSw
+Money Exchange & ATMs,BUSINESS,Euro Money Changer,"Chibahal, Kathmandu",+97714266871,08:30-21:00,,,5.0,5,ChIJW6Ocsv0Y6zkRz0TjrekoiUI
+Money Exchange & ATMs,BUSINESS,A One Money Changer,Kathmandu,+97714700690,06:00-22:00,,,4.6,14,ChIJmQC7xvwY6zkRHuqVA64UVjk
+Money Exchange & ATMs,BUSINESS,Thamel Universal Money Exchange,"Paryatan Marg, Kathmandu",+97714700147,Mon-Fri 09:30-20:30; Sat 12:00-20:30; Sun 09:30-20:30,,,4.5,8,ChIJEe9D5PwY6zkRGLoD0lpIXHU
+Money Exchange & ATMs,BUSINESS,Tridev Money Exchange,"Chaksibari Marg, Kathmandu",+97714700245,Mon-Wed 06:00-23:00; Thu 06:30-22:30; Fri 06:00-23:00; Sat 06:30-23:00; Sun 06:00-23:00,,,4.0,56,ChIJ90i3zPwY6zkRB7tmyoV_0jM
+Courier,BUSINESS,DHL Quick Best Cargo (DHL agent),"16 Paknajol Marg, Kathmandu",+9779849410924,Mon-Fri 06:30-21:00; Sat 06:30-20:00; Sun 06:30-21:00,,,4.9,401,ChIJd6PnoPwY6zkRcKfriTmHss4
+Courier,BUSINESS,Sagun Express Courier & Cargo (DHL agent),"Lazimpat Rd, Kathmandu",+9779706413980,Mon-Tue 10:00-18:00; Wed 09:30-18:00; Thu-Fri 10:00-18:00; Sat closed; Sun 10:00-18:00,,,4.9,281,ChIJDQHjO2kZ6zkR41nxSnpv8g0
+Courier,BUSINESS,Kathmandu Courier & Cargo,"110 Sundhara Rd, Kathmandu",+9779851164273,24h,,,4.9,253,ChIJ-cotagAZ6zkRslMB5o2y2uQ
+Courier,BUSINESS,Infinite Cargo & Courier (DHL agent),"Setopul, Kathmandu",+9779761423860,08:00-21:00,,,5.0,50,ChIJU82kzakZ6zkRT_JzbeGc7aY
+Courier,BUSINESS,On Time Cargo & Courier Pvt Ltd,"Saat Ghumti Marg, Kathmandu",+9779801069558,Mon-Fri 08:30-20:30; Sat 10:00-18:00; Sun 08:30-20:30,,,4.8,76,ChIJkxJuIAkZ6zkRmE1cmS_dnYg
+Courier,BUSINESS,Surya International Export,Paknajol,+9779851228832,Mon-Fri 24h; Sat closed; Sun 24h,,,4.9,24,ChIJeWY-vWwZ6zkRr6TqSKpYxMk
+Hospitals,BUSINESS,Swacon International Hospital,"164 Rudra Mati Marg, Kathmandu",+97714562960,24h,,,4.8,539,ChIJcfIrt58Z6zkRIdqnMnyiiKA
+Hospitals,BUSINESS,Inova Hospital,Kathmandu,+9779802348721,24h,,,4.8,222,ChIJDx56a6cZ6zkRGeDf5Rl4aeI
+Hospitals,BUSINESS,ERA International Hospital,"Puspalal Path, Kathmandu",+9779709000012,24h,,,4.8,91,ChIJFeOy-t8Z6zkRfyHpvhS4M1Q
+Hospitals,BUSINESS,CIWEC Hospital Pvt. Ltd,"Kapurdhara Marg, Kathmandu",+97714535232,24h,,,4.6,271,ChIJaVO1ZhwZ6zkRkhEtRp5q-FQ
+Hospitals,BUSINESS,Overseas Friendship International Hospital,"Golkupakha Pipal Bot, Leknath Marg, Kathmandu",+97714520630,24h,,,4.4,209,ChIJcwJFwOIY6zkRIY4qaZL3DoY
+Hospitals,BUSINESS,"B&B Hospital, Gwarko","Gwarko, Lalitpur",,,,,4.2,799,ChIJP2JIqbIZ6zkRl5dtCm4mb2Q
+Clinics,BUSINESS,Kathmandu Polyclinic and Pathology Lab Pvt. Ltd,"Maternity Hospital Road, Kathmandu",+9779803222693,07:00-20:00,,,4.9,566,ChIJhynvzbMZ6zkRjkX--CaOivY
+Clinics,BUSINESS,Avalon Polyclinic and Pharmacy,"Ekatabasti, Kathmandu",+9779707739146,Mon 06:00-00:00; Tue-Wed 24h; Thu 06:30-22:00; Fri 00:30-22:00; Sat 24h; Sun 06:30-22:00,,,5.0,28,ChIJd6U8VgAZ6zkRS_2LkIb-Rrc
+Clinics,BUSINESS,MedEx Neo Clinic,"4th Floor, Opposite, Bhat Bhateni Supermarket",+9779802345336,Mon-Fri 07:00-19:00; Sat 09:00-18:00; Sun 07:00-19:00,,,4.7,233,ChIJf-RfCpQZ6zkRNgzIUw0OrG8
+Clinics,BUSINESS,Nepal International Health Services (NIHS),"Bishwojyoti Mall -1st Floor, Kathmandu",+97715920190,Mon-Fri 07:00-19:00; Sat 09:00-17:00; Sun 07:00-19:00,,,4.7,102,ChIJuVdc_tgZ6zkRcTbQkr3a9es
+Clinics,BUSINESS,Clinic One Kathmandu,"Infront of Kumari Mandir, Dhumbarahi Marg, Kathmandu",+97715920918,Mon-Fri 07:00-20:00; Sat 07:00-14:00; Sun 07:00-20:00,,,4.7,86,ChIJZ1xzhXcZ6zkR_ukxnc4xHiY
+Clinics,BUSINESS,International Medicare Kathmandu Private Limited,Chhetrapati 17,+9779764860781,24h,,,4.5,35,ChIJHfvhFbwZ6zkRz6w7HCk0uu4
+Pharmacies,BUSINESS,Trucare Pharmacy (Thamel),"Thamel street, Kathmandu",+9779709087563,07:00-23:00,,,4.9,68,ChIJlUbIDn4Z6zkRkQntdwXzceY
+Pharmacies,BUSINESS,Thamel Pharmacy,Kathmandu,+97714700433,07:30-22:00,,,4.6,51,ChIJDVgQofwY6zkRGrThfZdVRJA
+Pharmacies,BUSINESS,Shishir Medical Hall,"Adwait Marg, Kathmandu",+9779851134839,07:30-21:30,,,4.9,8,ChIJJV73makZ6zkRl1Y68pGomJw
+Pharmacies,BUSINESS,Palpali Pharmacy,"Mahadev Galli, Kathmandu",+9779851408669,09:00-22:00,,,4.6,8,ChIJafgJgnQZ6zkRQD_n0MpJnYs
+Pharmacies,BUSINESS,Archana Pharmecy,Kathmandu,+9779841269642,07:00-21:00,,,4.6,5,ChIJ3_OY7qYZ6zkRRPCsJ9TakjI
+Pharmacies,BUSINESS,Tesla Pharmacy Pvt Ltd,"Baluwatar, Kathmandu",+97714534871,06:00-21:00,,,4.0,39,ChIJu-hJiDsZ6zkR8LxXciedBLc
+Labs,BUSINESS,Reliable Diagnostic Laboratory Nepal Pvt Ltd,Kathmandu,+9779801612348,Mon-Fri 07:15-19:00; Sat 07:15-14:00; Sun 07:15-19:00,,,4.8,26,ChIJu1QffqYZ6zkRjX-N4F0-fsY
+Labs,BUSINESS,Alfa Health Care & Diagnostic Center,"Ground Floor, Alfa Beta Complex, Kathmandu",+97715970423,Mon-Fri 07:00-20:30; Sat 07:00-02:00; Sun 07:00-20:30,,,4.5,271,ChIJDTnILbwZ6zkRPO3Z2MJS30k
+Labs,BUSINESS,Kathmandu Pathlab & Diagnostic Center (KPL),"Mandala Complex, Kathmandu",+9779860473717,Mon-Fri 07:00-19:00; Sat 07:00-14:00; Sun 07:00-19:00,,,4.4,41,ChIJSTyg0EcZ6zkRjycyDuUBXcA
+Labs,BUSINESS,National Path Lab and Research Center,"Teaching Bus Stand, Maharajgunj",+97714533492,07:00-20:00,,,4.0,24,ChIJmxWbnp8Z6zkRqQBboQvTMiM
+Labs,BUSINESS,RB Diagnostic Kathmandu,"Pashupati Sadak, Kathmandu",+97715970980,Mon-Fri 07:00-20:00; Sat 07:00-14:00; Sun 07:00-20:00,,,4.2,282,ChIJ4Uu8orkZ6zkRZXklPd_hJas
+Dentists,BUSINESS,Chirayu DentCare,"Bijulibazar, Bhaktithapa Rd, Kathmandu",+9779865365892,24h,,,4.9,801,ChIJ_4yx-BEZ6zkRZMBS7616gm0
+Dentists,BUSINESS,Studio Dentale,"810 Bhagawati Marg, Kathmandu",+97714532181,Mon-Fri 10:00-19:00; Sat closed; Sun 10:00-19:00,,,4.9,625,ChIJqXHQ3D0Z6zkRtX0eRkjF9w4
+Dentists,BUSINESS,Zenith Dental Clinic,"Dilli Bazar Height Marg, Kathmandu",+9779861155901,08:00-19:00,,,5.0,89,ChIJOyMEYQAZ6zkR0HEwMbafiAQ
+Dentists,BUSINESS,Big Smile Dental Clinic,"4 Ganeshbasti Ward, Kathmandu",+9779745666620,Mon-Fri 11:00-19:00; Sat closed; Sun 11:00-19:00,,,4.9,191,ChIJE206wCoZ6zkRJo4Hrgai2Vs
+Dentists,BUSINESS,Agrim Dental Clinic,"Ghattekulo Marga, Kathmandu",+9779843142767,Mon-Tue 08:00-19:30; Wed 08:00-19:00; Thu-Sun 08:00-19:30,,,4.9,148,ChIJZ10gf-IjTisR1J8xDYqCi9Y
+Dentists,BUSINESS,Dent Inn Dental Clinic,"Kamaladi, Kathmandu",+9779761780172,Mon-Fri 10:00-18:00; Sat closed; Sun 10:00-18:00,,,4.9,112,ChIJJTTpIQAZ6zkRneEASreoy4M
+Spa & Massage,BUSINESS,Paradise Spa,"Sherbhawan Building, Chaksibari, Kathmandu",+97714700755,08:00-22:00,,,4.9,1705,ChIJWR63ZqQZ6zkRKVYdOElBJZE
+Spa & Massage,BUSINESS,Real Therapy Spa,"Lekhnath Marg, Thamel",+9779801166651,07:00-22:00,,,4.9,1465,ChIJKyHB3PwY6zkRMmEoA_gzFJc
+Spa & Massage,BUSINESS,Zen Spa,"Near Back Gate of Kathmandu Guest House, Kathmandu",+97714700700,09:00-22:00,,,4.9,668,ChIJL72y5_wY6zkRtxGftmVIp4k
+Spa & Massage,BUSINESS,Horizon Spa,"Tridevi Sadak, Kathmandu",+9779713963827,08:00-22:00,,,4.9,422,ChIJRXWSjeYZ6zkRR5csk474oFk
+Spa & Massage,BUSINESS,Nectar Spa,"Thamel Marg, Kathmandu",+97714510665,07:30-02:00,,,4.8,566,ChIJ0c5JUdoZ6zkR2WAxfOlV59E
+Spa & Massage,BUSINESS,Kaya Healing Spa,"Hotel Northfield, Chaksibari, Kathmandu",+97715355882,09:00-00:00,,,4.8,557,ChIJs2aEgqkZ6zkRgXxZ_Hu8elM
+Gyms,BUSINESS,Evolve Fitness,"Narayan Gopal Sadak, Kathmandu",+9779802362300,Mon-Fri 05:30-20:30; Sat closed; Sun 05:30-20:30,,,4.9,271,ChIJ9zrXNQAZ6zkRI_s0n2Mfosc
+Gyms,BUSINESS,Revive Fitness Baneshwor,"Mid-Baneshwor, Kathmandu",+9779744574810,Mon-Fri 05:30-20:30; Sat 07:00-12:00; Sun 05:30-20:30,,,4.9,197,ChIJFWMhMwAZ6zkR2TZyNEujb80
+Gyms,BUSINESS,ROC Fitness Club,"Muni Bhairab Marg, Kathmandu",+9779851080621,Mon-Fri 05:00-21:00; Sat closed; Sun 05:00-21:00,,,4.9,186,ChIJGYrsurAZ6zkRU4bWVvqiUU4
+Gyms,BUSINESS,Super Fitness,"Tokha Rd, Kathmandu",+9779803501389,Mon-Fri 05:00-21:00; Sat closed; Sun 05:00-21:00,,,4.9,136,ChIJ2duqHCQZ6zkRvHo6RQnUivw
+Gyms,BUSINESS,Milestone Gym,"Kalo Brg, Kathmandu",+9779768591573,Mon-Fri 05:00-21:00; Sat 06:00-10:00; Sun 05:00-21:00,,,5.0,48,ChIJN08tWP4Z6zkRB4GH3bOI3Tk
+Gyms,BUSINESS,Regal Fitness Club,Kathmandu,+9779709119935,Mon-Fri 05:30-21:00; Sat 08:00-12:00; Sun 05:30-21:00,,,5.0,36,ChIJv5MGDQAZ6zkR5p0zWmwqmsA
+Yoga,BUSINESS,Kanchan Yoga Studio,"Chaksibari Marg, Kathmandu",+9779818148030,06:00-20:00,,,5.0,317,ChIJ028XWfwY6zkRheuWtHjYxew
+Yoga,BUSINESS,Nepal Yoga Home,"Tarkeshwor-5, Kathmandu",+9779849521819,07:00-19:00,,,4.9,768,ChIJdeYCkrQY6zkRs4pJgHdVz38
+Yoga,BUSINESS,Padmachandra Studio,"Near maya manor, Kathmandu",+9779808703426,24h,,,5.0,98,ChIJ3U7IO9wZ6zkRopr2WVlZwJc
+Yoga,BUSINESS,Himalayan Yoga Academy,"Raniban Rd, Kathmandu",+97715927693,06:00-22:00,,,4.9,160,ChIJ4dN7aAsZ6zkRBbqI4mccc38
+Yoga,BUSINESS,Vinyasa Nepal Yoga Studio,"Narsingh Chowk Marg, Kathmandu",+9779813237572,08:00-20:00,,,4.9,135,ChIJkcX5Me4Z6zkR7IhjZ06Y4hA
+Yoga,BUSINESS,Yoga at Thamel (Mandala Yoga),"Mandala Street, Kathmandu",+9779761663470,Mon 07:00-20:30; Tue 07:00-20:00; Wed-Fri 07:00-20:30; Sat 10:00-20:30; Sun 07:00-20:30,,,4.9,122,ChIJDa8nkDgZ6zkRuqZEQtmHnz8
+Online Shopping,APP,Daraz,,,,daraz.com.np,Largest online marketplace in Nepal,,,
+Online Shopping,APP,Sastodeal,,,,sastodeal.com,"Online shopping, electronics and household goods",,,
+Malls,BUSINESS,Durbar Mall,Kathmandu,+97714250031,08:00-20:00,,,4.2,201,ChIJE1Vc0ygZ6zkRFYYu4e1iG2U
+Malls,BUSINESS,City Square Mall,Kathmandu,+9779802356892,08:00-21:00,,,4.2,554,ChIJ6QKnR_QZ6zkRXEdGT4nD-Yg
+Malls,BUSINESS,One Durbar Mall,Kathmandu,+97714254470,07:00-21:30,,,4.2,608,ChIJW0h7_6kZ6zkRfpFduNXzZWM
+Malls,BUSINESS,Civil Mall,Kathmandu,+97715312095,10:00-20:00,,,4.0,8802,ChIJg8HBoFQY6zkRdrZdwLzhS4Y
+Malls,BUSINESS,City Centre,"Pashupati Road, Kathmandu",+9779802024109,09:30-22:00,,,4.0,9812,ChIJm-GgHQkZ6zkRgZPZ2SOJWcQ
+Malls,BUSINESS,BG Mall,Kathmandu,+97714383917,07:00-21:00,,,3.9,5321,ChIJWZ7ANdkY6zkRV3bekES14sA
+Electronics,BUSINESS,Best Buy and Sells,"Birendra Marg, Kathmandu",+97715909496,Mon-Thu 16:30-21:30; Fri 16:30-18:30; Sat closed; Sun 16:30-21:30,,,4.9,185,ChIJpwhj6QcZ6zkRiURWeNZc1uc
+Electronics,BUSINESS,Brother-mart,"Putali Sadak, Kathmandu",+9779801877856,Mon-Fri 09:30-19:30; Sat closed; Sun 09:30-19:30,,,4.8,477,ChIJgSDVCVQX6zkRe7aqO_00jqc
+Electronics,BUSINESS,Zolpa Store,"Ramshah Path, Kathmandu",+9779708085445,Mon-Fri 09:30-19:30; Sat 10:30-19:30; Sun 09:30-19:30,,,4.8,455,ChIJl3A9JBAZ6zkRm8nLeJq-I40
+Electronics,BUSINESS,Maxell Computer & Suppliers Pvt. Ltd,Kathmandu,+9779811770082,10:00-21:00,,,4.7,1139,ChIJV2cV7F4Z6zkRLJQE2Og_AL0
+Electronics,BUSINESS,Kapan Electric & Electronics Centre,Kapan,+97714812762,08:00-21:00,,,4.5,294,ChIJzdzEV-cb6zkR4rF63r0JY4c
+Electronics,BUSINESS,Neo Store - Putalisadak,"171 Hattisar Sadak, Kathmandu",+9779801200108,Mon 09:00-17:00; Tue-Sun 10:00-07:30,,,4.5,65,ChIJgb6wev4Z6zkRIgrBDLmd3iA
+Souvenirs & Handicrafts,BUSINESS,Goodluck Handicrafts,"Thamel Marg, Kathmandu",+9779813934493,24h,,,5.0,336,ChIJf5b9K6EZ6zkR_LmO4pXCll8
+Souvenirs & Handicrafts,BUSINESS,Legend's Khukuri Gallery Pvt. Ltd,"26 Narsingh Chok, Kathmandu",+97714548826,09:00-21:00,,,5.0,56,ChIJpSBoAf0Y6zkRIDrxK-qQKMY
+Souvenirs & Handicrafts,BUSINESS,Knendu Craft,"JP Rd, Kathmandu",+9779851120870,08:00-22:00,,,4.9,55,ChIJg3XbKgAZ6zkReOxEwhAtMBA
+Souvenirs & Handicrafts,BUSINESS,Kathmandu Art & Handicraft (Singing Bowls),"Narsingh Chowk Marg, Kathmandu",+9779851083746,Mon-Fri 09:00-20:45; Sat 11:00-20:00; Sun 09:00-20:45,,,4.8,99,ChIJJ658qv0Y6zkRaBOrWG5SxIs
+Souvenirs & Handicrafts,BUSINESS,Lotus Thanka Art Handicrafts,"Shree Gha Bihar Rd, Kathmandu",+9779851078104,08:00-21:00,,,4.9,39,ChIJxelX6_4Y6zkRqegbKiho4R8
+Souvenirs & Handicrafts,BUSINESS,Nepalaya Handicraft,Kathmandu,+9779813822260,08:30-22:30,,,4.8,24,ChIJdxQUyIsZ6zkRdOfhmHrvoyE
+Trekking Gear,BUSINESS,Ocean Trekking Gear,"Nursing Chowk, Thamel",+9779818335825,08:00-22:00,,,5.0,1331,ChIJ_TxNIjYZ6zkRGA4hiL0r6qc
+Trekking Gear,BUSINESS,Goreto Gear Traders,Kathmandu,+9779851016852,08:00-22:00,,,5.0,879,ChIJdRz-0vwY6zkRF8aIniz0OOY
+Trekking Gear,BUSINESS,Himalaya Gears,"Thamel Marg, Kathmandu",+9779851168665,Mon-Tue 09:00-21:00; Wed 09:30-21:00; Thu-Sun 09:00-21:00,,,5.0,740,ChIJuZKCDYUZ6zkRsQtp8Ye_2CM
+Trekking Gear,BUSINESS,Himal Outdoor (trekking gear rental),"JP Rd, Kathmandu",+9779849800304,09:00-20:30,,,4.9,653,ChIJh4TcSfwY6zkRNnZWwR16VqA
+Trekking Gear,BUSINESS,Outdoor Compass Shop,"Thabahi Sadak, Kathmandu",+9779851338978,Mon-Fri 09:00-22:00; Sat 09:30-22:00; Sun 09:00-22:00,,,4.9,296,ChIJu1psC_0Y6zkR6cpqc5fw7zg
+Trekking Gear,BUSINESS,Sherpa Adventure Gear,"Next to Nepal Investment Mega Bank, 20 Chaksibari",+9779823383447,09:00-20:30,,,4.2,174,ChIJn1wX9_wY6zkRYnNKErzStcY
+Thrift & Second-hand,BUSINESS,Ortus Thrift,Kathmandu,+9779840748388,Mon-Fri 11:00-19:00; Sat 00:00-19:00; Sun 11:00-19:00,,,5.0,59,ChIJJUjhRAAZ6zkR30FRjKIyQFI
+Thrift & Second-hand,BUSINESS,Antidote Thrift Store,"Kupondole Rd, Lalitpur",+9779818505324,Mon-Fri 11:00-18:30; Sat closed; Sun 11:00-18:30,,,4.9,35,ChIJnfDPk-AZ6zkR6WHzUxxF78g
+Thrift & Second-hand,BUSINESS,House of Thrift,"Ramhiti Boudha Rd, Kathmandu",+9779818273135,11:00-08:00,,,5.0,12,ChIJ02aLXAAb6zkRYa4LckcM2eE
+Thrift & Second-hand,BUSINESS,Thrift Bazar Nepal,Kathmandu Valley,+9779827871874,24h,,,5.0,9,ChIJwfRJVgAb6zkRovZMUmUwG70
+Thrift & Second-hand,BUSINESS,Thrift by Kush,"Hadigaun Marga, Kathmandu",+9779705010186,10:30-18:30,,,4.6,9,ChIJBdj7ZQAZ6zkRxDLYsyO7HO4
+Thrift & Second-hand,BUSINESS,ReFashion Thriftstore,Lalitpur,+9779828159594,11:00-19:00,,,4.4,29,ChIJnS03YQAZ6zkRPIYrp3TUe0Q
+Heritage Sites,PLACE,Pashupatinath Temple,"Pashupati Nath Road, Kathmandu",,10:00-17:00,,,4.7,42525,ChIJq6qqqhoZ6zkRkZDfYAp9TEI
+Heritage Sites,PLACE,Kathmandu Durbar Square,Kathmandu,,,,,4.5,40702,ChIJcXj30VcY6zkR_UGmBRA5sMU
+Heritage Sites,PLACE,Patan Durbar Square,Lalitpur,,,,,4.6,33819,ChIJsS-qDcUZ6zkRMLWXgKN_GW8
+Heritage Sites,PLACE,Bhaktapur Durbar Square,"Durbar Square, Bhaktapur",,09:00-18:00,,,4.6,24386,ChIJMd8y7K8a6zkR_ZuvMec5o90
+Heritage Sites,PLACE,Boudhanath Stupa,"Boudha, Kathmandu",,24h,,,4.7,23313,ChIJDx-VStob6zkRvcORSCO72j0
+Heritage Sites,PLACE,Swayambhunath (Swayambhu Mahachaitya),Kathmandu,,24h,,,4.6,21561,ChIJrciCm40Y6zkR93t5EOS9Ma4
+Heritage Sites,PLACE,Changu Narayan Temple,"Changunarayan, Bhaktapur",,07:00-19:00,,,4.7,850,ChIJ-wGgSDcb6zkRKGRrJGtcoGk
+Viewpoints & Hikes,PLACE,Chandragiri Hills Cable Car,"Bottom station, Chandragiri",+97715970796,08:00-18:00,,,4.5,6767,ChIJaS3HxBMj6zkRe4Y7ecFsqBM
+Viewpoints & Hikes,PLACE,Shivapuri Nagarjun National Park,"Budhanilkantha, Kathmandu",+97714370355,,,,4.4,6125,ChIJbSMZfDQc6zkRsS9kHIModWQ
+Viewpoints & Hikes,PLACE,Nagarkot View Tower,"Nagarkot, Bhaktapur",,24h,,,4.2,3145,ChIJW_8-fd8F6zkR1LdfkutfEt8
+Viewpoints & Hikes,PLACE,Phulchowki Hill,"Godawari, Lalitpur",,,,,4.5,441,ChIJdfyXNoYR6zkR6CqtxsTNdDA
+Viewpoints & Hikes,PLACE,Lakhuri Bhanjyang,"Lamatar, Lalitpur",,24h,,,4.4,288,ChIJ55-2kiwR6zkRY4uitAtp0oQ
+Viewpoints & Hikes,PLACE,Champadevi Hiking Trail,Kirtipur,,,,,4.8,79,ChIJFWMKRAA96zkR6GlvIRRbUx8
+Tours & Activities,BUSINESS,Third Rock Adventures,"Keshar Mahal Marg, Kathmandu",+9779851055684,Mon-Fri 24h; Sat 10:00-00:00; Sun 24h,,,5.0,542,ChIJMRvQcv0Y6zkR7Msgve7vfYA
+Tours & Activities,BUSINESS,Magic Expedition and Tours,"Z Street, Kathmandu",+9779851066279,07:00-22:00,,,5.0,138,ChIJ55-yyvwY6zkRTGiROpIMiFY
+Tours & Activities,BUSINESS,Attractive Travels and Tours Pvt. Ltd,Kathmandu,+9779851048567,06:00-22:00,,,5.0,131,ChIJO22TD_wY6zkRGToILUlJfTA
+Tours & Activities,BUSINESS,Namaste Nepal Travels and Tours,Kathmandu,+9779869802040,08:00-20:30,,,4.9,168,ChIJqZaNYekZ6zkRA7XZD852uC8
+Tours & Activities,BUSINESS,Outshine Adventure Pvt. Ltd,"Paknajol Chock, Kathmandu",+97714701444,24h,,,4.9,123,ChIJMdwg1_wY6zkRrn1bF-a02ug
+Tours & Activities,BUSINESS,Guru Travels Limited,"Durbar Marg, Kathmandu",+9779851334626,Mon-Fri 09:30-18:00; Sat 10:00-17:00; Sun 09:30-18:00,,,4.8,629,ChIJ1Ut9rtkZ6zkR5rRCD5Vof2A
+Movies,BUSINESS,Durbar Cinemax (QFX),Kathmandu,+97715350266,07:30-23:00,,,4.2,448,ChIJEYP1bqsZ6zkRs1WtMpZ3Dio
+Movies,BUSINESS,Ranjana Cineplex,"5th Floor, Phasikyaba Marg, Kathmandu",+97715919495,24h,,,4.1,923,ChIJY3YW9b0Z6zkRicdCkQO98dQ
+Movies,BUSINESS,One Cinemas Baneshwor,"Eyeplex Mall, 4th Floor",+97715903206,08:00-21:00,,,4.1,1786,ChIJh_4NaKcZ6zkR_g8LO-Gyddo
+Movies,BUSINESS,QFX Cinemas Chhaya Center,"Chhaya Center, Kathmandu",,,,,4.1,3064,ChIJN5UdZ_0Y6zkRCyNR-05Y_Lw
+Movies,BUSINESS,Big Movies,"Kamal Pokhari, Kathmandu",+97714011643,08:00-21:00,,,4.0,6190,ChIJeeyYHgkZ6zkRXt_MZC518x8
+Movies,BUSINESS,"QFX Cinemas, City Square Mall",Kathmandu,+97715422566,,,,3.9,465,ChIJL5aPVWYZ6zkRm3xdzIHzt4Q
+Event & Movie Tickets,APP,Khalti Events,,,,events.khalti.com,"Concert, show and event tickets",,,
+Event & Movie Tickets,APP,eTicketNepal,,,,,Event ticketing (official partner for trade fairs),,,
+Event & Movie Tickets,APP,QFX Cinemas,,,,qfxcinemas.com,"Movie tickets for QFX halls (app, site, Khalti)",,,
+Event & Movie Tickets,APP,Big Movies,,,,bigmovies.com.np,"Movie tickets for Big Movies, Kamal Pokhari",,,
+Classes & Workshops,BUSINESS,Madison Culinary & Tourism Academy,Kathmandu,+9779801355357,Mon-Fri 06:00-17:00; Sat closed; Sun 06:00-17:00,,,5.0,122,ChIJy34qWNYZ6zkR9L7V5oePJ3g
+Classes & Workshops,BUSINESS,Nepal Cooking School,"Opposite to Ganesh Temple, Paknajol Marg, Kathmandu",+9779803894085,09:00-20:00,,,4.9,420,ChIJ-QSAdewZ6zkR2f8DKAyMIOs
+Classes & Workshops,BUSINESS,"2 Sisters Nepal Cooking School, Kathmandu","Boudha Dharatole, Kathmandu",+9779803841560,08:30-21:00,,,5.0,92,ChIJu4KioOgZ6zkRjgV8HU9mz0w
+Classes & Workshops,BUSINESS,Namaste Cooking School,Kathmandu,+9779851334565,09:00-17:00,,,5.0,76,ChIJ_a6D-wcZ6zkR8DmAmr9a9EE
+Classes & Workshops,BUSINESS,Kathmandu Cooking Academy,"Yapikhya Marg, Kathmandu",,Mon 08:00-20:00; Tue-Sun 08:00-21:00,,,4.8,84,ChIJH_2ppG_gWEgRF-zd4FtW-SY
+Classes & Workshops,BUSINESS,Outdoor Cooking with Prakriti,"Buddhi Sagar Marg, Kathmandu",+9779851230138,09:00-17:00,,,5.0,20,ChIJqbQiCa-ojKMRpKGefXYqJlY
+Home Service Apps,APP,Bhetayo,,,,,"15+ home and office services: plumbing, electrical, AC, cleaning, pest control",,,
+Home Service Apps,APP,Sajilo Sewa,,,,,"50+ home services in Kathmandu, Lalitpur and Bhaktapur",,,
+Home Service Apps,APP,Sewa App,,,,,Home service marketplace based in Kathmandu,,,
+Plumbers,BUSINESS,Wow Sewa,"Jamuna Marga, Machhapokhari, Kathmandu",+9779762424318,24h,,,5.0,357,ChIJ606ytj4Z6zkRygyNxSzLUrk
+Plumbers,BUSINESS,Santosh Plumbing Service,Budhanilkantha,+9779808073906,,,,5.0,105,ChIJk9pq0-4b6zkRrS3sXSXqly4
+Plumbers,BUSINESS,Ganesh Bahadur Khadka Plumbing,"Uday Basti, Lalitpur",+9779867615060,24h,,,5.0,78,ChIJKzha47V-1kMRFVZGTUhE1ZM
+Plumbers,BUSINESS,Surendra Tamang Plumbing Service,Kathmandu,+9779808180585,24h,,,5.0,68,ChIJi2pwxcsZ6zkRI_eEq66itGQ
+Plumbers,BUSINESS,All Time Plumbing Service,Budhanilkantha,+9779841428103,24h,,,4.9,79,ChIJ0XRmI0Mb6zkRdTWwuedjFEI
+Plumbers,BUSINESS,Madhuram Thapa Plumbing Service,Kathmandu,+9779841771395,24h,,,4.8,139,ChIJM9lHzRcZ6zkRlBkHhDjobXo
+Electricians,BUSINESS,Electrician Service Nepal 24,"Narayanhiti Path, Kathmandu",+9779709104586,24h,,,4.9,236,ChIJQb10PNwZ6zkR3iR2CVjDPFA
+Electricians,BUSINESS,Hamro Electrical Sewa,"Amrit Marg, Kathmandu",+9779705469830,24h,,,5.0,63,ChIJJ9U_u_QZ6zkRbeo51tb7ylM
+Electricians,BUSINESS,Electrician Service Nepal by Saroj,Kathmandu,+9779767982526,24h,,,4.9,105,ChIJK8osSgAZ6zkRJF0StDULceA
+Electricians,BUSINESS,Electrician Ajay Sony Nepal Service,Kathmandu,+9779843013430,24h,,,4.8,231,ChIJxfpSYwAZ6zkRYbSGWWREyfc
+Electricians,BUSINESS,Super Electrical Services Nepal,Kathmandu,+9779768987361,24h,,,5.0,38,ChIJib1XToYZ6zkRABJ-4P3kwr4
+Electricians,BUSINESS,Smart Electrician Service Nepal,Kathmandu,+9779704557848,24h,,,4.8,115,ChIJdZtbYgAZ6zkRHdv30WULfEw
+AC & Appliance Repair,BUSINESS,Friendly AC and Refrigeration Pvt. Ltd,"Bhatbhateni, Kathmandu",+9779851325416,24h,,,5.0,47,ChIJIWxviasZ6zkRWAvYr0XiU7A
+AC & Appliance Repair,BUSINESS,Kathmandu AC Repair & Service,Kathmandu,+9779765011065,07:00-21:00,,,4.9,59,ChIJW5PMR4kZ6zkRPPi_9CyBys8
+AC & Appliance Repair,BUSINESS,"Fridge, Washing Machine & AC Repair",Kathmandu,+9779847685975,24h,,,4.8,75,ChIJmQ53yrIZ6zkRxBEHlSLf4Co
+AC & Appliance Repair,BUSINESS,Bluediamond Service Center,Kathmandu,+9779768770060,24h,,,4.7,100,ChIJ11X_xQ4Z6zkRRVWeUDWcp_s
+AC & Appliance Repair,BUSINESS,All Home Appliances Repair Center,"Kupondole Rd, Lalitpur",+9779841031631,24h,,,4.5,78,ChIJe72PouoZ6zkRES06ZhlBkY4
+Cleaning & Pest Control,BUSINESS,Pest Defence Service Pvt. Ltd,Kathmandu,+9779808326233,24h,,,4.9,1153,ChIJI6jy2KAZ6zkREdph8FjF0cM
+Cleaning & Pest Control,BUSINESS,Orange Ball Pvt. Ltd,"Basundhara, Kathmandu",+9779802344322,24h,,,4.9,1120,ChIJbfbugkoZ6zkRceS3yPWfhHc
+Cleaning & Pest Control,BUSINESS,Nepal Pest Control Cleaning,"Janakalyan chowk, Kathmandu",+9779820565466,24h,,,5.0,87,ChIJ4Ww6n0oZ6zkR_cfnmluOg70
+Cleaning & Pest Control,BUSINESS,Sayonara Pest Management Service Pvt. Ltd,"Buddhamarga, Kathmandu",+9779810303010,00:00-23:00,,,5.0,31,ChIJ6faTdNo-m4kRJU70hpL1ytM
+Cleaning & Pest Control,BUSINESS,Royal Cleaning Services and Suppliers,"Bullbulley, Kathmandu",+9779851239227,09:00-17:00,,,4.7,1520,ChIJe4EW9L8Z6zkRcrkW55QrDBI
+Cleaning & Pest Control,BUSINESS,Kucho Cleaning and Pest Control Services,"Kholcha Pokhari Marg Purba, Lalitpur",+97714621398,08:00-18:00,,,4.7,135,ChIJXR18GgAZ6zkRoX8_Rq3gY8U
+Movers,BUSINESS,Ramro Packers and Movers Nepal,"Araniko Highway, Kathmandu",+9779841501451,24h,,,5.0,170,ChIJdfL3UHIyjAURV_x7ZXj3aMg
+Movers,BUSINESS,Packers and Movers Nepal,Lalitpur,+9779701087178,24h,,,5.0,119,ChIJsyAVRD3ujEERZUvnGP-w06U
+Movers,BUSINESS,Namaste Packers and Movers Pvt Ltd,Kathmandu,+9779851226669,24h,,,4.9,314,ChIJBaJ2fhwZ6zkRhl9km1DWip8
+Movers,BUSINESS,Nepal Packers and Movers,Kathmandu,+9779849635563,24h,,,4.9,141,ChIJu1GEsFAZ6zkRpdLgD1RlSKU
+Movers,BUSINESS,Nepal City Packers and Movers,"Kupondole Rd, Lalitpur",+9779851364869,Mon-Fri 24h; Sat closed; Sun 24h,,,5.0,59,ChIJ1_C4-2aGJYURoos2mIfwwPc
+Movers,BUSINESS,Quick Movers and Packers Nepal,Kathmandu,+9779860038562,24h,,,4.9,106,ChIJ18FKWaob6zkRKDNtxaBZxY0
+Painters & Carpenters,BUSINESS,Biswaz Interior & Home Plan,Kathmandu,+9779841387920,Mon 10:30-21:00; Tue-Fri 10:00-21:00; Sat closed; Sun 10:00-21:00,,,5.0,42,ChIJ2-ndoq0Z6zkRbqsznhdwEP8
+Painters & Carpenters,BUSINESS,Repairing Service Nepal,Kathmandu,+9779802302562,09:00-17:00,,,4.8,58,ChIJvyZPKCoZ6zkRIRT5VqjzxbI
+Painters & Carpenters,BUSINESS,Painting Service Nepal,Kathmandu,+9779700590288,24h,,,4.8,53,ChIJjRpvGgAj6zkR9sGRpgr7Ynw
+Painters & Carpenters,BUSINESS,Harry's Painting Services,"Boudha - Jorpati Rd, Kathmandu",+9779761761947,24h,,,5.0,18,ChIJNYLuWqYb6zkRwRanmy2RhR4
+Painters & Carpenters,BUSINESS,Asn House Painting Service,Kathmandu,+9779845915826,24h,,,4.8,32,ChIJ46aF_-UZ6zkRpUoYFF6FJv4
+Painters & Carpenters,BUSINESS,Khojnu Home Service,Kathmandu,+9779866551703,24h,,,5.0,13,ChIJ-ZcYrckZ6zkRXTOvviAfILs
+Lawyers,BUSINESS,Imperial Law Associates,"Gravity Center, Anamnagar",+9779823388975,Mon-Fri 09:00-18:00; Sat closed; Sun 09:00-18:00,,,4.9,591,ChIJIXHylPgZ6zkRDzXVsE7i4XU
+Lawyers,BUSINESS,Lexis & Legis Law Associates,"Tanka Prasad Ghumti Sadak, Kathmandu",+9779856044154,24h,,,5.0,104,ChIJuwhUjL0Z6zkRQ7i0DoRzdfQ
+Lawyers,BUSINESS,Bhandari Law and Partners,"10 Park Ln, Kathmandu",+9779808811027,24h,,,4.9,241,ChIJ-VfykXpOh24R-dHD56VvIm4
+Lawyers,BUSINESS,Paragon Law Associates,Kathmandu,+9779845062652,24h,,,4.9,176,ChIJrcAyHzkZ6zkREQloY4ZCB6A
+Lawyers,BUSINESS,Surya Law Firm,Anamnagar-29,+9779848509269,24h,,,5.0,65,ChIJZcPNkp3fn2gRsFEyqqcHMW8
+Lawyers,BUSINESS,Law Firm Nepal,Kathmandu,+9779846905010,24h,,,5.0,61,ChIJBQjCU3cZ6zkRbJjjjHBm8HA
+Accountants,BUSINESS,"B Aryal & Associates, Chartered Accountants","Tindhara Complex, Kathmandu",+9779849821928,Mon-Fri 10:00-17:30; Sat closed; Sun 10:00-17:30,,,5.0,42,ChIJAUn32KkZ6zkRx2saNwJ6rZ0
+Accountants,BUSINESS,GFCS Corporate Advisors,"Swatantra Marg, Kathmandu",+9779802360825,Mon-Fri 09:00-18:00; Sat closed; Sun 09:00-18:00,,,4.8,202,ChIJfW18LGEZ6zkR9UBWvXfL5M0
+Accountants,BUSINESS,BK Agrawal & Co,"Saraswati Vatika, Kathmandu",+97714581865,Mon-Fri 10:00-18:00; Sat closed; Sun 10:00-18:00,,,4.8,53,ChIJcTH6QnEZ6zkRJWoa2fDG_jE
+Accountants,BUSINESS,P. Koirala & Associates,"Seto Dhoka Marg, Kathmandu",+9779709065905,Mon-Fri 10:00-17:00; Sat closed; Sun 10:00-17:00,,,5.0,17,ChIJ-2i3OKFxK08RISVh0AHoFhI
+Accountants,BUSINESS,NBSM & Associates,Kathmandu,+97714533069,Mon-Fri 09:00-18:00; Sat closed; Sun 09:00-18:00,,,4.6,45,ChIJ9735UQ4Z6zkRbHjptNzPf64
+Accountants,BUSINESS,"SSA Associates, Chartered Accountants","Sama Marga, Kathmandu",+97715359874,Mon-Fri 10:00-18:00; Sat closed; Sun 10:00-18:00,,,4.7,15,ChIJafTFHgAZ6zkRgKgC9GsVSUw
+IT & Web,BUSINESS,Web House Nepal,Kathmandu,+9779801194962,Mon-Fri 09:00-18:00; Sat closed; Sun 09:00-18:00,,,4.9,158,ChIJO_3ovkEZ6zkRDhH51SmAujI
+IT & Web,BUSINESS,Twozero Labs,Kathmandu,+9779700066633,09:00-19:00,,,4.9,130,ChIJJSvOiHQZ6zkRM4nNlZz5Z5E
+IT & Web,BUSINESS,Namche Web Pvt Ltd,Kathmandu,+9779849765826,10:00-01:00,,,4.9,104,ChIJObIXOhsZ6zkRSETw-GV8W6w
+IT & Web,BUSINESS,WebX Nepal Pvt. Ltd,"Uttar Dhoka Rd, Kathmandu",+9779703464314,Mon-Fri 24h; Sat closed; Sun 24h,,,4.9,65,ChIJwc_HGtsZ6zkRBY17N6FXNT8
+IT & Web,BUSINESS,Web Creation Nepal,"Adwait Marg, Kathmandu",+97715343968,24h,,,4.8,153,ChIJd_iDJaoZ6zkRzOMG5mddUsQ
+IT & Web,BUSINESS,Genesis Web Technology Pvt. Ltd,"Babarmahal, Kathmandu",+9779851127307,Mon-Fri 09:00-19:00; Sat-Sun closed,,,4.9,58,ChIJv3wZnvwZ6zkRwOg7mn3zfKA
+Printing,BUSINESS,Flex Bazar Printing Press,Kathmandu,+9779815617236,24h,,,5.0,137,ChIJfdWkro4Z6zkRwudVRC1fxtY
+Printing,BUSINESS,Happy Design & Printing Service,"Gurukul CA, Bag Bazar Sadak, Kathmandu",+9779861445749,Mon-Fri 24h; Sat closed; Sun 24h,,,4.9,137,ChIJmXrMvZ0Z6zkR58D5GfIzMxA
+Printing,BUSINESS,Vision Creation Graphic Design & Printing,"Opposite To P.K. Campus, Yeti Plaza, Bag Bazar Sadak",+97715319395,10:00-22:00,,,4.8,73,ChIJ8ZHc2KkZ6zkR2GziP2oS93U
+Printing,BUSINESS,Xpert Copiers,Kathmandu,+97715316098,07:00-20:00,,,4.7,126,ChIJB13jIagZ6zkROho82WpnTrk
+Printing,BUSINESS,Sincere Printing Press,Kathmandu,+97714960395,Mon-Tue 09:30-19:00; Wed-Fri 09:30-07:00; Sat closed; Sun 09:30-19:00,,,4.6,15,ChIJNWx0CSIZ6zkRLWQvoziCEGE
+Printing,BUSINESS,"Sathghumti Printing Press, Bagbazar","Dharma Chakra Galli, Kathmandu",+9779841877618,Mon-Fri 24h; Sat 00:00-00:30; Sun 24h,,,4.4,7,ChIJzeTsUgAZ6zkRoNRmHup7D88
+Education & Language,BUSINESS,Language Hub,"Chhaya Center, Amrit Marg, Thamel",+97715252187,Mon-Fri 06:00-19:00; Sat closed; Sun 07:00-19:00,,,4.8,524,ChIJFU-WdP0Y6zkRczajOFphne8
+Education & Language,BUSINESS,KTM Language Academy Pvt. Ltd,"2 Nursery Rd, Kathmandu",+9779767246877,Mon-Fri 09:00-17:30; Sat closed; Sun 09:00-12:00,,,5.0,28,ChIJ_5ZxMowZ6zkRfa3NJk9l3zQ
+Education & Language,BUSINESS,Bhasa Point,"Kamalpokhari St, Kathmandu",+9779809715822,Mon-Fri 24h; Sat closed; Sun 24h,,,4.9,17,ChIJhxYuHCOJFaoRRHvezjR19sc
+Education & Language,BUSINESS,German Language Institute (GLI),Kathmandu,+97715329933,Mon-Fri 07:00-17:00; Sat closed; Sun 09:00-17:00,,,4.6,47,ChIJqVBSnKwZ6zkRYxNBKKk8txA
+Education & Language,BUSINESS,Shinhwa Korean Language,"Bag Bazar Sadak, Kathmandu",+97714167622,Mon-Fri 06:00-16:00; Sat closed; Sun 10:00-18:00,,,4.5,118,ChIJtbSE2KkZ6zkRbflDKRmjJbA
+Education & Language,BUSINESS,American Language Center,"Bhagwati Bahal Road, Kathmandu",+9779818154416,Mon-Fri 07:00-17:00; Sat closed; Sun 07:00-17:00,,,4.4,129,ChIJc9mMU7AZ6zkRUkY7apszLTE
+Party Venues,BUSINESS,partySewa,"Mandikatar Road Near Childrens Park, Kathmandu",+9779851002747,06:00-23:00,,,5.0,120,ChIJWXTf-fYZ6zkRiBmaW33pusk
+Party Venues,BUSINESS,Smart Palace,Kathmandu,+9779851148279,07:00-22:00,,,4.5,1064,ChIJxyTBJp4Z6zkRDwzfuCw4cag
+Party Venues,BUSINESS,Royal Palace,"Mulpani Kageshwori Manohara - 6, Kathmandu",+9779808284046,07:00-22:00,,,4.5,529,ChIJY2NnlTgb6zkR_0Vr7cgCbtU
+Party Venues,BUSINESS,Parijat Party Event Pvt Ltd,"Baluwapati Chowk, Near Indrayani Bridge, Baniyatar",+9779851108162,Mon-Wed 07:00-22:00; Thu 19:00-22:00; Fri-Sun 07:00-22:00,,,4.4,140,ChIJ62ekMd4Z6zkR5ZOVd58314M
+Party Venues,BUSINESS,Taaj Palace Banquet & Event Venue,"Special Chowk, Kathmandu",+9779823407276,24h,,,4.2,718,ChIJN03jhJYf6zkRHyRLWLw5_nQ
+Party Venues,BUSINESS,Lord Palace Banquet,Tokha,+9779851351217,08:00-22:00,,,4.1,617,ChIJjbuV1bQZ6zkR1KGOIhbYexw
+Photographers,BUSINESS,Studio Thapas,"Kageshwori Manohara-9, Kathmandu",+9779841419161,07:00-21:00,,,5.0,527,ChIJYTnMrzAa6zkRdjmJrN7zwvY
+Photographers,BUSINESS,WelClick Studio,"Chowk Katyani Marg, Kathmandu",+9779851212429,Mon-Fri 08:00-19:30; Sat 10:00-14:00; Sun 08:00-19:30,,,4.9,492,ChIJy5kbmJEZ6zkRvLTlEcoEqHw
+Photographers,BUSINESS,Rays Studio and Productions,"Mandir, Kathmandu",+9779813400444,Mon-Fri 10:00-06:00; Sat closed; Sun 10:00-06:00,,,4.9,253,ChIJhbjgFt8Z6zkRz5RFHzrTdus
+Photographers,BUSINESS,Studio Kipasa,"Ranamukteshwor Marg, Kathmandu",+97715346947,Mon-Fri 10:00-19:00; Sat closed; Sun 10:00-19:00,,,4.9,225,ChIJbcLMYfsZ6zkRjzeHFPrR4gc
+Photographers,BUSINESS,FloydB,"Jyatha Marg, Kathmandu",+9779823307121,Mon-Fri 06:30-19:30; Sat 24h; Sun 06:30-19:30,,,4.9,104,ChIJkcOm4oEZ6zkRm9AZDYiVLHs
+Photographers,BUSINESS,Dream Wedding Photography,"Devkota Sadak, Kathmandu",+9779851224030,Mon-Fri 08:30-19:30; Sat closed; Sun 08:30-19:30,,,4.9,88,ChIJ8TFFGpwZ6zkRXQHnPSnYSTw
+Decorators & Catering,BUSINESS,Floral Events Pvt Ltd,"Devkota Sadak, Kathmandu",+9779861626537,Mon-Fri 10:00-17:00; Sat closed; Sun 10:00-17:00,,,5.0,71,ChIJAcRZ5lUZ6zkRbDdF6D0IITA
+Decorators & Catering,BUSINESS,Decoration Nepal,Kathmandu,+9779861515933,Mon-Fri 10:00-18:00; Sat closed; Sun 10:00-18:00,,,4.9,34,ChIJh4ZI3LYZ6zkRmHUYwGvGP5k
+Decorators & Catering,BUSINESS,Dynamic Event Decoration,Kathmandu,+9779827432237,24h,,,5.0,21,ChIJ8adcagAZ6zkRkh1VBjE0rvE
+Decorators & Catering,BUSINESS,Royal Catering & Rental Service,"Melissa Marga, Kathmandu",+9779867126245,24h,,,4.8,48,ChIJ153kEAAj6zkRtrzgm57_lIg
+Decorators & Catering,BUSINESS,Prestige Event Np,Kathmandu,+9779767344757,09:00-19:00,,,5.0,10,ChIJYyfReaoZ6zkRMwXj8RSjRyc
+Decorators & Catering,BUSINESS,The Event Planner Nepal,Kathmandu,+9779840060955,24h,,,5.0,6,ChIJT6aUTfeHXQsR_fbh50TIpcs
+Property & Rentals,BUSINESS,GP Real Estate Services,Lalitpur,+9779860342444,24h,,,4.9,86,ChIJ00NbO4sX6zkR-JxQQLcRd2M
+Property & Rentals,BUSINESS,Sara Sewa Pvt Ltd,"Kalopul-Ratopul Rd, Kathmandu",+9779705544155,Mon 10:00-18:00; Tue closed; Wed-Sun 10:00-18:00,,,4.8,268,ChIJ_4CTAQAZ6zkRpHnKGH2zy7c
+Property & Rentals,BUSINESS,Gharsansar,"Sitapaila Chowk, Kathmandu",+9779841057532,Mon-Thu 09:00-18:00; Fri-Sat 10:00-16:00; Sun 09:00-18:00,,,4.9,68,ChIJff4aVAQZ6zkRaNDpy-KbsOk
+Property & Rentals,BUSINESS,The Huv Ghar Jagga,"Dilli Bazaar Road, Kathmandu",+9779851316399,24h,,,4.9,33,ChIJW_VTbZkZ6zkRV51dSF7tn-o
+Property & Rentals,BUSINESS,Lalpurja Nepal,Kathmandu,,Mon-Fri 09:30-18:00; Sat closed; Sun 09:30-18:00,,,4.8,39,ChIJsYRHlucZ6zkRJWEO28h8vY8
+Property & Rentals,BUSINESS,Fyafulla Real Estate Services,Kathmandu,+9779851132469,Mon-Fri 10:00-17:00; Sat closed; Sun 09:30-17:30,,,4.6,57,ChIJJ2ET8-QY6zkRN7iXOEqCmIs
+Auto Service,BUSINESS,Indrayani Motor Garage,"Kharibot, Banasthali, Kathmandu",+9779851179708,24h,,,5.0,558,ChIJA7q7megY6zkRCgnDl-kS77k
+Auto Service,BUSINESS,Shrestha Motorcycle Workshop,"Baisdhara, Kathmandu",+9779849881480,24h,,,5.0,177,ChIJQ9uRyvAZ6zkRV4bwLQMRW98
+Auto Service,BUSINESS,Minkey Motorcycle Workshop,Kathmandu,+9779841383138,Mon-Fri 09:30-22:00; Sat 11:00-20:00; Sun 09:30-22:00,,,4.9,237,ChIJCWacH6kZ6zkRpiX9TPC1r2g
+Auto Service,BUSINESS,Best Auto Car Service Center,Kathmandu,+9779701526449,24h,,,4.9,48,ChIJ6wv7GgAZ6zkRHoxrA9QynFA
+Auto Service,BUSINESS,Mahindra Service Center Kathmandu,"Baburam Acharya Sadak, Kathmandu",+9779851129029,24h,,,4.3,109,ChIJIVCPQoQZ6zkRUci-bZFsWco
+Pets & Vets,BUSINESS,Grow Up Pet Shop,"Devkota Sadak, Kathmandu",+9779851125762,08:30-20:30,,,4.9,706,ChIJ14DrGmcZ6zkRy8n7Jjs1bM8
+Pets & Vets,BUSINESS,Paws & Claws Animal Hospital,"Buddhi Sagar Marg, Kathmandu",+9779841209744,08:00-20:00,,,4.9,531,ChIJZe0KWrqjXkIRmyv1dXQFTIQ
+Pets & Vets,BUSINESS,Home Service Veterinary Centre,Kathmandu,+9779860627544,Mon-Thu 05:00-23:00; Fri-Sat 05:00-23:30; Sun 05:00-23:00,,,4.9,328,ChIJ6Z4BVwEZ6zkRrEqbFdyhzBc
+Pets & Vets,BUSINESS,Kathmandu Pet Spa (Pepsicola),"Suncity Chowk, Kathmandu",+9779768383290,09:00-18:00,,,4.9,72,ChIJldbfASEb6zkR5n-Yl-mo7Dk
+Pets & Vets,BUSINESS,Kathmandu Pet Spa,Kathmandu,+9779768383290,09:00-18:00,,,4.8,186,ChIJpeJEKjQZ6zkRfLgLfTo5_50
+Pets & Vets,BUSINESS,Pawfect Pets,"Shree Panchakumari Marg, Kathmandu",+9779765009811,09:00-18:00,,,4.9,56,ChIJNwK5D3EZ6zkRGuA7aytOOLo
+Hotlines,HOTLINE,Police,,100,24h,,,,,
+Hotlines,HOTLINE,Fire,,101,24h,,,,,
+Hotlines,HOTLINE,Ambulance,,102,24h,,,,,
+Hotlines,HOTLINE,Traffic Police,,103,24h,,,,,
+Hotlines,HOTLINE,Tourist Police (toll free),,1144,24h,,,,,
+Hotlines,HOTLINE,"Tourist Police office, Bhrikutimandap",,+97715347041,,,,,,
+24h Hospitals,BUSINESS,Nepal Mediciti Hospital,"Bhaisepati, Lalitpur",+97714217766,24h,,,3.9,1544,ChIJIwNJICYY6zkR86b1T6OO-sU
+24h Hospitals,BUSINESS,Grande International Hospital,"Dhapasi, Tokha",+97715159266,24h,,,3.9,912,ChIJ98DoN80e6zkRTRu-tHvRZ3o
+24h Hospitals,BUSINESS,Norvic International Hospital,"Thapathali, Kathmandu",+97715970032,24h,,,3.1,882,ChIJmZNSY7EZ6zkRuQ-sNEd_LlI
+24h Hospitals,BUSINESS,T.U. Teaching Hospital,"Maharajgunj, Kathmandu",+97714512505,OPD Mon-Fri 08:00-17:00; ER unconfirmed,,,3.6,709,ChIJ19o9QzkZ6zkRJPwu2_pj3ns
+24h Hospitals,BUSINESS,Civil Service Hospital of Nepal,"Minbhawan Marg, Kathmandu",+97714107000,24h,,,3.5,697,ChIJn8GadpQZ6zkR7dsEu9rdFQ0
+24h Hospitals,BUSINESS,Bir Hospital,Kathmandu,+97714221119,24h,,,3.7,667,ChIJCyA3_P8Y6zkRvAaR6dNxxPw
+24h Hospitals,BUSINESS,Patan Hospital,"Lagankhel, Lalitpur",+97715522295,24h,,,3.6,588,ChIJca-bvtEZ6zkRL3lkCFg9iUg
+24h Hospitals,BUSINESS,National Trauma Center Emergency,Kathmandu,+97715326863,24h,,,2.3,39,ChIJ9y2FSAAZ6zkRywpon29VX8A

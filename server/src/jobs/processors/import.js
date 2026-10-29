@@ -1,3 +1,5 @@
-import { importListings } from '../../services/listingImport.js'
+import { runImport } from '../../services/listingImport.js'
 
-export const importListingsJob = (job) => importListings(job.data)
+// Progress is { done, total } rows; the return value holds the counts and row report.
+export const importListingsJob = (job) =>
+  runImport({ ...job.data, onProgress: (progress) => job.updateProgress(progress) })

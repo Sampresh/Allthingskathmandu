@@ -102,15 +102,16 @@ describe('directory maintenance jobs', () => {
       categories: { create: { categoryId: cat.id, isPrimary: true } },
     })
 
-    expect(await syncListings([listing.id])).toEqual({ updated: 1 })
+    expect(await syncListings([listing.id])).toEqual({ updated: 1, scored: 1 })
     const synced = await db.business.findUnique({ where: { id: listing.id } })
     expect(synced.searchExtra).toBe('Plumbers प्लम्बर Thamel')
-    expect(synced.profileScore).toBe(30) // contact 20 + area 10
+    // 4 of the 11 BUSINESS fields: shortDesc, category, phone, area.
+    expect(synced.profileScore).toBe(36)
 
     const [match] = await db.$queryRaw`
       SELECT id FROM businesses
       WHERE "searchVector" @@ to_tsquery('simple', 'thamel:* & plumb:*')`
     expect(match.id).toBe(listing.id)
-    expect(await syncListings()).toEqual({ updated: 0 })
+    expect(await syncListings()).toEqual({ updated: 0, scored: 1 })
   })
 })

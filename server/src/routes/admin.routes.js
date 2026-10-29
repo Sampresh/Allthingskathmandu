@@ -40,6 +40,12 @@ adminRouter.get(
   validate({ params: v.jobParams }),
   listings.importStatus,
 )
+adminRouter.get(
+  '/listings/import/:jobId/result.csv',
+  admin,
+  validate({ params: v.jobParams }),
+  listings.importResult,
+)
 adminRouter.get('/listings/:id', admin, id, listings.detail)
 adminRouter.patch(
   '/listings/:id',
