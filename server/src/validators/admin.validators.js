@@ -110,6 +110,17 @@ export const bulkBody = z
       ctx.addIssue({ code: 'custom', path: ['areaId'], message: 'Pick an area' })
   })
 
+export const logoBody = z.object({
+  publicId: z
+    .string()
+    .regex(/^[\w/-]{1,200}$/)
+    .nullable(),
+})
+export const mediaAltBody = z.object({
+  altText: z.string().trim().min(1, 'Describe the photo').max(150),
+})
+export const historyQuery = z.object({ cursor, limit })
+
 export const importBody = z.object({
   csv: z.string().min(1).max(2_000_000),
   dryRun: z.boolean().default(false),

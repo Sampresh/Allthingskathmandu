@@ -431,9 +431,21 @@ describe('claims and new listings (members)', () => {
 
     const admin = await session('ADMIN', { totpEnabled: true })
     const { accessToken } = await createSession(admin.user, { mfa: true })
-    await call('post', `/admin/listings/${res.body.data.id}/status`, accessToken, {
-      status: 'LIVE',
+    // Admin completes what the publish rules need, then publishes.
+    const area = await db.area.create({
+      data: { slug: 'patan', nameEn: 'Patan', district: 'Lalitpur' },
     })
+    await call('patch', `/admin/listings/${res.body.data.id}`, accessToken, {
+      areaId: area.id,
+      location: { lat: 27.673, lng: 85.325 },
+    })
+    const published = await call(
+      'post',
+      `/admin/listings/${res.body.data.id}/status`,
+      accessToken,
+      { status: 'LIVE' },
+    )
+    expect(published.status).toBe(200)
     expect((await db.user.findUnique({ where: { id: member.user.id } })).role).toBe(
       'BUSINESS_OWNER',
     )

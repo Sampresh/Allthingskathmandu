@@ -126,29 +126,44 @@ export async function updateListing(tx, id, input) {
 }
 
 /**
- * After a listing changes: purge its cached API responses, revalidate its pages (both id and
- * slug tags, the old slug too) and refresh search text and category counts.
+ * After listings change: purge their cached API responses, revalidate their pages (both id
+ * and slug tags, old slugs too) and refresh search text, profile scores and category counts.
+ * listings: [{ id, slug, oldSlug? }].
  */
-export async function afterListingChange({ id, slug, oldSlug }, categoryIds = []) {
+export async function afterListingsChange(listings, categoryIds = []) {
+  if (!listings.length) return
   const categories = categoryIds.length
     ? await db.category.findMany({
-        where: { id: { in: categoryIds } },
+        where: { id: { in: [...new Set(categoryIds)] } },
         select: { id: true, slug: true },
       })
     : []
   await Promise.all([
     queueContentChange({
-      cacheTags: [`listing:${id}`, ...categories.map((c) => `category:${c.id}`), 'home', 'search'],
+      cacheTags: [
+        ...listings.map((l) => `listing:${l.id}`),
+        ...categories.map((c) => `category:${c.id}`),
+        'home',
+        'search',
+      ],
       pageTags: pageTagsFor({
-        listings: [{ id, slug, oldSlug: oldSlug !== slug ? oldSlug : undefined }],
+        listings: listings.map(({ id, slug, oldSlug }) => ({
+          id,
+          slug,
+          oldSlug: oldSlug !== slug ? oldSlug : undefined,
+        })),
         categories,
-        extra: ['home'],
+        extra: ['home', 'emergency'],
       }),
     }),
-    enqueue(QUEUE.DIRECTORY, 'sync-listings', { businessIds: [id] }),
+    enqueue(QUEUE.DIRECTORY, 'sync-listings', { businessIds: listings.map((l) => l.id) }),
     enqueue(QUEUE.DIRECTORY, 'refresh-counts', {}),
   ])
 }
+
+/** afterListingsChange for one listing. */
+export const afterListingChange = (listing, categoryIds = []) =>
+  afterListingsChange([listing], categoryIds)
 
 /** Category ids a listing currently belongs to. */
 export async function categoryIdsOf(client, businessId) {

@@ -12,6 +12,7 @@ import { verifyToken } from '../middleware/auth.js'
 import { requireRole } from '../middleware/requireRole.js'
 import { validate } from '../middleware/validate.js'
 import * as v from '../validators/admin.validators.js'
+import { mediaBody, mediaOrderBody, mediaParams } from '../validators/business.validators.js'
 import { eventUpdate } from '../validators/events.validators.js'
 import { adminMarketQuery } from '../validators/market.validators.js'
 
@@ -30,9 +31,12 @@ const id = validate({ params: v.idParams })
 
 adminRouter.get('/overview', admin, users.overview)
 
-// Listings (ADMIN)
-adminRouter.get('/listings', admin, validate({ query: v.listingListQuery }), listings.list)
+// Listings: MODERATOR may read; every change is ADMIN. Fixed paths come before /:id.
+const listingId = validate({ params: v.idParams })
+adminRouter.get('/listings', validate({ query: v.listingListQuery }), listings.list)
+adminRouter.get('/listings/export', validate({ query: v.listingFilters }), listings.exportCsv)
 adminRouter.post('/listings', admin, validate({ body: v.listingCreate }), listings.create)
+adminRouter.post('/listings/bulk', admin, validate({ body: v.bulkBody }), listings.bulk)
 adminRouter.post('/listings/import', admin, validate({ body: v.importBody }), listings.importCsv)
 adminRouter.get(
   '/listings/import/:jobId',
@@ -46,25 +50,70 @@ adminRouter.get(
   validate({ params: v.jobParams }),
   listings.importResult,
 )
-adminRouter.get('/listings/:id', admin, id, listings.detail)
+adminRouter.get('/listings/:id', listingId, listings.detail)
+adminRouter.get(
+  '/listings/:id/history',
+  validate({ params: v.idParams, query: v.historyQuery }),
+  listings.history,
+)
 adminRouter.patch(
   '/listings/:id',
   admin,
   validate({ params: v.idParams, body: v.listingUpdate }),
   listings.update,
 )
-adminRouter.delete('/listings/:id', admin, id, listings.remove)
+adminRouter.delete('/listings/:id', admin, listingId, listings.remove)
+adminRouter.post('/listings/:id/restore', admin, listingId, listings.restore)
+adminRouter.delete(
+  '/listings/:id/permanent',
+  superAdmin,
+  validate({ params: v.idParams, body: v.permanentDeleteBody }),
+  listings.removePermanently,
+)
 adminRouter.post(
   '/listings/:id/status',
   admin,
   validate({ params: v.idParams, body: v.listingStatusBody }),
   listings.setStatus,
 )
+adminRouter.post('/listings/:id/duplicate', admin, listingId, listings.duplicate)
 adminRouter.post(
   '/listings/:id/assign-owner',
   admin,
   validate({ params: v.idParams, body: v.assignOwnerBody }),
   listings.assignOwner,
+)
+adminRouter.post('/listings/:id/logo/sign', admin, listingId, listings.signLogo)
+adminRouter.put(
+  '/listings/:id/logo',
+  admin,
+  validate({ params: v.idParams, body: v.logoBody }),
+  listings.setLogo,
+)
+adminRouter.post('/listings/:id/media/sign', admin, listingId, listings.signMedia)
+adminRouter.post(
+  '/listings/:id/media',
+  admin,
+  validate({ params: v.idParams, body: mediaBody }),
+  listings.addMedia,
+)
+adminRouter.patch(
+  '/listings/:id/media/order',
+  admin,
+  validate({ params: v.idParams, body: mediaOrderBody }),
+  listings.reorderMedia,
+)
+adminRouter.patch(
+  '/listings/:id/media/:mediaId',
+  admin,
+  validate({ params: mediaParams, body: v.mediaAltBody }),
+  listings.updateMedia,
+)
+adminRouter.delete(
+  '/listings/:id/media/:mediaId',
+  admin,
+  validate({ params: mediaParams }),
+  listings.deleteMedia,
 )
 
 // Moderation queues (MODERATOR and up)

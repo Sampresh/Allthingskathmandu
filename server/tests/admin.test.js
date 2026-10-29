@@ -26,7 +26,6 @@ const jobs = async (queue, name) =>
 
 let admin
 let category
-let area
 
 beforeEach(async () => {
   await resetDb()
@@ -36,7 +35,6 @@ beforeEach(async () => {
   category = await db.category.create({
     data: { slug: 'restaurants', nameEn: 'Restaurants', parentId: group.id },
   })
-  area = await db.area.create({ data: { slug: 'thamel', nameEn: 'Thamel', district: 'Kathmandu' } })
 })
 
 describe('access', () => {
@@ -49,7 +47,8 @@ describe('access', () => {
     expect((await call('get', '/claims', mod.token)).status).toBe(200)
     expect((await call('get', '/reviews', mod.token)).status).toBe(200)
     expect((await call('get', '/reports', mod.token)).status).toBe(200)
-    expect((await call('get', '/listings', mod.token)).status).toBe(403)
+    // Moderators read listings (tests/adminListings.test.js covers what they cannot change).
+    expect((await call('get', '/listings', mod.token)).status).toBe(200)
     expect((await call('get', '/categories', mod.token)).status).toBe(403)
 
     expect((await call('get', '/listings', admin.token)).status).toBe(200)
@@ -63,112 +62,6 @@ describe('access', () => {
     expect((await call('get', '/listings', accessToken)).body.error.code).toBe(
       'TWO_FACTOR_REQUIRED',
     )
-  })
-})
-
-describe('listings', () => {
-  const body = () => ({
-    name: 'Momo Hut',
-    type: 'BUSINESS',
-    shortDesc: 'Steamed momo',
-    categoryIds: [category.id],
-    areaId: area.id,
-    phone: '01-4000000',
-    location: { lat: 27.7154, lng: 85.3123 },
-    hours: { mon: [['10:00', '20:00']] },
-    status: 'LIVE',
-  })
-
-  it('creates with relations, audits, and queues purge, revalidation and search sync', async () => {
-    const res = await call('post', '/listings', admin.token, body())
-    expect(res.status).toBe(201)
-    expect(res.body.data).toMatchObject({
-      slug: 'momo-hut',
-      categoryIds: [category.id],
-      location: { lat: expect.closeTo(27.7154, 4) },
-      hours: { mon: [['10:00', '20:00']], tue: [] },
-    })
-
-    const again = await call('post', '/listings', admin.token, body())
-    expect(again.body.data.slug).toBe('momo-hut-2')
-
-    const [log] = await db.auditLog.findMany({ where: { action: 'business.create' }, take: 1 })
-    expect(log).toMatchObject({ actorId: admin.user.id, entity: 'business' })
-    const purge = (await jobs(QUEUE.CACHE, 'purge'))[0]
-    expect(purge.data.tags).toEqual(expect.arrayContaining(['home', `category:${category.id}`]))
-    const revalidated = (await jobs(QUEUE.REVALIDATE)).flatMap((job) => job.data.tags)
-    expect(revalidated).toEqual(
-      expect.arrayContaining(['listing:momo-hut', 'category:restaurants']),
-    )
-    expect((await jobs(QUEUE.DIRECTORY, 'sync-listings')).length).toBeGreaterThan(0)
-  })
-
-  it('rejects bad input', async () => {
-    const bad = await call('post', '/listings', admin.token, {
-      ...body(),
-      logoUrl: 'https://evil.example/logo.png',
-      website: 'javascript:alert(1)',
-      hours: { mon: [['10:00', '10:00']] },
-      categoryIds: [],
-    })
-    expect(bad.status).toBe(400)
-    const paths = bad.body.error.details.map((d) => d.path)
-    expect(paths).toEqual(expect.arrayContaining(['logoUrl', 'website', 'categoryIds']))
-  })
-
-  it('updates (old slug revalidated), changes status, soft deletes', async () => {
-    const { data } = (await call('post', '/listings', admin.token, body())).body
-    await flushRedis()
-
-    const updated = await call('patch', `/listings/${data.id}`, admin.token, {
-      slug: 'momo-hut-thamel',
-      location: null,
-    })
-    expect(updated.body.data).toMatchObject({ slug: 'momo-hut-thamel', location: null })
-    const tags = (await jobs(QUEUE.REVALIDATE))[0].data.tags
-    expect(tags).toEqual(
-      expect.arrayContaining(['listing:momo-hut', 'listing:momo-hut-thamel', `listing:${data.id}`]),
-    )
-    const [log] = await db.auditLog.findMany({ where: { action: 'business.update' } })
-    expect(log.diff.slug).toEqual({ from: 'momo-hut', to: 'momo-hut-thamel' })
-
-    expect(
-      (await call('post', `/listings/${data.id}/status`, admin.token, { status: 'SUSPENDED' })).body
-        .data.status,
-    ).toBe('SUSPENDED')
-    expect((await call('delete', `/listings/${data.id}`, admin.token)).status).toBe(200)
-    expect((await db.business.findUnique({ where: { id: data.id } })).deletedAt).not.toBeNull()
-    expect((await call('get', `/listings/${data.id}`, admin.token)).status).toBe(404)
-  })
-
-  it('lists with search and filters', async () => {
-    await call('post', '/listings', admin.token, body())
-    await call('post', '/listings', admin.token, {
-      ...body(),
-      name: 'Pizza Place',
-      status: 'DRAFT',
-    })
-    const live = await call('get', '/listings?status=LIVE', admin.token)
-    expect(live.body.data.map((l) => l.name)).toEqual(['Momo Hut'])
-    const found = await call('get', '/listings?q=pizza', admin.token)
-    expect(found.body.data.map((l) => l.name)).toEqual(['Pizza Place'])
-    expect(found.body.data[0].category).toEqual({ id: category.id, nameEn: 'Restaurants' })
-  })
-
-  it('assigns an owner, making a member a business owner', async () => {
-    const listing = await createListing()
-    const member = await createUser()
-    const res = await call('post', `/listings/${listing.id}/assign-owner`, admin.token, {
-      email: member.email,
-    })
-    expect(res.body.data.owner.id).toBe(member.id)
-    expect((await db.user.findUnique({ where: { id: member.id } })).role).toBe('BUSINESS_OWNER')
-
-    const mod = await createUser({ role: 'MODERATOR' })
-    expect(
-      (await call('post', `/listings/${listing.id}/assign-owner`, admin.token, { userId: mod.id }))
-        .status,
-    ).toBe(400)
   })
 })
 
