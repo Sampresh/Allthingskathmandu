@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react'
 import { GroupIcon } from '@/components/common/GroupIcon'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import { ST as T } from '@/components/common/ST'
-import { CardGrid } from '@/components/listing/ListingCard'
+import { FeatureGrid } from '@/components/listing/FeatureCard'
 import { tintFor } from '@/components/listing/ListingLogo'
 import { OpenNowSection } from '@/components/listing/OpenNowSection'
 import { EventCard } from '@/components/events/EventCard'
@@ -146,7 +146,7 @@ function renderSection(section) {
     default:
       return items.length ? (
         <Section key={section.id} section={section}>
-          <CardGrid cards={items} priorityCount={0} />
+          <FeatureGrid cards={items} />
         </Section>
       ) : null
   }

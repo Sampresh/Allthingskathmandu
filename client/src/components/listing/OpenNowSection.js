@@ -5,7 +5,7 @@ import { LocateFixed } from 'lucide-react'
 import { T } from '@/components/common/T'
 import { Chip } from '@/components/ui/Chip'
 import { useGeolocation } from '@/hooks/useGeolocation'
-import { CardGrid } from './ListingCard'
+import { FeatureGrid } from './FeatureCard'
 
 /** "Open now near you": cached list first; with the visitor's location, nearest first. */
 export function OpenNowSection({ sectionId, initialItems }) {
@@ -40,7 +40,7 @@ export function OpenNowSection({ sectionId, initialItems }) {
           </p>
         )}
       </div>
-      <CardGrid cards={items} priorityCount={0} />
+      <FeatureGrid cards={items} />
     </div>
   )
 }
