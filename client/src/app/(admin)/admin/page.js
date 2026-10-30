@@ -19,7 +19,9 @@ import {
 import { PageHeader } from '@/components/admin/PageHeader'
 import { QUEUE_ITEMS, canSee } from '@/components/admin/adminNav'
 import { errorMessage, useToast } from '@/components/admin/Toast'
+import { AnimatedNumber } from '@/components/ui/AnimatedNumber'
 import { Button } from '@/components/ui/Button'
+import { GlowCard } from '@/components/ui/GlowCard'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { formatNpr } from '@/lib/format'
 import { audit, overview, purgeCache } from '@/services/admin.service'
@@ -134,7 +136,8 @@ export default function AdminHome() {
               <MetricCard
                 icon={Receipt}
                 label="Revenue this month"
-                value={data ? formatNpr(data.revenueThisMonthNpr) : '—'}
+                value={data?.revenueThisMonthNpr ?? 0}
+                format={(n) => formatNpr(Math.round(n))}
                 href="/admin/payments"
                 loading={loading}
               />
@@ -170,10 +173,7 @@ function SectionTitle({ id, children, action }) {
 
 function Panel({ title, id, action, children, className }) {
   return (
-    <section
-      aria-labelledby={id}
-      className={clsx('rounded-box border border-border bg-surface p-5', className)}
-    >
+    <GlowCard as="section" aria-labelledby={id} className={className}>
       <div className="mb-4 flex items-center justify-between gap-3">
         <h2 id={id} className="font-semibold">
           {title}
@@ -181,7 +181,7 @@ function Panel({ title, id, action, children, className }) {
         {action}
       </div>
       {children}
-    </section>
+    </GlowCard>
   )
 }
 
@@ -202,12 +202,12 @@ function ReviewQueues({ pending, loading, showCounts }) {
           const count = pending?.[queue] ?? 0
           return (
             <li key={href}>
-              <Link
+              <GlowCard
+                as={Link}
                 href={href}
-                className={clsx(
-                  'group flex h-full flex-col gap-3 rounded-box border bg-surface p-4 transition-colors hover:bg-surface-raised',
-                  count > 0 ? 'border-warning' : 'border-border',
-                )}
+                tone={count > 0 ? 'warning' : 'brand'}
+                className={clsx('group h-full', count > 0 && 'bg-warning')}
+                bodyClassName="gap-3 p-4"
               >
                 <span className="flex items-center justify-between">
                   <span
@@ -228,11 +228,13 @@ function ReviewQueues({ pending, loading, showCounts }) {
                     (loading ? (
                       <Skeleton className="mb-1 h-8 w-10" />
                     ) : (
-                      <span className="block text-2xl font-semibold">{count}</span>
+                      <span className="block text-2xl font-semibold">
+                        <AnimatedNumber value={count} />
+                      </span>
                     ))}
                   <span className="block text-sm text-text-muted">{label}</span>
                 </span>
-              </Link>
+              </GlowCard>
             </li>
           )
         })}
@@ -241,12 +243,9 @@ function ReviewQueues({ pending, loading, showCounts }) {
   )
 }
 
-function MetricCard({ icon: Icon, label, value, href, loading }) {
+function MetricCard({ icon: Icon, label, value, format, href, loading }) {
   return (
-    <Link
-      href={href}
-      className="flex items-center gap-4 rounded-box border border-border bg-surface p-5 transition-colors hover:bg-surface-raised"
-    >
+    <GlowCard as={Link} href={href} bodyClassName="flex-row items-center gap-4 p-5">
       <span className="grid size-11 shrink-0 place-content-center rounded-box bg-brand/10 text-brand">
         <Icon aria-hidden="true" className="size-5" />
       </span>
@@ -255,10 +254,12 @@ function MetricCard({ icon: Icon, label, value, href, loading }) {
         {loading ? (
           <Skeleton className="mt-1 h-7 w-20" />
         ) : (
-          <span className="block truncate text-2xl font-semibold">{value}</span>
+          <span className="block truncate text-2xl font-semibold">
+            <AnimatedNumber value={value} format={format} />
+          </span>
         )}
       </span>
-    </Link>
+    </GlowCard>
   )
 }
 

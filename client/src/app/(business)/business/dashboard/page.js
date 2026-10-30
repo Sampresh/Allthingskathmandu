@@ -2,10 +2,13 @@
 
 import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
+import { Eye, Globe, MessageCircle, Navigation, Phone } from 'lucide-react'
 import { MemberOnboarding } from '@/components/business/MemberOnboarding'
+import { AnimatedNumber } from '@/components/ui/AnimatedNumber'
 import { Badge } from '@/components/ui/Badge'
+import { GlowCard } from '@/components/ui/GlowCard'
 import { Skeleton } from '@/components/ui/Skeleton'
-import { StatTile } from '@/components/ui/StatTile'
+import { MiniBars, TrendChart } from '@/components/ui/TrendChart'
 import { useBusinessListing, withListing } from '@/hooks/useBusinessListing'
 import { formatDate } from '@/lib/format'
 import { getStats } from '@/services/business.service'
@@ -18,25 +21,69 @@ const STATUS_HELP = {
   SUSPENDED: ['danger', 'Suspended; contact us'],
 }
 
+// The four ways people get in touch from a listing page, each with its own glow colour.
+const TAPS = [
+  { key: 'calls', label: 'Calls', icon: Phone, tone: 'success' },
+  { key: 'whatsapp', label: 'WhatsApp', icon: MessageCircle, tone: 'success' },
+  { key: 'mapClicks', label: 'Directions', icon: Navigation, tone: 'warning' },
+  { key: 'websiteClicks', label: 'Website', icon: Globe, tone: 'featured' },
+]
+const TONE_TEXT = { success: 'text-success', warning: 'text-warning', featured: 'text-featured' }
+const TREND_DAYS = 14
+
 function Activity({ listingId }) {
   const { data, isPending, isError } = useQuery({
     queryKey: ['business', 'stats', listingId],
     queryFn: () => getStats(listingId),
   })
-  if (isPending) return <Skeleton className="h-28 w-full" />
+  if (isPending) return <Skeleton className="h-96 w-full" />
   if (isError) return <p className="text-danger">Could not load activity.</p>
   const { totals, days } = data
+  const recent = days.slice(-TREND_DAYS)
   return (
     <section aria-labelledby="activity" className="flex flex-col gap-3">
       <h2 id="activity" className="text-lg font-semibold">
         Last 30 days
       </h2>
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
-        <StatTile label="Views" value={totals.views} />
-        <StatTile label="Calls" value={totals.calls} />
-        <StatTile label="WhatsApp" value={totals.whatsapp} />
-        <StatTile label="Directions" value={totals.mapClicks} />
-        <StatTile label="Website" value={totals.websiteClicks} />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <GlowCard className="min-h-80 sm:col-span-2 lg:row-span-2">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <h3 className="flex items-center gap-2 text-sm font-semibold text-text-muted">
+              <Eye aria-hidden="true" className="size-4" />
+              Views
+            </h3>
+            <span className="text-xs text-text-muted">
+              Best day {Math.max(...days.map((d) => d.views)).toLocaleString('en-US')}
+            </span>
+          </div>
+          <p className="mb-4 text-3xl font-semibold">
+            <AnimatedNumber value={totals.views} />
+          </p>
+          <TrendChart
+            name="Views"
+            className="text-brand"
+            points={days.map((d) => ({ label: formatDate(d.date), value: d.views }))}
+          />
+          <p className="mt-2 flex justify-between text-xs text-text-muted">
+            <span>{formatDate(days[0].date)}</span>
+            <span>Today</span>
+          </p>
+        </GlowCard>
+        {TAPS.map(({ key, label, icon: Icon, tone }) => (
+          <GlowCard key={key} tone={tone} className="min-h-40">
+            <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold text-text-muted">
+              <Icon aria-hidden="true" className={`size-4 ${TONE_TEXT[tone]}`} />
+              {label}
+            </h3>
+            <p className="text-3xl font-semibold">
+              <AnimatedNumber value={totals[key]} />
+            </p>
+            <MiniBars
+              values={recent.map((d) => d[key])}
+              className={`mt-auto pt-3 ${TONE_TEXT[tone]}`}
+            />
+          </GlowCard>
+        ))}
       </div>
       <details>
         <summary className="cursor-pointer text-sm font-semibold text-brand">Day by day</summary>

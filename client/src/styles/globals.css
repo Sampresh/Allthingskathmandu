@@ -219,6 +219,84 @@
 }
 
 /*
+ * Glow card (components/ui/GlowCard.js): the border, a soft spotlight and a faint grid follow
+ * the pointer while it is over the card (or a child has focus). GlowCard writes --glow-x/y;
+ * --glow is the tone colour. Layered so a bg-* utility can recolour the border.
+ */
+@layer components {
+  .glow-card {
+    --glow-x: 50%;
+    --glow-y: 0px;
+    position: relative;
+    isolation: isolate;
+    display: block;
+    border-radius: var(--radius-panel);
+    background: var(--color-border);
+    box-shadow: var(--shadow-card);
+  }
+  .glow-card::before,
+  .glow-card-face::before,
+  .glow-card-face::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .glow-card::before {
+    border-radius: inherit;
+    background: radial-gradient(
+      240px circle at var(--glow-x) var(--glow-y),
+      var(--glow),
+      transparent 70%
+    );
+  }
+  .glow-card-face {
+    position: absolute;
+    inset: 1px;
+    overflow: hidden;
+    border-radius: calc(var(--radius-panel) - 1px);
+    background: var(--color-surface);
+  }
+  .glow-card-face::before {
+    background: radial-gradient(
+      380px circle at var(--glow-x) var(--glow-y),
+      color-mix(in srgb, var(--glow) 12%, transparent),
+      transparent 65%
+    );
+  }
+  .glow-card-face::after {
+    background-image:
+      linear-gradient(var(--color-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+    background-size: 26px 26px;
+    mask-image: radial-gradient(
+      220px circle at var(--glow-x) var(--glow-y),
+      black,
+      transparent 75%
+    );
+  }
+  .glow-card:hover::before,
+  .glow-card:focus-within::before,
+  .glow-card:hover .glow-card-face::before,
+  .glow-card:focus-within .glow-card-face::before {
+    opacity: 1;
+  }
+  .glow-card:hover .glow-card-face::after,
+  .glow-card:focus-within .glow-card-face::after {
+    opacity: 0.6;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .glow-card::before,
+    .glow-card-face::before,
+    .glow-card-face::after {
+      transition: none;
+    }
+  }
+}
+
+/*
  * English / Nepali toggle. Both languages are in the cached HTML; <html data-lang> picks
  * which one shows, so pages stay static (ISR) and switching costs no request.
  */
