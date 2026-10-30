@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Siren } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { GroupIcon } from '@/components/common/GroupIcon'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import { ST as T } from '@/components/common/ST'
@@ -171,13 +171,6 @@ export default async function HomePage() {
             <T k="home.subtitle" />
           </p>
           <SearchBar areas={areas?.data ?? []} />
-          <Link
-            href="/emergency"
-            className="inline-flex min-h-11 items-center gap-2 self-start text-sm font-semibold text-danger hover:underline"
-          >
-            <Siren aria-hidden="true" className="size-4" />
-            <T k="footer.emergency" />
-          </Link>
           {!hasListings && (
             <p className="text-text-muted">
               <T k="home.empty" />

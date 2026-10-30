@@ -16,6 +16,9 @@ const DEFAULT_LIMIT = 8
 const MAX_LIMIT = 24
 const POPULAR_DAYS = 7
 
+// Hotlines (Police, Fire, Ambulance) live on /emergency and in the footer, not in home card rows.
+const notHotlineSql = Prisma.sql`b.type <> 'HOTLINE'`
+
 const limitOf = (section) =>
   Math.min(Math.max(Number(section.config?.limit) || DEFAULT_LIMIT, 1), MAX_LIMIT)
 
@@ -31,7 +34,7 @@ const loaders = {
   OPEN_NOW: (section, point) =>
     cards({
       point,
-      where: Prisma.sql`${liveSql} AND ${openNowSql()}`,
+      where: Prisma.sql`${liveSql} AND ${notHotlineSql} AND ${openNowSql()}`,
       sortKey: organicSortSql(point),
       limit: limitOf(section),
     }),
@@ -39,7 +42,7 @@ const loaders = {
   FEATURED: (section, point) =>
     cards({
       point,
-      where: Prisma.sql`${liveSql} AND ${featuredSql}`,
+      where: Prisma.sql`${liveSql} AND ${notHotlineSql} AND ${featuredSql}`,
       sortKey: featuredSortSql(null),
       limit: limitOf(section),
     }),
@@ -53,7 +56,7 @@ const loaders = {
         WHERE date >= CURRENT_DATE - ${POPULAR_DAYS}::int
         GROUP BY "businessId"
       ) pop ON pop."businessId" = b.id`,
-      where: liveSql,
+      where: Prisma.sql`${liveSql} AND ${notHotlineSql}`,
       sortKey: Prisma.sql`-pop.views`,
       limit: limitOf(section),
     }),

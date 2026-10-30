@@ -7,7 +7,7 @@ import { purgeTags } from '../src/services/cache.js'
 import { resetSynonymCache } from '../src/services/search.js'
 import { resetDb } from './helpers/db.js'
 import { createUser, flushRedis } from './helpers/auth.js'
-import { LIVE_RESTAURANTS, THAMEL, seedDirectory } from './helpers/directory.js'
+import { ALWAYS_OPEN, LIVE_RESTAURANTS, THAMEL, seedDirectory } from './helpers/directory.js'
 
 const app = createApp()
 const get = (path) => request(app).get(`/api/v1/public${path}`)
@@ -380,8 +380,22 @@ describe('areas, plans, settings, home', () => {
         { type: 'EVENTS', title: 'Hidden', sortOrder: 5, isActive: false },
       ],
     })
+    // Open, Featured and popular, but hotlines stay off the home card rows.
+    const police = await db.business.create({
+      data: {
+        slug: 'police-100',
+        name: 'Police',
+        shortDesc: 'Nepal Police',
+        type: 'HOTLINE',
+        phone: '100',
+        status: 'LIVE',
+        hours: ALWAYS_OPEN,
+        featuredUntil: new Date(Date.now() + 86400000),
+      },
+    })
     await db.listingStatDaily.createMany({
       data: [
+        { businessId: police.id, date: new Date(), views: 500 },
         { businessId: fx.listings['momo-house'].id, date: new Date(), views: 50 },
         { businessId: fx.listings['pizza-palace'].id, date: new Date(), views: 10 },
       ],
