@@ -1,19 +1,13 @@
 import '@/styles/globals.css'
-import { Fraunces, Source_Sans_3 } from 'next/font/google'
+import { Plus_Jakarta_Sans } from 'next/font/google'
 import { SITE_NAME, SITE_URL } from '@/lib/site'
 import { ERROR_BUFFER_SCRIPT } from '@/lib/errorBuffer'
 import { LANG_COOKIE } from '@/lib/i18n'
 import { Providers } from './providers'
 
-// Self-hosted at build time (no request to Google from the browser). Headings use one
-// static weight of Fraunces; body text the Source Sans 3 variable font.
-const heading = Fraunces({
-  subsets: ['latin'],
-  weight: '600',
-  display: 'swap',
-  variable: '--font-heading',
-})
-const body = Source_Sans_3({ subsets: ['latin'], display: 'swap', variable: '--font-body' })
+// Self-hosted at build time (no request to Google from the browser). One variable font
+// carries headings and body text.
+const sans = Plus_Jakarta_Sans({ subsets: ['latin'], display: 'swap', variable: '--font-body' })
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
@@ -27,8 +21,8 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#fbf9f6' },
-    { media: '(prefers-color-scheme: dark)', color: '#15120f' },
+    { media: '(prefers-color-scheme: light)', color: '#fbfaf7' },
+    { media: '(prefers-color-scheme: dark)', color: '#0e1220' },
   ],
 }
 
@@ -41,7 +35,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       data-lang="en"
-      className={`${heading.variable} ${body.variable}`}
+      className={sans.variable}
       suppressHydrationWarning
     >
       <head>

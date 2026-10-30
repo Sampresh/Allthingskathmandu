@@ -26,7 +26,7 @@ export function BottomBar() {
   return (
     <nav
       aria-label={t('nav.main')}
-      className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-20 border-t border-border/60 bg-surface/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md lg:hidden"
     >
       <ul className="grid grid-cols-5">
         {items.map(({ href, label, Icon }) => (
@@ -41,7 +41,14 @@ export function BottomBar() {
                 isActive(href) ? 'text-brand' : 'text-text-muted',
               )}
             >
-              <Icon aria-hidden="true" className="size-6" />
+              <span
+                className={clsx(
+                  'inline-flex h-7 w-12 items-center justify-center rounded-pill',
+                  isActive(href) && 'bg-brand/10',
+                )}
+              >
+                <Icon aria-hidden="true" className="size-5" />
+              </span>
               <T k={label} />
             </Link>
           </li>

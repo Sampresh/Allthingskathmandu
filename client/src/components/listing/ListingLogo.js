@@ -51,7 +51,7 @@ export function ListingLogo({
       aria-hidden={alt ? undefined : true}
       role={alt ? 'img' : undefined}
       aria-label={alt || undefined}
-      className={clsx(box, 'inline-flex items-center justify-center font-display')}
+      className={clsx(box, 'inline-flex items-center justify-center font-display font-bold')}
       style={{
         width: size,
         height: size,

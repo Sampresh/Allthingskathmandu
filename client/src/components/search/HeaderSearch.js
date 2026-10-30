@@ -15,7 +15,7 @@ export function HeaderSearch() {
       </label>
       <Search
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-3 size-5 -translate-y-1/2 text-text-muted"
+        className="pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-text-muted"
       />
       <input
         id="header-search"
@@ -24,7 +24,7 @@ export function HeaderSearch() {
         required
         maxLength={100}
         placeholder={placeholder}
-        className="min-h-11 w-full rounded-box border border-text-muted bg-surface pr-3 pl-10 text-base"
+        className="min-h-11 w-full rounded-pill border border-text-muted/40 bg-surface pr-3 pl-10 text-base"
       />
     </form>
   )

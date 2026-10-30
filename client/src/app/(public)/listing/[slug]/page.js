@@ -62,7 +62,7 @@ const TYPE_LABEL = {
 
 const chip =
   'inline-flex items-center gap-1 rounded-pill border px-2.5 py-0.5 text-xs font-semibold'
-const panel = 'rounded-panel border border-border bg-surface p-5 shadow-card'
+const panel = 'rounded-panel bg-surface p-5 shadow-card'
 
 /** Strips the scheme for display: "https://foodmandu.com" → "foodmandu.com". */
 const bareUrl = (url) => url.replace(/^https?:\/\//, '').replace(/\/$/, '')

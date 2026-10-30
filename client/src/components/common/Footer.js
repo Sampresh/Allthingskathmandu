@@ -19,7 +19,15 @@ export function Footer({ settings }) {
   const social = (settings?.social_links ?? []).filter((s) => s?.url && s?.platform)
 
   return (
-    <footer className="mt-12 border-t border-border bg-surface-raised pb-20 lg:pb-0">
+    <footer className="mt-16 bg-surface pb-20 lg:pb-0">
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 1440 60"
+        preserveAspectRatio="none"
+        className="-mb-10 block h-10 w-full -translate-y-[calc(100%-1px)] fill-surface sm:-mb-14 sm:h-14"
+      >
+        <path d="M0 60V38l180-22 150 18 210-30 170 26 230-28 200 30 170-18 130 12v32Z" />
+      </svg>
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-8 md:grid-cols-3">
         {emergency.length > 0 && (
           <section aria-labelledby="footer-emergency">
@@ -31,7 +39,7 @@ export function Footer({ settings }) {
                 <li key={number}>
                   <a
                     href={telHref(number)}
-                    className="flex min-h-11 items-center gap-2 rounded-box border border-border bg-surface px-3 text-sm hover:bg-surface-raised"
+                    className="flex min-h-11 items-center gap-2 rounded-pill bg-surface-raised px-4 text-sm hover:opacity-80"
                   >
                     <Phone aria-hidden="true" className="size-4 text-danger" />
                     <span>

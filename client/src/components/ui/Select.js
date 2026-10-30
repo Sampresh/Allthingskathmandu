@@ -13,7 +13,7 @@ export function Select({ label, hideLabel = false, className, children, ...props
       </label>
       <select
         id={id}
-        className="min-h-11 rounded-box border border-text-muted bg-surface px-3 text-base text-text"
+        className="min-h-11 rounded-box border border-text-muted/40 bg-surface px-3 text-base text-text"
         {...props}
       >
         {children}

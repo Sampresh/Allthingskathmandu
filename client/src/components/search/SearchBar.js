@@ -42,6 +42,7 @@ export function SearchBar({
   size = 'lg',
   autoFocus = false,
 }) {
+  const hero = size === 'lg'
   const router = useRouter()
   const t = useT()
   const lang = useLang()
@@ -110,14 +111,21 @@ export function SearchBar({
   }
 
   return (
-    <form role="search" onSubmit={submit} className="flex w-full flex-col gap-2 sm:flex-row">
+    <form
+      role="search"
+      onSubmit={submit}
+      className={clsx(
+        'flex w-full flex-col gap-2 sm:flex-row',
+        hero && 'rounded-panel bg-surface p-2 shadow-overlay sm:items-center sm:rounded-pill',
+      )}
+    >
       <div ref={boxRef} className="relative flex-1">
         <label htmlFor={`${listboxId}-input`} className="sr-only">
           <T k="search.label" />
         </label>
         <Search
           aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 left-3 size-5 -translate-y-1/2 text-text-muted"
+          className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-text-muted"
         />
         <input
           id={`${listboxId}-input`}
@@ -140,8 +148,8 @@ export function SearchBar({
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
           className={clsx(
-            'w-full rounded-box border border-text-muted bg-surface pr-3 pl-10 text-base',
-            size === 'lg' ? 'min-h-12' : 'min-h-11',
+            'w-full bg-surface pr-3 pl-11 text-base',
+            hero ? 'min-h-12 rounded-pill' : 'min-h-11 rounded-box border border-text-muted/40',
           )}
         />
         {showList && (
@@ -184,8 +192,10 @@ export function SearchBar({
             value={area}
             onChange={(e) => setArea(e.target.value)}
             className={clsx(
-              'rounded-box border border-text-muted bg-surface px-3 text-base sm:w-44',
-              size === 'lg' ? 'min-h-12' : 'min-h-11',
+              'bg-surface px-3 text-base sm:w-40',
+              hero
+                ? 'min-h-12 rounded-pill sm:rounded-none sm:border-l sm:border-border'
+                : 'min-h-11 rounded-box border border-text-muted/40',
             )}
           >
             <option value="">{t('search.allAreas')}</option>
@@ -200,8 +210,8 @@ export function SearchBar({
       <button
         type="submit"
         className={clsx(
-          'inline-flex items-center justify-center rounded-box bg-brand px-5 font-semibold text-brand-contrast hover:opacity-90',
-          size === 'lg' ? 'min-h-12' : 'min-h-11',
+          'inline-flex items-center justify-center rounded-pill bg-brand px-6 font-semibold text-brand-contrast transition-opacity hover:opacity-90',
+          hero ? 'min-h-12' : 'min-h-11',
         )}
       >
         <T k="search.submit" />

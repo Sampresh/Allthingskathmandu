@@ -1,76 +1,95 @@
 @import 'tailwindcss';
 
 /*
- * Design tokens (Part 4 §6): warm, local and quiet. Brick accent (#A3302A) on warm paper
- * (#FBF9F6), ink text, a clear green for "Open now". Every text/background pair meets WCAG AA
- * (4.5:1) in both themes. Cards are `surface`; the page and quiet panels are `surface-raised`.
+ * Design tokens: Himalayan dawn. Vermilion on warm white with ink text, prayer-flag tints for
+ * colour, deep night indigo in dark mode. Every text/background pair meets WCAG AA (4.5:1) in
+ * both themes. Cards are `surface` with soft shadows rather than borders.
  */
 
 :root {
-  --atk-brand: #a3302a;
+  --atk-brand: #cf2e1d;
   --atk-brand-contrast: #ffffff;
   --atk-surface: #ffffff;
-  --atk-surface-raised: #fbf9f6;
-  --atk-text: #1f2328;
-  --atk-text-muted: #6b6560;
-  --atk-border: #e3ddd6;
-  --atk-success: #18794e;
+  --atk-surface-raised: #f4f3ee;
+  --atk-text: #15171c;
+  --atk-text-muted: #5b606c;
+  --atk-border: #e8e6df;
+  --atk-success: #0f7a4a;
   --atk-warning: #a35a00;
-  --atk-danger: #b42318;
+  --atk-danger: #c02317;
   --atk-featured: #8a5a00;
-  --atk-page: #fbf9f6;
+  --atk-page: #fbfaf7;
 
-  /* Category tints for logo-less monogram tiles: background / text (≥ 6:1). */
-  --tint-1-bg: #f7e4e0;
-  --tint-1-fg: #8a2a24;
-  --tint-2-bg: #f8ebd3;
-  --tint-2-fg: #6e4400;
-  --tint-3-bg: #e3efdf;
-  --tint-3-fg: #2f5d2a;
-  --tint-4-bg: #ddefec;
-  --tint-4-fg: #1f5f58;
-  --tint-5-bg: #e3e6f5;
-  --tint-5-fg: #33407f;
-  --tint-6-bg: #efe2ee;
-  --tint-6-fg: #6b2f66;
-  --tint-7-bg: #e6e9ec;
-  --tint-7-fg: #3c4650;
-  --tint-8-bg: #fce8d5;
-  --tint-8-fg: #7f3f0e;
+  /* Prayer-flag tints for tiles and card panels: background / text (≥ 6:1). */
+  --tint-1-bg: #ffd9cf;
+  --tint-1-fg: #8e2010;
+  --tint-2-bg: #ffe7a6;
+  --tint-2-fg: #634100;
+  --tint-3-bg: #caefd5;
+  --tint-3-fg: #125a36;
+  --tint-4-bg: #bfeee7;
+  --tint-4-fg: #0c544d;
+  --tint-5-bg: #d9dfff;
+  --tint-5-fg: #2c379a;
+  --tint-6-bg: #f0d6f8;
+  --tint-6-fg: #66217c;
+  --tint-7-bg: #cbe8fc;
+  --tint-7-fg: #0d4e78;
+  --tint-8-bg: #ffdfc0;
+  --tint-8-fg: #7c3a07;
+
+  /* The home page scene (components/common/HeroArt.js): the valley at dawn. */
+  --hero-sky-top: #ffe2c9;
+  --hero-sky-bottom: #fff4e6;
+  --hero-sun: #ffb37a;
+  --hero-far: #f3c3b0;
+  --hero-snow: #fffaf3;
+  --hero-mid: #d98a78;
+  --hero-near: #7c2f33;
+  --hero-eye: #fff4e6;
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --atk-brand: #e8837a;
-    --atk-brand-contrast: #1a1310;
-    --atk-surface: #1e1a17;
-    --atk-surface-raised: #15120f;
-    --atk-text: #f2ede7;
-    --atk-text-muted: #b5aca2;
-    --atk-border: #3a332c;
-    --atk-success: #4cc38a;
-    --atk-warning: #f0b455;
-    --atk-danger: #ff8a80;
-    --atk-featured: #f2c14e;
-    --atk-page: #15120f;
+    --atk-brand: #ff8469;
+    --atk-brand-contrast: #2a0b05;
+    --atk-surface: #171c2e;
+    --atk-surface-raised: #202740;
+    --atk-text: #f3f4f8;
+    --atk-text-muted: #a9b0c4;
+    --atk-border: #2b3350;
+    --atk-success: #45d994;
+    --atk-warning: #ffb95c;
+    --atk-danger: #ff8d82;
+    --atk-featured: #ffcb52;
+    --atk-page: #0e1220;
 
-    --tint-1-bg: #3b2320;
-    --tint-1-fg: #f4b4aa;
-    --tint-2-bg: #3a2e17;
-    --tint-2-fg: #f0c878;
-    --tint-3-bg: #22301f;
-    --tint-3-fg: #a9d79b;
-    --tint-4-bg: #1c302d;
-    --tint-4-fg: #93d6cb;
-    --tint-5-bg: #232843;
-    --tint-5-fg: #b4bdf2;
-    --tint-6-bg: #33223a;
-    --tint-6-fg: #e0b4da;
-    --tint-7-bg: #262b30;
-    --tint-7-fg: #c3ccd5;
-    --tint-8-bg: #3a2817;
-    --tint-8-fg: #f5be8c;
+    --tint-1-bg: #4d1f18;
+    --tint-1-fg: #ffbcab;
+    --tint-2-bg: #443309;
+    --tint-2-fg: #ffd970;
+    --tint-3-bg: #113f29;
+    --tint-3-fg: #8fe5af;
+    --tint-4-bg: #0d403c;
+    --tint-4-fg: #7de5d8;
+    --tint-5-bg: #262e6c;
+    --tint-5-fg: #c0caff;
+    --tint-6-bg: #421c54;
+    --tint-6-fg: #e8b8f7;
+    --tint-7-bg: #113851;
+    --tint-7-fg: #a0d7fb;
+    --tint-8-bg: #4c2b0d;
+    --tint-8-fg: #ffc592;
+
+    --hero-sky-top: #10163a;
+    --hero-sky-bottom: #33275f;
+    --hero-sun: #f3eccf;
+    --hero-far: #3f3a7c;
+    --hero-snow: #d9dcf5;
+    --hero-mid: #2a2860;
+    --hero-near: #0e1220;
+    --hero-eye: #ffcb52;
     color-scheme: dark;
   }
 }
@@ -108,7 +127,7 @@
 }
 
 @theme {
-  /* Body: Source Sans 3; headings: Fraunces. Nepali falls back to the system Devanagari font. */
+  /* Plus Jakarta Sans throughout. Nepali falls back to the system Devanagari font. */
   --font-sans:
     var(--font-body), system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans Devanagari',
     'Kohinoor Devanagari', sans-serif;
@@ -134,20 +153,21 @@
   --font-weight-*: initial;
   --font-weight-normal: 400;
   --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
   /* Spacing: 4 px base (p-1 = 4, p-2 = 8, p-3 = 12, p-4 = 16, p-6 = 24, p-8 = 32, p-12 = 48). */
   --spacing: 0.25rem;
 
   /* Radius: 8 px for cards and inputs, 14 px for large panels, 999 px for chips. */
   --radius-*: initial;
-  --radius-box: 0.5rem;
-  --radius-panel: 0.875rem;
+  --radius-box: 0.75rem;
+  --radius-panel: 1.25rem;
   --radius-pill: 999px;
 
   /* Elevation: borders first; one soft shadow for sheets and dialogs. */
   --shadow-*: initial;
-  --shadow-overlay: 0 8px 32px rgb(0 0 0 / 0.18);
-  --shadow-card: 0 1px 2px rgb(31 35 40 / 0.06), 0 4px 12px rgb(31 35 40 / 0.04);
+  --shadow-overlay: 0 12px 40px rgb(21 23 28 / 0.16);
+  --shadow-card: 0 1px 2px rgb(21 23 28 / 0.04), 0 8px 24px rgb(21 23 28 / 0.06);
 
   /* Breakpoints: 640, 768, 1024, 1280. */
   --breakpoint-*: initial;
@@ -169,7 +189,8 @@
   h1,
   h2 {
     font-family: var(--font-display);
-    letter-spacing: -0.01em;
+    font-weight: 700;
+    letter-spacing: -0.025em;
   }
 
   /* The back office stays in one plain face. */
@@ -211,7 +232,7 @@
     @apply mt-3;
   }
   .lcard-act {
-    @apply relative z-10 ml-auto inline-flex min-h-11 items-center rounded-box border border-brand px-4 text-sm font-semibold text-brand transition-colors hover:bg-brand hover:text-brand-contrast;
+    @apply relative z-10 ml-auto inline-flex min-h-11 items-center rounded-pill bg-brand/10 px-5 text-sm font-semibold text-brand transition-colors hover:bg-brand hover:text-brand-contrast;
   }
   .lcard-act-sos {
     @apply border-danger bg-danger text-surface hover:bg-danger hover:text-surface hover:opacity-90;
@@ -250,7 +271,75 @@
     @apply hidden lg:block;
   }
   .browse-panel {
-    @apply sticky top-20 hidden max-h-[calc(100dvh-6rem)] flex-col gap-4 overflow-y-auto rounded-panel border border-border bg-surface p-4 shadow-card xl:flex;
+    @apply sticky top-20 hidden max-h-[calc(100dvh-6rem)] flex-col gap-4 overflow-y-auto rounded-panel bg-surface p-4 shadow-card xl:flex;
+  }
+}
+
+/*
+ * Site graphics. .ridge draws a mountain line along the bottom of any block in its text colour;
+ * .hero is the full-width home scene; .gtile is a category tile with an oversized icon.
+ */
+@utility ridge {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 55%;
+    pointer-events: none;
+    background: currentColor;
+    opacity: 0.12;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'%3E%3Cpath d='M0 70 60 34l44 26 72-54 62 46 48-28 62 42 52-24v82H0Z'/%3E%3C/svg%3E")
+      bottom / 100% 100% no-repeat;
+  }
+}
+@layer components {
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    margin-inline: calc(50% - 50vw);
+    margin-top: -1.5rem;
+    padding: 3.5rem 1rem 11rem;
+    background: linear-gradient(var(--hero-sky-top), var(--hero-sky-bottom));
+  }
+  @media (min-width: 40rem) {
+    .hero {
+      padding: 5.5rem 1.5rem 17rem;
+    }
+  }
+  .hero-art {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: -1;
+    width: 100%;
+    height: 10rem;
+  }
+  @media (min-width: 40rem) {
+    .hero-art {
+      height: 18rem;
+    }
+  }
+  .hero-link {
+    @apply inline-flex min-h-11 items-center rounded-pill bg-surface/70 px-4 text-sm font-semibold text-text backdrop-blur transition-colors hover:bg-surface;
+  }
+  .gtile {
+    @apply relative flex h-full min-h-32 flex-col overflow-hidden rounded-panel p-4 transition-transform duration-200 hover:-translate-y-1 sm:min-h-40;
+  }
+  .gtile-icon {
+    @apply absolute -right-3 -bottom-3 size-20 opacity-25 transition-transform duration-200 sm:size-24;
+  }
+  .gtile:hover .gtile-icon {
+    @apply scale-110 opacity-40;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gtile,
+    .gtile-icon {
+      transition: none;
+    }
+    .gtile:hover,
+    .gtile:hover .gtile-icon {
+      transform: none;
+    }
   }
 }
 
@@ -263,7 +352,7 @@
 }
 @layer components {
   .fcard {
-    @apply relative flex h-full flex-col overflow-hidden rounded-panel border border-border bg-surface shadow-card;
+    @apply relative flex h-full flex-col overflow-hidden rounded-panel bg-surface shadow-card;
     animation: fcard-in 0.45s ease-out both;
     animation-delay: calc(var(--i, 0) * 60ms);
     transition:
@@ -272,20 +361,16 @@
   }
   .fcard:is(:hover, :focus-within) {
     @apply shadow-overlay;
-    transform: scale(1.03);
+    transform: translateY(-4px);
   }
   .fcard-selected {
-    @apply border-brand;
+    @apply ring-2 ring-brand;
   }
   .fcard-panel {
-    @apply relative flex items-center justify-center overflow-hidden px-3 pt-12 pb-8;
+    @apply ridge relative flex items-center justify-center overflow-hidden px-3 pt-12 pb-8;
   }
   .fcard-foot {
     @apply mt-auto flex items-center justify-between gap-3 border-t border-border pt-2;
-  }
-  .fcard-panel::after {
-    content: '';
-    @apply pointer-events-none absolute inset-0 bg-text/5;
   }
   .fcard-tag {
     @apply absolute top-2.5 left-2.5 z-10 max-w-[calc(100%-1.25rem)] truncate rounded-pill bg-surface px-2 py-0.5 text-xs font-semibold text-text;

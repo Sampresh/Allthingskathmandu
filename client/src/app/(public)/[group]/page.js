@@ -61,7 +61,7 @@ export default async function GroupPage({ params }) {
             <li key={c.slug}>
               <Link
                 href={`/${group.slug}/${c.slug}`}
-                className="group flex min-h-20 items-center justify-between gap-3 rounded-panel border border-border bg-surface p-5 font-semibold shadow-card transition-colors hover:border-brand/40"
+                className="group flex min-h-20 items-center justify-between gap-3 rounded-panel bg-surface p-5 font-semibold shadow-card transition-transform hover:-translate-y-0.5"
               >
                 <span className="group-hover:text-brand">
                   <T en={c.nameEn} ne={c.nameNe} />

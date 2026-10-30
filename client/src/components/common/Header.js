@@ -15,16 +15,15 @@ const navLink =
  */
 export function Header() {
   return (
-    <header className="sticky top-0 z-20 border-b border-border bg-surface/95 backdrop-blur">
+    <header className="sticky top-0 z-20 border-b border-border/60 bg-surface/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-2">
         <Link
           href="/"
-          className="inline-flex min-h-11 min-w-0 items-center gap-2 font-display text-base font-semibold sm:shrink-0 sm:text-lg"
+          className="inline-flex min-h-11 min-w-0 items-center gap-2 font-display text-base font-bold tracking-tight sm:shrink-0 sm:text-lg"
         >
-          <span
-            aria-hidden="true"
-            className="inline-block size-3 shrink-0 rotate-45 rounded-[2px] bg-brand"
-          />
+          <svg aria-hidden="true" viewBox="0 0 24 24" className="size-6 shrink-0 fill-brand">
+            <path d="M1 21 9 6l4 7 3-4 7 12z" />
+          </svg>
           <span className="truncate">
             <T k="site.name" />
           </span>
@@ -47,7 +46,7 @@ export function Header() {
           <Link
             href="/business"
             prefetch={false}
-            className="inline-flex min-h-11 items-center rounded-box bg-brand px-4 font-semibold text-brand-contrast hover:opacity-90"
+            className="inline-flex min-h-11 items-center rounded-pill bg-brand px-5 font-semibold whitespace-nowrap text-brand-contrast hover:opacity-90"
           >
             <T k="nav.listBusiness" />
           </Link>

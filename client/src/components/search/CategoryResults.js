@@ -183,7 +183,7 @@ export function CategoryResults({ category, areas, initialItems, initialCursor }
             near={near}
           />
         </div>
-        <div className="hidden items-center justify-between gap-3 rounded-panel border border-border bg-surface px-4 py-2 shadow-card lg:flex">
+        <div className="hidden items-center justify-between gap-3 rounded-panel bg-surface px-4 py-2 shadow-card lg:flex">
           <p className="text-sm text-text-muted">
             <T en="Results" ne="नतिजा" />:{' '}
             <span className="font-semibold text-text">

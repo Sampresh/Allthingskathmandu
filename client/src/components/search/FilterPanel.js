@@ -29,7 +29,7 @@ export default function FilterPanel({ tags, areas, filters, onChange, near }) {
   const nearOn = near.status === 'ready'
 
   return (
-    <div className="flex flex-col gap-4 rounded-panel border border-border bg-surface p-4 shadow-card">
+    <div className="flex flex-col gap-4 rounded-panel bg-surface p-4 shadow-card">
       <div className="flex items-center justify-between gap-3">
         <h2 className="text-lg font-semibold">
           <T en="Filters" ne="फिल्टर" />

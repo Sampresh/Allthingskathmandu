@@ -21,7 +21,7 @@ export function Input({ label, hint, error, className, id, ...props }) {
         aria-describedby={[hintId, errorId].filter(Boolean).join(' ') || undefined}
         className={clsx(
           'min-h-11 rounded-box border bg-surface px-3 text-base text-text placeholder:text-text-muted',
-          error ? 'border-danger' : 'border-text-muted',
+          error ? 'border-danger' : 'border-text-muted/40',
         )}
         {...props}
       />
