@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { GroupIcon } from '@/components/common/GroupIcon'
 import { HeroArt } from '@/components/common/HeroArt'
+import { CloudImage } from '@/components/ui/CloudImage'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import { ST as T } from '@/components/common/ST'
 import { FeatureGrid } from '@/components/listing/FeatureCard'
@@ -28,12 +29,29 @@ export const metadata = {
 
 const TILE_TINTS = 8
 
+// Themed stock photo behind each top-level group tile (free Unsplash). Groups are fixed, so a
+// static map keeps this to the client; a group without one simply shows the tint as before.
+const U = (id) => `https://images.unsplash.com/photo-${id}`
+const GROUP_PHOTO = {
+  'eat-and-drink': U('1517248135467-4c7edcad34c4'), // restaurant interior
+  'get-around': U('1502877338535-766e1452684a'), // car
+  stay: U('1566073771259-6a8506099945'), // lodge and pool
+  essentials: U('1556742049-0cfed4f6a45d'), // shop
+  'health-and-wellness': U('1519494026892-80bbd2d6fd0d'), // hospital reception
+  shopping: U('1441986300917-64674bd600d8'), // boutique
+  'things-to-do': U('1519125323398-675f0ddb6308'), // mountain viewpoint
+  'home-services': U('1504148455328-c376907d081c'), // power drill
+  'services-and-events': U('1497366216548-37526070297c'), // office
+  emergency: U('1587745416684-47953f16f02f'), // ambulance
+}
+
 function Groups({ groups }) {
   return (
     <ul className="grid grid-cols-2 gap-3 sm:grid-cols-5 sm:gap-4">
       {groups.map((group, i) => {
         // In turn rather than by name, so neighbouring tiles never match.
         const tint = (i % TILE_TINTS) + 1
+        const photo = GROUP_PHOTO[group.slug]
         return (
           <li key={group.slug}>
             <Link
@@ -41,11 +59,44 @@ function Groups({ groups }) {
               className="gtile"
               style={{ background: `var(--tint-${tint}-bg)`, color: `var(--tint-${tint}-fg)` }}
             >
-              <span className="leading-snug font-bold">
+              {photo && (
+                <>
+                  <CloudImage
+                    src={photo}
+                    alt=""
+                    width={480}
+                    widths={[240, 360, 480]}
+                    sizes="(min-width: 640px) 20vw, 50vw"
+                    className="absolute inset-0 size-full object-cover"
+                  />
+                  {/* Tint wash keeps the group's colour identity. */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0"
+                    style={{ background: `var(--tint-${tint}-bg)`, opacity: 0.8 }}
+                  />
+                  {/* Dark scrim under the top-left text so the label stays legible. */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        'linear-gradient(145deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.45) 42%, transparent 72%)',
+                    }}
+                  />
+                </>
+              )}
+              <span
+                className="relative z-10 leading-snug font-bold"
+                style={{ textShadow: '0 1px 4px rgba(0,0,0,0.7)' }}
+              >
                 <T en={group.nameEn} ne={group.nameNe} />
               </span>
               {group.liveCount > 0 && (
-                <span className="mt-1 text-sm opacity-80">
+                <span
+                  className="relative z-10 mt-1 text-sm font-medium opacity-95"
+                  style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}
+                >
                   {group.liveCount} <T en="places" ne="ठाउँ" />
                 </span>
               )}

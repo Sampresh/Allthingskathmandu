@@ -35,7 +35,15 @@ const csp = {
     'https://fonts.googleapis.com',
     'https://accounts.google.com',
   ],
-  'img-src': ["'self'", 'data:', 'blob:', 'https://res.cloudinary.com', ...GOOGLE_MAPS],
+  // Unsplash serves the seeded demo/stock listing photos alongside Cloudinary uploads.
+  'img-src': [
+    "'self'",
+    'data:',
+    'blob:',
+    'https://res.cloudinary.com',
+    'https://images.unsplash.com',
+    ...GOOGLE_MAPS,
+  ],
   'font-src': ["'self'", 'https://fonts.gstatic.com'],
   'connect-src': [
     "'self'",
@@ -93,7 +101,10 @@ const nextConfig = {
     // Cloudinary resizes (f_auto,q_auto, width per breakpoint); only its host is allowed.
     loader: 'custom',
     loaderFile: './src/lib/cloudinaryLoader.js',
-    remotePatterns: [{ protocol: 'https', hostname: 'res.cloudinary.com' }],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+    ],
   },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }]

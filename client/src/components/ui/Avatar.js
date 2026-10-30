@@ -1,5 +1,5 @@
 import { clsx } from 'clsx'
-import { isCloudinaryUrl } from '@/lib/cloudinaryLoader'
+import { isAllowedImageUrl } from '@/lib/cloudinaryLoader'
 import { CloudImage } from './CloudImage'
 
 const initials = (name) =>
@@ -16,7 +16,7 @@ export function Avatar({ src, name, alt = '', size = 56, className, priority = f
     'shrink-0 overflow-hidden rounded-box border border-border bg-surface-raised',
     className,
   )
-  if (isCloudinaryUrl(src)) {
+  if (isAllowedImageUrl(src)) {
     return (
       <CloudImage
         src={src}

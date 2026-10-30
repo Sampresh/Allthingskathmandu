@@ -1,9 +1,10 @@
-import cloudinaryLoader, { isCloudinaryUrl } from '@/lib/cloudinaryLoader'
+import cloudinaryLoader, { isAllowedImageUrl } from '@/lib/cloudinaryLoader'
 
 /**
- * Responsive Cloudinary image rendered as plain HTML (no image runtime in the browser, for
- * the Part 4 §9 JS budget). Cloudinary picks format and quality; the browser picks a width
- * from srcSet. Lazy unless `priority`. Renders nothing for non-Cloudinary URLs.
+ * Responsive image rendered as plain HTML (no image runtime in the browser, for the Part 4 §9
+ * JS budget). The host (Cloudinary, or Unsplash for stock photos) picks format and quality;
+ * the browser picks a width from srcSet. Lazy unless `priority`. Renders nothing for a URL
+ * from a host we do not serve.
  */
 export function CloudImage({
   src,
@@ -16,7 +17,7 @@ export function CloudImage({
   className,
   style,
 }) {
-  if (!isCloudinaryUrl(src)) return null
+  if (!isAllowedImageUrl(src)) return null
   const candidates = widths ?? [width, width * 2, width * 3]
   return (
     // eslint-disable-next-line @next/next/no-img-element -- server-rendered srcSet, see above
