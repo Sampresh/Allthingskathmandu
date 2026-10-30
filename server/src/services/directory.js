@@ -25,6 +25,9 @@ const cardColumns = (point) => Prisma.sql`
   b.phone, b.whatsapp, b.website, b."playStoreUrl", b."appStoreUrl",
   b."priceLevel", b."ratingAvg"::float8 AS "ratingAvg", b."ratingCount", b."isVerified", b.hours,
   ${featuredSql} AS featured,
+  (SELECT m.url FROM media m
+    WHERE m."businessId" = b.id AND m.type = 'PHOTO' AND ${featuredSql}
+    ORDER BY m."sortOrder" LIMIT 1) AS "photoUrl",
   a.slug AS "areaSlug", a."nameEn" AS "areaNameEn", a."nameNe" AS "areaNameNe",
   pc.slug AS "categorySlug", pc."nameEn" AS "categoryNameEn", pc."nameNe" AS "categoryNameNe",
   pc."groupSlug", pc."isPublic" AS "categoryIsPublic",
@@ -56,6 +59,8 @@ export function toCard(row, clock = nepalClock()) {
     type: row.type,
     shortDesc: row.shortDesc,
     logoUrl: row.logoUrl,
+    // Photos are Featured-only (Part 1 §2).
+    photoUrl: row.photoUrl ?? null,
     contact: {
       phone: row.phone,
       whatsapp: row.whatsapp,

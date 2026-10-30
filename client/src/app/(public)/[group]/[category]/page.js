@@ -40,7 +40,7 @@ export default async function CategoryPage({ params }) {
   ])
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="browse-wide flex flex-col gap-6">
       <Breadcrumbs
         items={[
           { href: '/', label: <T k="nav.home" /> },

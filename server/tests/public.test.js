@@ -421,6 +421,29 @@ describe('areas, plans, settings, home', () => {
   })
 })
 
+describe('card photos', () => {
+  it('shows the first photo on Featured listings only', async () => {
+    const photo = (businessId, sortOrder) => ({
+      businessId,
+      type: 'PHOTO',
+      url: `https://res.cloudinary.com/x/${sortOrder}.jpg`,
+      altText: 'Photo',
+      sortOrder,
+    })
+    await db.media.createMany({
+      data: [
+        photo(fx.listings['featured-three'].id, 1),
+        photo(fx.listings['featured-three'].id, 0),
+        photo(fx.listings['pizza-palace'].id, 0),
+      ],
+    })
+    const body = (await get('/categories/restaurants/listings?limit=50')).body
+    const card = (slug) => body.data.find((c) => c.slug === slug)
+    expect(card('featured-three').photoUrl).toBe('https://res.cloudinary.com/x/0.jpg')
+    expect(card('pizza-palace').photoUrl).toBeNull()
+  })
+})
+
 describe('response cache', () => {
   it('serves repeats from Redis and drops entries when their tag is purged', async () => {
     expect((await get('/categories/restaurants/listings')).headers['x-cache']).toBe('MISS')

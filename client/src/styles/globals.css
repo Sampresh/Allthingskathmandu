@@ -218,6 +218,42 @@
   }
 }
 
+/*
+ * Category results (components/search/CategoryResults.js): filters and cards on laptops, plus
+ * the listing panel on wide screens. .browse-wide lets the page grow past the site's content
+ * width without changing the shared layout.
+ */
+@layer components {
+  @media (min-width: 64rem) {
+    .browse-wide {
+      margin-inline: calc((min(92rem, 100vw - 2rem) - 100%) / -2);
+    }
+    .browse {
+      display: grid;
+      grid-template-columns: 16rem minmax(0, 1fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .browse-filters {
+      position: sticky;
+      top: 5rem;
+      max-height: calc(100dvh - 6rem);
+      overflow-y: auto;
+    }
+  }
+  @media (min-width: 80rem) {
+    .browse[data-panel='open'] {
+      grid-template-columns: 16rem minmax(0, 1fr) 24rem;
+    }
+  }
+  .browse-filters {
+    @apply hidden lg:block;
+  }
+  .browse-panel {
+    @apply sticky top-20 hidden max-h-[calc(100dvh-6rem)] flex-col gap-4 overflow-y-auto rounded-panel border border-border bg-surface p-4 shadow-card xl:flex;
+  }
+}
+
 /* Home page card (components/listing/FeatureCard.js): fades up in turn, lifts on hover. */
 @keyframes fcard-in {
   from {
@@ -238,8 +274,14 @@
     @apply shadow-overlay;
     transform: scale(1.03);
   }
+  .fcard-selected {
+    @apply border-brand;
+  }
   .fcard-panel {
-    @apply relative flex items-center justify-center px-3 pt-12 pb-8;
+    @apply relative flex items-center justify-center overflow-hidden px-3 pt-12 pb-8;
+  }
+  .fcard-foot {
+    @apply mt-auto flex items-center justify-between gap-3 border-t border-border pt-2;
   }
   .fcard-panel::after {
     content: '';

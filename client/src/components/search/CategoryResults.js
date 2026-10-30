@@ -1,16 +1,25 @@
 'use client'
 
-import { useState, useSyncExternalStore } from 'react'
+import { useCallback, useState, useSyncExternalStore } from 'react'
+import dynamic from 'next/dynamic'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { T } from '@/components/common/T'
-import { CardGrid } from '@/components/listing/ListingCard'
+import { FeatureGrid } from '@/components/listing/FeatureCard'
 import { LazyMap } from '@/components/map/LazyMap'
 import { toMapPoints } from '@/components/map/points'
 import { Button } from '@/components/ui/Button'
+import { Chip } from '@/components/ui/Chip'
 import { EmptyState } from '@/components/ui/EmptyState'
-import { CardListSkeleton } from '@/components/ui/Skeleton'
+import { CardListSkeleton, Skeleton } from '@/components/ui/Skeleton'
 import { useGeolocation } from '@/hooks/useGeolocation'
+import { useT } from '@/hooks/useLang'
 import { EMPTY_FILTERS, FilterBar } from './FilterBar'
+
+const FilterPanel = dynamic(() => import('./FilterPanel'), {
+  ssr: false,
+  loading: () => <Skeleton className="h-96 w-full rounded-panel" />,
+})
+const ListingPanel = dynamic(() => import('@/components/listing/ListingPanel'), { ssr: false })
 
 const PAGE_SIZE = 20
 
@@ -45,6 +54,7 @@ const isDefault = (filters) => JSON.stringify(filters) === JSON.stringify(EMPTY_
 /**
  * Category listings: the first page is rendered on the server (cached); filters, Near me,
  * Load more and the map run here. Filters live in the URL so a filtered view can be shared.
+ * Wide screens show three columns: filters, cards, and the listing picked from the cards.
  */
 export function CategoryResults({ category, areas, initialItems, initialCursor }) {
   // Filters start from the URL (a shared link) once in the browser; the server render and
@@ -58,6 +68,15 @@ export function CategoryResults({ category, areas, initialItems, initialCursor }
   const filters = chosen ?? readFilters(urlSearch)
   const [view, setView] = useState('list')
   const near = useGeolocation()
+  const [selected, setSelected] = useState(null)
+  const t = useT()
+
+  const closePanel = useCallback(() => {
+    setSelected((card) => {
+      if (card) document.getElementById(`card-${card.id}`)?.focus({ preventScroll: true })
+      return null
+    })
+  }, [])
 
   const update = (next) => {
     setFilters(next)
@@ -129,34 +148,75 @@ export function CategoryResults({ category, areas, initialItems, initialCursor }
   } else if (view === 'map') {
     body = <LazyMap points={toMapPoints(cards)} className="h-[60dvh]" />
   } else {
-    body = <CardGrid cards={cards} headingLevel={2} />
+    body = (
+      <FeatureGrid
+        cards={cards}
+        results
+        headingLevel={2}
+        onOpen={setSelected}
+        selectedId={selected?.id}
+        className={selected ? 'xl:grid-cols-2' : undefined}
+      />
+    )
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <FilterBar
-        tags={category.tags}
-        areas={areas}
-        filters={filters}
-        onChange={update}
-        view={view}
-        onView={setView}
-        near={near}
-      />
-      <div aria-live="polite" aria-busy={query.isFetching}>
-        {body}
+    <div className="browse" data-panel={selected ? 'open' : undefined}>
+      <div className="browse-filters">
+        <FilterPanel
+          tags={category.tags}
+          areas={areas}
+          filters={filters}
+          onChange={update}
+          near={near}
+        />
       </div>
-      {query.hasNextPage && view === 'list' && (
-        <div className="flex justify-center">
-          <Button
-            variant="secondary"
-            onClick={() => query.fetchNextPage()}
-            loading={query.isFetchingNextPage}
-          >
-            <T k="listing.loadMore" />
-          </Button>
+      <div className="flex min-w-0 flex-col gap-4">
+        <div className="lg:hidden">
+          <FilterBar
+            tags={category.tags}
+            areas={areas}
+            filters={filters}
+            onChange={update}
+            view={view}
+            onView={setView}
+            near={near}
+          />
         </div>
-      )}
+        <div className="hidden items-center justify-between gap-3 rounded-panel border border-border bg-surface px-4 py-2 shadow-card lg:flex">
+          <p className="text-sm text-text-muted">
+            <T en="Results" ne="नतिजा" />:{' '}
+            <span className="font-semibold text-text">
+              {cards.length}
+              {query.hasNextPage && '+'}
+            </span>{' '}
+            <T en="listings" ne="सूची" />
+          </p>
+          <div role="group" aria-label={t('filters.view')} className="flex gap-2">
+            <Chip selected={view === 'list'} onClick={() => setView('list')}>
+              <T k="filters.list" />
+            </Chip>
+            <Chip selected={view === 'map'} onClick={() => setView('map')}>
+              <T k="filters.map" />
+            </Chip>
+          </div>
+        </div>
+        <div aria-live="polite" aria-busy={query.isFetching}>
+          {body}
+        </div>
+        {query.hasNextPage && view === 'list' && (
+          <div className="flex justify-center">
+            <Button
+              variant="secondary"
+              onClick={() => query.fetchNextPage()}
+              loading={query.isFetchingNextPage}
+            >
+              <T k="listing.loadMore" />
+            </Button>
+          </div>
+        )}
+      </div>
+      {selected && <ListingPanel key={selected.id} card={selected} onClose={closePanel} />}
     </div>
   )
 }

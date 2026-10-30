@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { LocateFixed } from 'lucide-react'
 import { T } from '@/components/common/T'
-import { CardGrid } from '@/components/listing/ListingCard'
+import { FeatureGrid } from '@/components/listing/FeatureCard'
 import { LazyMap } from '@/components/map/LazyMap'
 import { toMapPoints } from '@/components/map/points'
 import { Button } from '@/components/ui/Button'
@@ -161,7 +161,7 @@ export function SearchResults({ areas, initial }) {
                         <T k="search.other" />
                       )}
                     </h2>
-                    <CardGrid cards={group} />
+                    <FeatureGrid cards={group} results />
                   </section>
                 ))}
               </div>

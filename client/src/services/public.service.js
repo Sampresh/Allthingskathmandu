@@ -14,6 +14,8 @@ export const searchListings = (params) =>
 export const suggest = (q, { signal } = {}) =>
   api.get('/public/search/suggest', { params: { q }, signal }).then(unwrap)
 
+export const getListing = (slug) => api.get(`/public/listings/${slug}`).then(unwrap)
+
 export const getListingReviews = (slug, cursor) =>
   api.get(`/public/listings/${slug}/reviews`, { params: toParams({ cursor }) }).then(unwrapWithMeta)
 

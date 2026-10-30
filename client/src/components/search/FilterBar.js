@@ -12,7 +12,7 @@ const MoreFilters = dynamic(() => import('./MoreFilters'), { ssr: false })
 
 export const EMPTY_FILTERS = { tags: [], area: '', open: false, price: [], rating: '' }
 
-const toggle = (list, value) =>
+export const toggle = (list, value) =>
   list.includes(value) ? list.filter((v) => v !== value) : [...list, value]
 
 /**
