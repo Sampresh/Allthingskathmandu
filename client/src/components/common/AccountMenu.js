@@ -34,7 +34,7 @@ export function AccountMenu({ compact = false }) {
       <Link
         href="/login"
         aria-label={t('nav.login')}
-        className="inline-flex size-11 items-center justify-center rounded-box hover:bg-surface-raised"
+        className="hidden size-11 items-center justify-center rounded-box hover:bg-surface-raised sm:inline-flex"
       >
         <CircleUserRound aria-hidden="true" className="size-6" />
       </Link>

@@ -16,7 +16,7 @@ export function LanguageToggle() {
       onClick={() => setLang(lang === 'ne' ? 'en' : 'ne')}
       className="inline-flex min-h-11 items-center gap-2 rounded-box px-3 text-sm font-semibold text-text hover:bg-surface-raised"
     >
-      <Languages aria-hidden="true" className="size-4" />
+      <Languages aria-hidden="true" className="hidden size-4 sm:block" />
       <span className="i18n-en" lang="ne">
         नेपाली
       </span>
